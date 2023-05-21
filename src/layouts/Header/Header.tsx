@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-import { BurgerDropdownLinks } from '@/components/BurgerDropdownLinks'
+import { BurgerDropdownLinks } from '@/components'
 import type { FCC } from '@/types'
 
 import styles from './Header.module.scss'
