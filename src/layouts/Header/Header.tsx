@@ -1,63 +1,31 @@
-import {
-  BarChartOutlined,
-  CalculatorOutlined,
-  LaptopOutlined,
-  SketchOutlined,
-  UsergroupAddOutlined,
-  UserOutlined,
-} from '@ant-design/icons'
+import { UserOutlined } from '@ant-design/icons'
 import { Button, Col, Layout, Row, Typography } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 
+import { BurgerDropdownLinks } from '@/components/BurgerDropdownLinks'
 import type { FCC } from '@/types'
 
 import styles from './Header.module.scss'
+import { Links } from './Links'
 
 const { Header: AntdHeader } = Layout
 const { Text } = Typography
 
-const links = [
-  {
-    text: 'Калькулятор',
-    href: '/calculator',
-    icon: <CalculatorOutlined />,
-  },
-  {
-    text: 'Найти партнера',
-    href: '/partners',
-    icon: <UsergroupAddOutlined />,
-  },
-  {
-    text: 'Крупным инвесторам',
-    href: '/investors',
-    icon: <SketchOutlined />,
-  },
-  {
-    text: 'Аналитика',
-    href: '/analytics',
-    icon: <BarChartOutlined />,
-  },
-  {
-    text: 'Блог',
-    href: '/blog',
-    icon: <LaptopOutlined />,
-  },
-]
 export const Header: FCC = () => {
   const router = useRouter()
 
   return (
     <AntdHeader className={styles.headerContainer}>
-      <Row justify='space-between' style={{ width: '100%' }}>
+      <Row justify='space-between' style={{ width: '100%' }} gutter={[5, 10]}>
         <Col flex='auto'>
           <Text className={styles.logoText}>Hincal</Text>
         </Col>
 
-        <Col flex='auto'>
+        <Col flex='auto' xs={0} md={24}>
           <Row>
-            {links.map((link) => (
+            {Links.map((link) => (
               <div
                 key={link.href}
                 className={
@@ -77,6 +45,9 @@ export const Header: FCC = () => {
           <Link href='/login'>
             <Button type='primary' shape='circle' icon={<UserOutlined />} />
           </Link>
+        </Col>
+        <Col md={0}>
+          <BurgerDropdownLinks />
         </Col>
       </Row>
     </AntdHeader>

@@ -21,7 +21,11 @@ const Login: FCC = () => {
       <Col xs={24} md={16}>
         <Card
           title='Авторизация'
-          extra={<Link href='/registration'>Зарегистрироваться?</Link>}
+          extra={
+            <Col xs={8}>
+              <Link href='/registration'>Зарегистрироваться?</Link>
+            </Col>
+          }
         >
           <Form
             name='basic'
@@ -65,8 +69,8 @@ const Login: FCC = () => {
               <Checkbox>Запомнить меня</Checkbox>
             </Form.Item>
 
-            <Form.Item wrapperCol={{ offset: 20, span: 24 }}>
-              <Button type='primary' htmlType='submit'>
+            <Form.Item>
+              <Button size='large' block type='primary' htmlType='submit'>
                 Войти
               </Button>
             </Form.Item>
