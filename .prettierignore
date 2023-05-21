@@ -1,8 +1,3 @@
-/dist/**
-/node_modules/**
-/coverage/**
-/build/**
-/docs/**
-/yarn.lock
-/package.json
-/src/submodules/cicada-map/
+node_modules
+out
+!.storybook

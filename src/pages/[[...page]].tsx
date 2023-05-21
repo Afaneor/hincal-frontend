@@ -1,15 +1,15 @@
-import { builder, BuilderComponent, useIsPreviewing } from '@builder.io/react';
-import DefaultErrorPage from 'next/error';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import React from 'react';
+import { builder, BuilderComponent, useIsPreviewing } from '@builder.io/react'
+import DefaultErrorPage from 'next/error'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import React from 'react'
 
 // Replace with your Public API Key
-builder.init(process.env.BUILDER_KEY || '');
+builder.init(process.env.BUILDER_KEY || '')
 
 // Define a function that fetches the Builder
 // content for a given page
-export async function getStaticProps({ params }) {
+export async function getStaticProps({ params }: any) {
   // Fetch the builder content for the given page
   const page = await builder
     .get('page', {
@@ -17,7 +17,7 @@ export async function getStaticProps({ params }) {
         urlPath: `/${params?.page?.join('/') || ''}`,
       },
     })
-    .toPromise();
+    .toPromise()
 
   // Return the page content as props
   return {
@@ -26,7 +26,7 @@ export async function getStaticProps({ params }) {
     },
     // Revalidate the content every 5 seconds
     revalidate: 5,
-  };
+  }
 }
 
 // Define a function that generates the
@@ -37,30 +37,30 @@ export async function getStaticPaths() {
     // We only need the URL field
     fields: 'data.url',
     options: { noTargeting: true },
-  });
+  })
 
   // Generate the static paths for all pages in Builder
   return {
     paths: pages.map((page) => `${page.data?.url}`),
     fallback: true,
-  };
+  }
 }
 
 // Define the Page component
-export default function Page({ page }) {
-  const router = useRouter();
-  const isPreviewing = useIsPreviewing();
+export default function Page({ page }: any) {
+  const router = useRouter()
+  const isPreviewing = useIsPreviewing()
 
   // If the page is still being generated,
   // show a loading message
   if (router.isFallback) {
-    return <h1>Loading...</h1>;
+    return <h1>Loading...</h1>
   }
 
   // If the page content is not available
   // and not in preview mode, show a 404 error page
   if (!page && !isPreviewing) {
-    return <DefaultErrorPage statusCode={404} />;
+    return <DefaultErrorPage statusCode={404} />
   }
 
   // If the page content is available, render
@@ -71,7 +71,7 @@ export default function Page({ page }) {
         <title>{page?.data.title}</title>
       </Head>
       {/* Render the Builder page */}
-      <BuilderComponent model="page" content={page} />
+      <BuilderComponent model='page' content={page} />
     </>
-  );
+  )
 }

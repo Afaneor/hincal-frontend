@@ -2,7 +2,7 @@
 to: <%= absPath %>/<%= h.changeCase.pascal(component_name) %>.tsx
 ---
 import React from 'react'
-import styles from './style.module.scss'
+import styles from './<%= h.changeCase.pascal(component_name) %>.module.scss'
 import { FCC } from 'src/types'
 
 interface <%= component_name %>Props {

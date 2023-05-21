@@ -1,0 +1,28 @@
+.logoText {
+  color: #c5defa;
+  font-size: 1.5rem;
+}
+
+.headerContainer {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  -webkit-box-shadow: 0px 3px 4px 0px rgba(34, 60, 80, 0.22);
+  -moz-box-shadow: 0px 3px 4px 0px rgba(34, 60, 80, 0.22);
+  box-shadow: 0px 3px 4px 0px rgba(34, 60, 80, 0.22);
+}
+
+.authSection {
+  display: flex;
+  justify-content: end;
+}
+
+.activeLink {
+  -webkit-box-shadow: 0px -3px 0px 0px #c5defa inset;
+  -moz-box-shadow: 0px -3px 0px 0px #c5defa inset;
+  box-shadow: 0px -3px 0px 0px #c5defa inset;
+  & button {
+    color: #c5defa;
+  }
+}
