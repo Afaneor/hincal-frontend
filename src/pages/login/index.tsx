@@ -18,7 +18,7 @@ const Login: FCC = () => {
   }
   return (
     <Row justify='center'>
-      <Col xs={24} md={16}>
+      <Col xs={24} md={8}>
         <Card
           title='Авторизация'
           extra={

@@ -18,8 +18,8 @@ const Registration: FCC = () => {
   }
   return (
     <Row justify='center'>
-      <Col xs={24} md={24}>
-        <Card title='Регистрация' extra={<Link href='/login'>Войти</Link>}>
+      <Col xs={24} md={12}>
+        <Card title='Регистрация' extra={<Link href='/login'>Вход</Link>}>
           <Form
             layout='vertical'
             wrapperCol={{ span: 24 }}

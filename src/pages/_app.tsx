@@ -10,14 +10,14 @@ import { Header } from '@/layouts/Header'
 
 const { Content } = Layout
 
-const contentStyle = { padding: '1% 10%', overflow: 'scroll' }
+const contentStyle = { padding: '1% 0', overflow: 'scroll' }
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <Layout className='h100'>
       <Header />
       <Content className='site-layout' style={contentStyle}>
         <Row justify='center'>
-          <Col xs={24} md={18}>
+          <Col span={24}>
             <Component {...pageProps} />
           </Col>
         </Row>
