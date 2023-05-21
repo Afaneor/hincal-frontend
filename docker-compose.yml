@@ -1,0 +1,14 @@
+version: "3"
+
+services:
+  hincal-frontend:
+    image: swr.ru-moscow-1.hc.sbercloud.ru/hincal/hincal-frontend:latest
+    environment:
+      VIRTUAL_HOST: hincal.pavlin.tech
+      VIRTUAL_PORT: 3000
+      LETSENCRYPT_HOST: hincal.pavlin.tech
+      ENV: production
+      HOSTNAME: localhost
+    restart: always
+    ports:
+      - 4000:3000
