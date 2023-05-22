@@ -19,7 +19,11 @@ const Registration: FCC = () => {
   return (
     <Row justify='center'>
       <Col xs={24} md={12}>
-        <Card title='Регистрация' extra={<Link href='/login'>Вход</Link>}>
+        <Card
+          title='Регистрация'
+          extra={<Link href='/login'>Вход</Link>}
+          hoverable
+        >
           <Form
             layout='vertical'
             wrapperCol={{ span: 24 }}

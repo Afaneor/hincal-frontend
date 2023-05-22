@@ -26,6 +26,7 @@ const Login: FCC = () => {
               <Link href='/registration'>Зарегистрироваться?</Link>
             </Col>
           }
+          hoverable
         >
           <Form
             name='basic'

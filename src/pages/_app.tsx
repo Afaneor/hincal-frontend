@@ -10,7 +10,7 @@ import { Header } from '@/layouts/Header'
 
 const { Content } = Layout
 
-const contentStyle = { padding: '1% 0', overflow: 'scroll' }
+const contentStyle = { padding: '1%' }
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <Layout className='h100'>

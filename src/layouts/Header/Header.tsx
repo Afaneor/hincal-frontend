@@ -28,9 +28,9 @@ export const Header: FCC = () => {
             {Links.map((link) => (
               <div
                 key={link.href}
-                className={
+                className={`${
                   router.pathname === link.href ? styles.activeLink : ''
-                }
+                } ${styles.navLink}`}
               >
                 <Link href={link.href}>
                   <Button type='link' icon={link.icon}>
@@ -43,7 +43,7 @@ export const Header: FCC = () => {
         </Col>
         <Col flex='auto' className={styles.authSection}>
           <Link href='/login'>
-            <Button type='primary' shape='circle' icon={<UserOutlined />} />
+            <Button shape='circle' icon={<UserOutlined />} />
           </Link>
         </Col>
         <Col md={0}>
