@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React, { useMemo } from 'react'
 import type { FCC } from 'src/types'
 
-import { Links } from '@/layouts/Header/Links'
+import { Links } from '@/components/Header/Links'
 
 interface BurgerDropdownLinksProps {
   prop?: any

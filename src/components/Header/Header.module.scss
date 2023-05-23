@@ -1,7 +1,7 @@
 @mixin boxShadowBottom {
-  -webkit-box-shadow: 0px -3px 0px 0px #1677ff inset;
-  -moz-box-shadow: 0px -3px 0px 0px #1677ff inset;
-  box-shadow: 0px -3px 0px 0px #1677ff inset;
+  -webkit-box-shadow: 0px -3px 0px 0px #2c2c2c inset;
+  -moz-box-shadow: 0px -3px 0px 0px #2c2c2c inset;
+  box-shadow: 0px -3px 0px 0px #2c2c2c inset;
 }
 
 .logoText {
@@ -24,6 +24,9 @@
   display: flex;
   justify-content: flex-end;
 }
+.navLink button {
+  color: #2c2c2c;
+}
 .navLink:hover {
   @include boxShadowBottom;
   & button {
@@ -36,5 +39,6 @@
 
   & button {
     font-weight: bold;
+    color: #2c2c2c;
   }
 }

@@ -33,7 +33,7 @@ export const Header: FCC = () => {
                 } ${styles.navLink}`}
               >
                 <Link href={link.href}>
-                  <Button type='link' icon={link.icon}>
+                  <Button color='black' type='link' icon={link.icon}>
                     {link.text}
                   </Button>
                 </Link>

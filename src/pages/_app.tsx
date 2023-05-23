@@ -6,11 +6,11 @@ import type { AppProps } from 'next/app'
 import { appWithTranslation } from 'next-i18next'
 import React from 'react'
 
-import { Header } from '@/layouts/Header'
+import { Header } from '@/components/Header'
 
 const { Content } = Layout
 
-const contentStyle = { padding: '1%' }
+const contentStyle = { padding: '1% 0' }
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <Layout className='h100'>

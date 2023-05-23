@@ -9,19 +9,21 @@ import type { FCC } from 'src/types'
 
 import { useMoneyFormat } from '@/hooks/useMoneyFormat'
 
-interface MapHoveCardProps {
+interface MapHoverCardProps {
   name: string
   website?: string
   averageCadastralValue?: number
   x: number
+  onSelect: () => void
   y: number
 }
-export const MapHoveCard: FCC<MapHoveCardProps> = ({
+export const MapHoverCard: FCC<MapHoverCardProps> = ({
   averageCadastralValue,
   website,
   name,
   x,
   y,
+  onSelect,
 }) => {
   const moneyFormat = useMoneyFormat()
   return (
@@ -58,7 +60,7 @@ export const MapHoveCard: FCC<MapHoveCardProps> = ({
         </List.Item>
       </List>
       <List.Item>
-        <Button block type='primary'>
+        <Button block type='primary' onClick={onSelect}>
           Выбрать
         </Button>
       </List.Item>
@@ -66,6 +68,6 @@ export const MapHoveCard: FCC<MapHoveCardProps> = ({
   )
 }
 
-MapHoveCard.displayName = 'MapHoveCard'
+MapHoverCard.displayName = 'MapHoverCard'
 
-export default MapHoveCard
+export default MapHoverCard
