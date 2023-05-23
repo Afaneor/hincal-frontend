@@ -1,6 +1,7 @@
 import {
   BarChartOutlined,
   CalculatorOutlined,
+  HomeOutlined,
   LaptopOutlined,
   SketchOutlined,
   UsergroupAddOutlined,
@@ -8,6 +9,11 @@ import {
 import React from 'react'
 
 export const Links = [
+  {
+    text: '',
+    href: '/',
+    icon: <HomeOutlined />,
+  },
   {
     text: 'Калькулятор',
     href: '/calculator',

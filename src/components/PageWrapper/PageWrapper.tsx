@@ -1,36 +1,50 @@
-import { Card, Col, Row, Space, Typography } from 'antd'
+import { Card, Col, Layout, Row, Space, Spin, Typography } from 'antd'
 import React from 'react'
 import type { FCC } from 'src/types'
 
 const { Title, Text } = Typography
+const { Footer } = Layout
 
 interface PageWrapperProps {
   title: string
   subTitle: string
+  isLoading?: boolean
+  showFooter?: boolean
 }
 export const PageWrapper: FCC<PageWrapperProps> = ({
   children,
   title,
   subTitle,
+  isLoading = false,
+  showFooter,
 }) => {
   return (
-    <Row gutter={[20, 20]} justify='center' style={{ padding: '1%' }}>
-      <Col xs={24} md={20}>
+    <Spin spinning={isLoading} size='large'>
+      <Row gutter={[20, 20]} justify='center' style={{ padding: '1%' }}>
+        <Col xs={24} md={20}>
+          <Row>
+            <Col xs={24} md={20}>
+              <Card>
+                <Space direction='vertical'>
+                  <Title level={3}>{title}</Title>
+                  <Text type='secondary'>{subTitle}</Text>
+                </Space>
+              </Card>
+            </Col>
+          </Row>
+        </Col>
+        <Col xs={24} md={20}>
+          {children}
+        </Col>
+      </Row>
+      {showFooter ? (
         <Row>
-          <Col xs={24} md={20}>
-            <Card>
-              <Space direction='vertical'>
-                <Title level={3}>{title}</Title>
-                <Text type='secondary'>{subTitle}</Text>
-              </Space>
-            </Card>
+          <Col span={24}>
+            <Footer style={{ backgroundColor: '#cecece', height: 550 }} />
           </Col>
         </Row>
-      </Col>
-      <Col xs={24} md={20}>
-        {children}
-      </Col>
-    </Row>
+      ) : null}
+    </Spin>
   )
 }
 

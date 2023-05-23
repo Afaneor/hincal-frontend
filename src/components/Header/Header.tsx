@@ -15,7 +15,7 @@ const { Text } = Typography
 
 export const Header: FCC = () => {
   const router = useRouter()
-
+  console.log(router)
   return (
     <AntdHeader className={styles.headerContainer}>
       <Row justify='space-between' style={{ width: '100%' }} gutter={[5, 10]}>
@@ -29,7 +29,9 @@ export const Header: FCC = () => {
               <div
                 key={link.href}
                 className={`${
-                  router.pathname === link.href ? styles.activeLink : ''
+                  router.pathname === link.href || router.asPath === link.href
+                    ? styles.activeLink
+                    : ''
                 } ${styles.navLink}`}
               >
                 <Link href={link.href}>

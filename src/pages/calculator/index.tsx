@@ -1,5 +1,6 @@
 import {
   AppstoreOutlined,
+  CalculatorOutlined,
   GatewayOutlined,
   TeamOutlined,
   ToolOutlined,
@@ -27,6 +28,7 @@ import { Switcher } from '@/components/Switcher'
 import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
 import { CalculateProgress } from '@/pages/calculator/components/CalculateProgress'
+import { CalculatorResults } from '@/pages/calculator/components/CalculatorResults'
 
 const { Option } = Select
 
@@ -39,23 +41,24 @@ const anchorItems = [
   {
     key: 'main-investment-params',
     href: '#main-investment-params',
-    title: 'Основные предполагаемые параметры инвестирования',
+    title: 'Основные инвестиционные требования',
   },
   {
     key: 'advanced-investment-params',
     href: '#advanced-investment-params',
-    title: 'Расширенные параметры инвестирования',
-  },
-  {
-    key: 'calculation-preview',
-    href: '#calculation-preview',
-    title: 'Предварительный просмотр',
+    title: 'Дополнительные инвестиционные требования',
   },
 ]
+
+const staffFormItemStyle = {
+  display: 'inline-block',
+  width: 'calc(45% - 12px)',
+}
 const AnchorCalc = () => <Anchor offsetTop={65} items={anchorItems} />
 const Calculator: FCC = () => {
   const [form] = Form.useForm()
   const { errors } = useFormErrors() as FormErrorsHook
+  const [ipOpen, setIpOpen] = useState(false)
   const [percent, setPercent] = useState(0)
   const getPercent = (_: FieldData[], all: FieldData[]) => {
     const count = all.filter((f) => f.touched && f.value)?.length
@@ -66,6 +69,7 @@ const Calculator: FCC = () => {
 
   const onFinish = () => {
     //
+    setIpOpen(true)
   }
   const onFinishFailed = () => {
     //
@@ -157,18 +161,6 @@ const Calculator: FCC = () => {
                   }
                 />
               </FormItem>
-              {/* <FormItem */}
-              {/*  label='Тип зданий/сооружений' */}
-              {/*  name='buildingType' */}
-              {/*  wrapperCol={{ span: 12 }} */}
-              {/*  errors={errors.buildingType} */}
-              {/* > */}
-              {/*  <Input */}
-              {/*    placeholder='name@example.ru' */}
-              {/*    size='large' */}
-              {/*    addonBefore={<BankOutlined />} */}
-              {/*  /> */}
-              {/* </FormItem> */}
               <FormItem
                 label='Штатная численность работников'
                 wrapperCol={{ span: 12 }}
@@ -177,7 +169,7 @@ const Calculator: FCC = () => {
                 <FormItem
                   help='минимальная'
                   name='from_staff'
-                  style={{ display: 'inline-block', width: 'calc(35% - 12px)' }}
+                  style={staffFormItemStyle}
                   errors={errors.from_staff}
                 >
                   <InputNumber
@@ -199,7 +191,7 @@ const Calculator: FCC = () => {
                 <FormItem
                   name='to_staff'
                   help='максимальная'
-                  style={{ display: 'inline-block', width: 'calc(35% - 12px)' }}
+                  style={staffFormItemStyle}
                   errors={errors.to_staff}
                 >
                   <InputNumber
@@ -226,8 +218,20 @@ const Calculator: FCC = () => {
 
             <AnchorItemWrapper
               id='advanced-investment-params'
-              title='Дополнительные инвестиционные параметры'
-              size={30}
+              title='Дополнительные инвестиционные требования'
+              size={50}
+              actions={[
+                <Button
+                  size='large'
+                  key='SubmitBtn'
+                  type='primary'
+                  htmlType='submit'
+                  icon={<CalculatorOutlined />}
+                  shape='round'
+                >
+                  Рассчитать
+                </Button>,
+              ]}
             >
               <FormItem
                 name='is_accounting'
@@ -244,26 +248,22 @@ const Calculator: FCC = () => {
                 <Switcher label='Оформление патента (только для индивидуальных предпринимателей)' />
               </FormItem>
             </AnchorItemWrapper>
-            <AnchorItemWrapper
-              id='calculation-preview'
-              title='Результат'
-              size={30}
-            >
-              {JSON.stringify(form.getFieldsValue())}
-            </AnchorItemWrapper>
-            <FormItem style={{ marginBottom: 50 }} shouldUpdate>
-              {() => (
-                <Button size='large' type='primary' htmlType='submit'>
-                  Submit
-                </Button>
-              )}
-            </FormItem>
           </Form>
         </Col>
         <Col xs={0} md={4}>
           <AnchorCalc />
         </Col>
         <CalculateProgress percent={percent} />
+        <CalculatorResults
+          title={
+            <h3>
+              Результат расчета необходимых инвестиция в развитие промышленного
+              предприятия
+            </h3>
+          }
+          open={ipOpen}
+          onCancel={() => setIpOpen(false)}
+        />
       </Row>
     </PageWrapper>
   )
