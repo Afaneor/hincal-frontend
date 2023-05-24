@@ -26,12 +26,14 @@ const initialViewState = {
 const mapStyle = { width: '100%', height: '65vh' }
 
 interface CalcMapProps {
+  freezeMap?: boolean
+
   onChange?: (
     feature: GeoJSON.FeatureCollection<GeoJSON.Geometry>['features']
   ) => void
 }
 
-export const CalcMap: FCC<CalcMapProps> = ({ onChange }) => {
+export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
   const [viewState, setViewState] = useState(initialViewState)
   const [allData, setAllData] = useState<
     GeoJSON.FeatureCollection<GeoJSON.Geometry>
@@ -70,7 +72,7 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange }) => {
       interactiveLayerIds={['administrativeDistrictPolygons']}
       mapStyle='mapbox://styles/mapbox/streets-v9'
       onMouseMove={onHover}
-      onMove={(evt) => setViewState(evt.viewState)}
+      onMove={(evt) => !freezeMap && setViewState(evt.viewState)}
     >
       <Source id='polygon-source' type='geojson' data={allData}>
         <Layer {...dataLayer} />
@@ -78,6 +80,7 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange }) => {
       </Source>
       {!isEmpty(hoverInfo) && hoverInfo.feature.properties?.name && (
         <MapHoverCard
+          noSelectBtn={freezeMap}
           name={`${hoverInfo.feature.properties.name}`}
           x={hoverInfo.x}
           y={hoverInfo.y}
@@ -88,7 +91,7 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange }) => {
           onSelect={handleSelectLocationArea}
         />
       )}
-      <NavigationControl />
+      {!freezeMap ? <NavigationControl /> : null}
     </Map>
   )
 }

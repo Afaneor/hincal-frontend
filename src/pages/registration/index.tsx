@@ -17,7 +17,7 @@ const Registration: FCC = () => {
     //
   }
   return (
-    <Row justify='center'>
+    <Row justify='center' style={{ padding: '1% 0' }}>
       <Col xs={24} md={12}>
         <Card
           title='Регистрация'
