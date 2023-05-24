@@ -15,7 +15,6 @@ const { Text } = Typography
 
 export const Header: FCC = () => {
   const router = useRouter()
-  console.log(router)
   return (
     <AntdHeader className={styles.headerContainer}>
       <Row justify='space-between' style={{ width: '100%' }} gutter={[5, 10]}>

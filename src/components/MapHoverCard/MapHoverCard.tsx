@@ -1,8 +1,4 @@
-import {
-  GlobalOutlined,
-  LineChartOutlined,
-  SlidersOutlined,
-} from '@ant-design/icons'
+import { GlobalOutlined, LineChartOutlined } from '@ant-design/icons'
 import { Button, Card, List } from 'antd'
 import React from 'react'
 import type { FCC } from 'src/types'
@@ -34,15 +30,12 @@ export const MapHoverCard: FCC<MapHoverCardProps> = ({
         position: 'absolute',
         left: x,
         top: y,
-        width: 375,
+        width: 350,
       }}
     >
       <List itemLayout='horizontal'>
         <List.Item>
-          <List.Item.Meta
-            title='Средние показатели инвестиций в развитие промышленного предприятия'
-            avatar={<SlidersOutlined />}
-          />
+          <List.Item.Meta title='Средние показатели инвестиций в развитие промышленного предприятия' />
         </List.Item>
         <List.Item>
           <List.Item.Meta
@@ -51,13 +44,15 @@ export const MapHoverCard: FCC<MapHoverCardProps> = ({
             avatar={<LineChartOutlined />}
           />
         </List.Item>
-        <List.Item>
-          <List.Item.Meta
-            title={website}
-            description='Официальный сайт округа'
-            avatar={<GlobalOutlined />}
-          />
-        </List.Item>
+        {website ? (
+          <List.Item>
+            <List.Item.Meta
+              title={website}
+              description='Официальный сайт округа'
+              avatar={<GlobalOutlined />}
+            />
+          </List.Item>
+        ) : null}
       </List>
       <List.Item>
         <Button block type='primary' onClick={onSelect}>
