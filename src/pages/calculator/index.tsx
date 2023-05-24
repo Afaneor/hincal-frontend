@@ -34,8 +34,8 @@ const { Option } = Select
 
 const anchorItems = [
   {
-    key: 'location_area',
-    href: '#location_area',
+    key: 'location-area',
+    href: '#location-area',
     title: 'Территория расположения производства',
   },
   {
@@ -68,7 +68,6 @@ const Calculator: FCC = () => {
   }
 
   const onFinish = () => {
-    //
     setIpOpen(true)
   }
   const onFinishFailed = () => {
@@ -95,7 +94,7 @@ const Calculator: FCC = () => {
             onFinishFailed={onFinishFailed}
           >
             <AnchorItemWrapper
-              id='location_area'
+              id='location-area'
               title='Выберите территорию расположения производства'
               size={75}
               bodyStyle={{ padding: 0 }}

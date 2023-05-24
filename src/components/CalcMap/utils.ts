@@ -1,7 +1,6 @@
 // @ts-ignore
 import type { GeoJSON } from 'geojson'
 
-// import { hsl } from 'polished'
 import averageCadastralValue from './averageСadastralValue'
 
 enum AdminLevel {
@@ -28,21 +27,23 @@ export const layerFillColors = (
   data: GeoJSON.FeatureCollection<GeoJSON.Geometry>
 ): GeoJSON.FeatureCollection<GeoJSON.Geometry> => {
   const colors = getMinMaxValue()
+  const features = data?.features.map((feat: any) => {
+    return {
+      ...feat,
+      properties: {
+        ...feat.properties,
+        // @ts-ignore
+        averageCadastralValue: averageCadastralValue[feat.properties.ref],
+        color:
+          feat.properties.admin_level === AdminLevel.administrativeDistrict &&
+          feat.properties.ref
+            ? colors[feat.properties.ref]
+            : '',
+      },
+    }
+  })
   return {
     type: 'FeatureCollection',
-    features: data?.features.map((feat: any) => {
-      return {
-        ...feat,
-        properties: {
-          ...feat.properties,
-          // @ts-ignore
-          averageCadastralValue: averageCadastralValue[feat.properties.ref],
-          color:
-            feat.properties.admin_level === AdminLevel.administrativeDistrict
-              ? colors[feat.properties.ref]
-              : '',
-        },
-      }
-    }),
+    features,
   }
 }

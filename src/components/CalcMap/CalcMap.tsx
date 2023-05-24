@@ -11,7 +11,7 @@ import { layerFillColors } from '@/components/CalcMap/utils'
 import { MapHoverCard } from '@/components/MapHoverCard'
 
 // @ts-ignore
-import geojsondata from './moscow'
+import locationAreas from './location-areas'
 
 const viewState = {
   longitude: 37.535096698033755,
@@ -28,7 +28,7 @@ interface CalcMapProps {
 // from_staff от скольки персонала to_staff до скольки персонала
 export const CalcMap: FCC<CalcMapProps> = ({ onChange }) => {
   const [allData] = useState<GeoJSON.FeatureCollection<GeoJSON.Geometry>>(
-    layerFillColors(geojsondata)
+    layerFillColors(locationAreas)
   )
   const [hoverInfo, setHoverInfo] = useState<any>(null)
 
