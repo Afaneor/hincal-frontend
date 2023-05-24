@@ -27,8 +27,8 @@ import { PageWrapper } from '@/components/PageWrapper'
 import { Switcher } from '@/components/Switcher'
 import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
-import { CalculateProgress } from '@/pages/calculator/components/CalculateProgress'
-import { CalculatorResults } from '@/pages/calculator/components/CalculatorResults'
+import { CalculateProgress } from '@/components/CalculateProgress'
+import { CalculatorResults } from '@/components/CalculatorResults'
 
 const { Option } = Select
 
