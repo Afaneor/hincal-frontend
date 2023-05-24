@@ -2,7 +2,7 @@
 import type { Feature, GeoJSON } from 'geojson'
 
 import averageCadastralValue from './averageСadastralValue'
-// import { HoveInfoProps } from '@/components/CalcMap/CalcMap'
+import type { HoveInfoProps } from './types'
 
 enum AdminLevel {
   historicalCenterOfMoscow = 2,
@@ -51,7 +51,7 @@ export const layerFillColors = (
 
 export const setColorToSelectedLocationArea = (
   locationAreas: GeoJSON.FeatureCollection<GeoJSON.Geometry>,
-  hoverInfo: any
+  hoverInfo: HoveInfoProps
 ) => {
   const defaultColorsData = layerFillColors(locationAreas)
   const features = defaultColorsData.features.map((feat) => {

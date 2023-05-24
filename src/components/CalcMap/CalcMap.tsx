@@ -1,7 +1,7 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 // @ts-ignore
-import type { Feature, GeoJSON } from 'geojson'
+import type { GeoJSON } from 'geojson'
 import { isEmpty } from 'lodash'
 import React, { useCallback, useState } from 'react'
 import Map, { Layer, NavigationControl, Source } from 'react-map-gl'
@@ -16,6 +16,7 @@ import { MapHoverCard } from '@/components/MapHoverCard'
 
 // @ts-ignore
 import locationAreas from './location-areas'
+import type { HoveInfoProps } from './types'
 
 const initialViewState = {
   longitude: 37.535096698033755,
@@ -30,11 +31,6 @@ interface CalcMapProps {
   ) => void
 }
 
-export interface HoveInfoProps {
-  feature: Feature
-  x: number
-  y: number
-}
 export const CalcMap: FCC<CalcMapProps> = ({ onChange }) => {
   const [viewState, setViewState] = useState(initialViewState)
   const [allData, setAllData] = useState<
