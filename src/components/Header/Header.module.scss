@@ -1,0 +1,44 @@
+@mixin boxShadowBottom {
+  -webkit-box-shadow: 0px -3px 0px 0px #2c2c2c inset;
+  -moz-box-shadow: 0px -3px 0px 0px #2c2c2c inset;
+  box-shadow: 0px -3px 0px 0px #2c2c2c inset;
+}
+
+.logoText {
+  color: #c5defa;
+  font-size: 1.5rem;
+}
+
+.headerContainer {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  width: 100%;
+  background-color: white;
+  -webkit-box-shadow: 0px 3px 4px 0px rgba(34, 60, 80, 0.22);
+  -moz-box-shadow: 0px 3px 4px 0px rgba(34, 60, 80, 0.22);
+  box-shadow: 0px 3px 4px 0px rgba(34, 60, 80, 0.22);
+}
+
+.authSection {
+  display: flex;
+  justify-content: flex-end;
+}
+.navLink button {
+  color: #2c2c2c;
+}
+.navLink:hover {
+  @include boxShadowBottom;
+  & button {
+    color: #69b1ff;
+  }
+}
+
+.activeLink {
+  @include boxShadowBottom;
+
+  & button {
+    font-weight: bold;
+    color: #2c2c2c;
+  }
+}

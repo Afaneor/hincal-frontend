@@ -1,7 +1,8 @@
 /* eslint-disable import/no-extraneous-dependencies */
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
-});
+})
+const { i18n } = require('./next-i18next.config')
 
 module.exports = withBundleAnalyzer({
   eslint: {
@@ -23,4 +24,6 @@ module.exports = withBundleAnalyzer({
   // So, the source code is "basePath-ready".
   // You can remove `basePath` if you don't need it.
   reactStrictMode: true,
-});
+  transpilePackages: ['antd'],
+  i18n,
+})

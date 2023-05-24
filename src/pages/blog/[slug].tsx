@@ -2,14 +2,14 @@ import type {
   GetStaticPaths,
   GetStaticProps,
   InferGetStaticPropsType,
-} from 'next';
+} from 'next'
 
-import { Meta } from '@/layouts/Meta';
-import { Main } from '@/templates/Main';
+import { Meta } from '@/layouts/Meta'
+import { Main } from '@/templates/Main'
 
 type IBlogUrl = {
-  slug: string;
-};
+  slug: string
+}
 
 export const getStaticPaths: GetStaticPaths<IBlogUrl> = async () => {
   return {
@@ -17,8 +17,8 @@ export const getStaticPaths: GetStaticPaths<IBlogUrl> = async () => {
       params: { slug: `blog-${index}` },
     })),
     fallback: false,
-  };
-};
+  }
+}
 
 export const getStaticProps: GetStaticProps<IBlogUrl, IBlogUrl> = async ({
   params,
@@ -27,13 +27,13 @@ export const getStaticProps: GetStaticProps<IBlogUrl, IBlogUrl> = async ({
     props: {
       slug: params!.slug,
     },
-  };
-};
+  }
+}
 
 const Blog = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
-    <Main meta={<Meta title={props.slug} description="Lorem ipsum" />}>
-      <h1 className="capitalize">{props.slug}</h1>
+    <Main meta={<Meta title={props.slug} description='Lorem ipsum' />}>
+      <h1 className='capitalize'>{props.slug}</h1>
       <p>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Inventore eos
         earum doloribus, quibusdam magni accusamus vitae! Nisi, sunt! Aliquam
@@ -41,7 +41,7 @@ const Blog = (props: InferGetStaticPropsType<typeof getStaticProps>) => {
         ipsum!
       </p>
     </Main>
-  );
-};
+  )
+}
 
-export default Blog;
+export default Blog
