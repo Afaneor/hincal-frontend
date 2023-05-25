@@ -1,7 +1,8 @@
 import React from 'react'
 import styles from './Block3.module.scss'
-import { Col, Row, Space, Typography } from 'antd'
+import { Button, Col, Row, Space, Typography } from 'antd'
 import CalcMap from '../../components/CalcMap/CalcMap'
+import Link from 'next/link'
 const { Title, Text } = Typography
 
 export const Block3 = () => {
@@ -24,6 +25,15 @@ export const Block3 = () => {
       </Row>
       <Row>
         <CalcMap freezeMap />
+      </Row>
+      <Row justify={'center'} gutter={[20, 20]}>
+        <Col style={{ padding: '1% 0' }}>
+          <Link href={'/calculator'}>
+            <Button size={'large'} shape={'round'} type={'primary'}>
+              Перейти к калькулятору
+            </Button>
+          </Link>
+        </Col>
       </Row>
     </div>
   )

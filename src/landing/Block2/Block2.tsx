@@ -46,7 +46,7 @@ export const Block2 = () => {
             <Col span={24} style={{ textAlign: 'center' }}>
               <Link href={'/calculator'}>
                 <Button size={'large'} shape={'round'} type={'primary'}>
-                  Рассчитать{' '}
+                  Рассчитать
                 </Button>
               </Link>
             </Col>
