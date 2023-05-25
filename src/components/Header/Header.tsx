@@ -1,25 +1,25 @@
 import { UserOutlined } from '@ant-design/icons'
-import { Button, Col, Layout, Row, Typography } from 'antd'
+import { Button, Col, Layout, Row } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 
 import { BurgerDropdownLinks } from '@/components'
+import { Logo } from '@/components/_icons/logo/Logo'
 import type { FCC } from '@/types'
 
 import styles from './Header.module.scss'
 import { Links } from './Links'
 
 const { Header: AntdHeader } = Layout
-const { Text } = Typography
 
 export const Header: FCC = () => {
   const router = useRouter()
   return (
     <AntdHeader className={styles.headerContainer}>
       <Row justify='space-between' style={{ width: '100%' }} gutter={[5, 10]}>
-        <Col flex='auto'>
-          <Text className={styles.logoText}>Hincal</Text>
+        <Col flex='auto' style={{ display: 'flex', alignItems: 'center' }}>
+          <Logo />
         </Col>
 
         <Col flex='auto' xs={0} md={24}>

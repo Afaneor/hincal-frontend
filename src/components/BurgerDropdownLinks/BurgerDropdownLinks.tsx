@@ -1,5 +1,5 @@
 import { MenuOutlined } from '@ant-design/icons'
-import type { MenuProps } from 'antd'
+import type { ButtonProps, MenuProps } from 'antd'
 import { Button, Dropdown } from 'antd'
 import Link from 'next/link'
 import React, { useMemo } from 'react'
@@ -7,11 +7,14 @@ import type { FCC } from 'src/types'
 
 import { Links } from '@/components/Header/Links'
 
-interface BurgerDropdownLinksProps {
-  prop?: any
+interface BurgerDropdownLinksProps extends ButtonProps {
+  dropdownRender?: React.ReactNode
 }
 
-export const BurgerDropdownLinks: FCC<BurgerDropdownLinksProps> = () => {
+export const BurgerDropdownLinks: FCC<BurgerDropdownLinksProps> = ({
+  type = 'primary',
+  dropdownRender,
+}) => {
   const items: MenuProps['items'] = useMemo(
     () =>
       Links?.map((link) => ({
@@ -27,10 +30,13 @@ export const BurgerDropdownLinks: FCC<BurgerDropdownLinksProps> = () => {
     []
   )
   return (
-    <Dropdown menu={{ items }} trigger={['click']}>
+    <Dropdown
+      menu={{ items }}
+      trigger={['click']}
+      dropdownRender={dropdownRender ? () => dropdownRender : undefined}
+    >
       <Button
-        type='primary'
-        ghost
+        type={type}
         shape='circle'
         icon={<MenuOutlined />}
         onClick={(e) => e.preventDefault()}

@@ -10,7 +10,7 @@ import React from 'react'
 
 export const Links = [
   {
-    text: '',
+    text: 'Дом',
     href: '/',
     icon: <HomeOutlined />,
   },

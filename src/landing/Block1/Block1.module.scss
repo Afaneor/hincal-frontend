@@ -1,0 +1,30 @@
+@mixin anim {
+  animation: showBlock 1s linear forwards;
+}
+.image {
+  background-color: #fdfdfd;
+  height: 100vh;
+  background-image: url('../img/moscow-city.png');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.title {
+  @include anim;
+  color: #ffffff !important;
+  text-shadow: 3px 3px #000000;
+}
+
+.subtitle {
+  @include anim;
+  color: #000000 !important;
+}
+
+@keyframes showBlock {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

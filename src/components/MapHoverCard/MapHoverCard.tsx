@@ -12,6 +12,7 @@ interface MapHoverCardProps {
   x: number
   onSelect: () => void
   y: number
+  noSelectBtn?: boolean
 }
 export const MapHoverCard: FCC<MapHoverCardProps> = ({
   averageCadastralValue,
@@ -20,6 +21,7 @@ export const MapHoverCard: FCC<MapHoverCardProps> = ({
   x,
   y,
   onSelect,
+  noSelectBtn,
 }) => {
   const moneyFormat = useMoneyFormat()
   return (
@@ -54,11 +56,13 @@ export const MapHoverCard: FCC<MapHoverCardProps> = ({
           </List.Item>
         ) : null}
       </List>
-      <List.Item>
-        <Button block type='primary' onClick={onSelect}>
-          Выбрать
-        </Button>
-      </List.Item>
+      {!noSelectBtn ? (
+        <List.Item>
+          <Button block type='primary' onClick={onSelect}>
+            Выбрать
+          </Button>
+        </List.Item>
+      ) : null}
     </Card>
   )
 }
