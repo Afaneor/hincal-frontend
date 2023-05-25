@@ -14,7 +14,7 @@ export interface FormError {
     | undefined
   help: string
 }
-interface FormErrorObj {
+export interface FormErrorObj {
   [key: string]: FormError
 }
 
