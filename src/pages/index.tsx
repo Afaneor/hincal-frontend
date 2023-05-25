@@ -1,15 +1,5 @@
-import type { GetStaticProps } from 'next'
-
 import Landing from '@/landing'
 
-const Index = (props: any) => <Landing {...props} />
+const Index = () => <Landing />
 
 export default Index
-
-export const getStaticProps: GetStaticProps<any> = () => {
-  return {
-    props: {
-      landing: true,
-    },
-  }
-}
