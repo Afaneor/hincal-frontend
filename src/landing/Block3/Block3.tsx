@@ -26,8 +26,8 @@ export const Block3 = () => {
       <Row>
         <CalcMap freezeMap />
       </Row>
-      <Row justify={'center'} gutter={[20, 20]}>
-        <Col style={{ padding: '1% 0' }}>
+      <Row justify={'center'} gutter={[20, 20]} style={{ padding: '10px 0' }}>
+        <Col>
           <Link href={'/calculator'}>
             <Button size={'large'} shape={'round'} type={'primary'}>
               Перейти к калькулятору

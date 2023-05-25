@@ -43,7 +43,19 @@ export const Block2 = () => {
                 подробную информацию.
               </Card>
             </Col>
-            <Col span={24} style={{ textAlign: 'center' }}>
+            <Col xs={24} md={12}>
+              <Card title='Отчёты' className={'elevation'} hoverable>
+                Генерация персонализированного отчета на основе заданных
+                параметров, ваших данных и опыта.
+              </Card>
+            </Col>
+            <Col xs={24} md={12}>
+              <Card title='Актуальность' className={'elevation'} hoverable>
+                Всегда свежая информация, собранная из открытых источников.
+                Стоимость недвижимости и сопутствующих товаров и услуг.
+              </Card>
+            </Col>
+            <Col span={24} style={{ textAlign: 'center', padding: '10px' }}>
               <Link href={'/calculator'}>
                 <Button size={'large'} shape={'round'} type={'primary'}>
                   Рассчитать

@@ -14,7 +14,7 @@ const contentStyle = { padding: 0 }
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <Layout className='h100'>
-      {!pageProps?.landing ? <Header /> : null}
+      <Header />
       <Content className='site-layout' style={contentStyle}>
         <Row justify='center'>
           <Col span={24}>

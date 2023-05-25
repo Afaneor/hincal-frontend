@@ -61,6 +61,14 @@ const Registration: FCC = () => {
               </Col>
             </Row>
             <FormItem
+              label='ИНН'
+              name='inn'
+              wrapperCol={{ span: 12 }}
+              errors={errors.inn}
+            >
+              <Input size='large' />
+            </FormItem>
+            <FormItem
               label='Электронная почта'
               name='email'
               wrapperCol={{ span: 12 }}
@@ -74,24 +82,31 @@ const Registration: FCC = () => {
             >
               <Input placeholder='name@example.ru' size='large' />
             </FormItem>
-            <FormItem
-              label='Наименование организации'
-              name='companyName'
-              wrapperCol={{ span: 24 }}
-              errors={errors.companyName}
-            >
-              <Input size='large' />
-            </FormItem>
-            <FormItem
-              label='ИНН'
-              name='inn'
-              wrapperCol={{ span: 12 }}
-              errors={errors.inn}
-            >
-              <Input size='large' />
-            </FormItem>
-            <Row justify='space-between' gutter={20}>
-              <Col xs={24} md={8}>
+            <Row gutter={20}>
+              <Col xs={24} md={12}>
+                <FormItem
+                  label='Наименование организации'
+                  name='companyName'
+                  wrapperCol={{ span: 24 }}
+                  errors={errors.companyName}
+                >
+                  <Input size='large' />
+                </FormItem>
+              </Col>
+              <Col xs={24} md={12}>
+                <FormItem
+                  label='Должность'
+                  name='staffPosition'
+                  wrapperCol={{ span: 24 }}
+                  errors={errors.staffPosition}
+                >
+                  <Input size='large' />
+                </FormItem>
+              </Col>
+            </Row>
+
+            <Row gutter={20}>
+              <Col xs={24} md={12}>
                 <FormItem
                   label='Страна'
                   name='country'
@@ -101,22 +116,12 @@ const Registration: FCC = () => {
                   <Input size='large' />
                 </FormItem>
               </Col>
-              <Col xs={24} md={8}>
+              <Col xs={24} md={12}>
                 <FormItem
                   label='Город'
                   name='city'
                   wrapperCol={{ span: 24 }}
                   errors={errors.city}
-                >
-                  <Input size='large' />
-                </FormItem>
-              </Col>
-              <Col xs={24} md={8}>
-                <FormItem
-                  label='Должность'
-                  name='staffPosition'
-                  wrapperCol={{ span: 24 }}
-                  errors={errors.staffPosition}
                 >
                   <Input size='large' />
                 </FormItem>

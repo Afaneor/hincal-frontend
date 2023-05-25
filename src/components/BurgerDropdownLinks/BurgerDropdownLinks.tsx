@@ -33,7 +33,7 @@ export const BurgerDropdownLinks: FCC<BurgerDropdownLinksProps> = ({
     <Dropdown
       menu={{ items }}
       trigger={['click']}
-      dropdownRender={() => dropdownRender || undefined}
+      dropdownRender={dropdownRender ? () => dropdownRender : undefined}
     >
       <Button
         type={type}
