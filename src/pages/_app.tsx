@@ -1,28 +1,25 @@
 import 'antd/dist/reset.css'
 import '../styles/global.css'
 
-import { Col, Layout, Row } from 'antd'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { AppProps } from 'next/app'
 import { appWithTranslation } from 'next-i18next'
 import React from 'react'
 
-import { Header } from '@/components/Header'
+import NotificationMessageProvider from '@/components/NotificationMessage/NotificationMessage'
 
-const { Content } = Layout
+const qClientConfig = {
+  defaultOptions: {},
+}
 
-const contentStyle = { padding: 0 }
+const queryClient = new QueryClient(qClientConfig)
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <Layout className='h100'>
-      <Header />
-      <Content className='site-layout' style={contentStyle}>
-        <Row justify='center'>
-          <Col span={24}>
-            <Component {...pageProps} />
-          </Col>
-        </Row>
-      </Content>
-    </Layout>
+    <QueryClientProvider client={queryClient}>
+      <NotificationMessageProvider>
+        <Component {...pageProps} />
+      </NotificationMessageProvider>
+    </QueryClientProvider>
   )
 }
 

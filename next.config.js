@@ -26,4 +26,12 @@ module.exports = withBundleAnalyzer({
   reactStrictMode: true,
   transpilePackages: ['antd'],
   i18n,
+  async rewrites() {
+    return [
+      {
+        source: '/api/:path*',
+        destination: 'https://api.hincal.pavlin.tech/api/:path*', // Proxy to Backend
+      },
+    ]
+  },
 })
