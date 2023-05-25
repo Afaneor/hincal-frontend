@@ -14,14 +14,14 @@ import { SpaceProps } from 'antd/es/space'
 
 const navLinks = (direction: SpaceProps['direction']) => (
   <Space direction={direction}>
-    <Link href={'#possibilities'}>
-      <Button type={'text'} shape={'round'} icon={<BulbOutlined />}>
-        Возможности
-      </Button>
-    </Link>
     <Link href={'#what'}>
       <Button type={'text'} shape={'round'} icon={<QuestionCircleOutlined />}>
         Для чего?
+      </Button>
+    </Link>
+    <Link href={'#possibilities'}>
+      <Button type={'text'} shape={'round'} icon={<BulbOutlined />}>
+        Возможности
       </Button>
     </Link>
     <Link href={'/calculator'}>
