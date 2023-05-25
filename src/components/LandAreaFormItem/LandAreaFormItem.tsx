@@ -4,9 +4,8 @@ import React from 'react'
 
 import type { PropsFormItem } from '@/components'
 import { FormItem } from '@/components'
+import FormItemDash from '@/components/FormItemDash/FormItemDash'
 import type { FCC } from '@/types'
-
-import FormItemDash from '../../../../components/FormItemDash/FormItemDash'
 
 const itemStyle = {
   display: 'inline-block',
