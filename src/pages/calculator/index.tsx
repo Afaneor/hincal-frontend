@@ -5,11 +5,11 @@ import React, { useState } from 'react'
 import type { FCC } from 'src/types'
 
 import { AnchorItemWrapper } from '@/components/AnchorItemWrapper'
+import { CalculateProgress } from '@/components/CalculateProgress'
+import { CalculatorResults } from '@/components/CalculatorResults'
 import { PageWrapper } from '@/components/PageWrapper'
 import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
-import { CalculateProgress } from '@/pages/calculator/components/CalculateProgress'
-import { CalculatorResults } from '@/pages/calculator/components/CalculatorResults'
 
 import AccountingFormItem from './components/AccountingFormItem/AccountingFormItem'
 import EquipmentFormItem from './components/EquipmentFormItem/EquipmentFormItem'

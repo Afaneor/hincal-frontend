@@ -1,1 +1,0 @@
-export { CalculateProgress } from './CalculateProgress'
