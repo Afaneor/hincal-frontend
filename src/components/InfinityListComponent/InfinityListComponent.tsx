@@ -3,7 +3,6 @@ import React from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import type { FCC } from 'src/types'
 
-import { BlogPostListItems } from '@/components/BlogPostListItems'
 import styles from '@/components/SelectDropdownListContent/style.module.scss'
 import type { BaseModel } from '@/models'
 import { useInfinityFetchData } from '@/services/base/useInfinityFetchData'
@@ -11,16 +10,20 @@ import { useInfinityFetchData } from '@/services/base/useInfinityFetchData'
 interface InfinityListComponentProps {
   model: typeof BaseModel
   noDataText?: string
+  renderList: (fetchedValues: Record<string, any>) => React.ReactNode
+  height?: string | number
 }
 
-const scrollableDivStyle = {
-  height: '100vh',
+const scrollableDivStyle = (height: string | number = '100vh') => ({
+  height,
   overflow: 'auto',
-}
+})
 
 const InfinityListComponent: FCC<InfinityListComponentProps> = ({
   model,
   noDataText,
+  renderList,
+  height = '100vh',
 }) => {
   const fetchedValues = useInfinityFetchData(
     model,
@@ -28,8 +31,9 @@ const InfinityListComponent: FCC<InfinityListComponentProps> = ({
     {},
     `filter-${model.modelName}`
   )
+
   return (
-    <div id='scrollableDiv' style={scrollableDivStyle}>
+    <div id='scrollableDiv' style={scrollableDivStyle()}>
       <InfiniteScroll
         dataLength={fetchedValues?.rowData?.length}
         next={fetchedValues?.fetchNextPage}
@@ -45,9 +49,9 @@ const InfinityListComponent: FCC<InfinityListComponentProps> = ({
           ) : null
         }
         scrollableTarget='scrollableListGrid'
-        height='100vh'
+        height={height}
       >
-        <BlogPostListItems fetchedValues={fetchedValues} />
+        {renderList(fetchedValues)}
       </InfiniteScroll>
     </div>
   )

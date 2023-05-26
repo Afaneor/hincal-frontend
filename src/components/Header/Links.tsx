@@ -20,8 +20,8 @@ export const Links = [
     icon: <CalculatorOutlined />,
   },
   {
-    text: 'Найти партнера',
-    href: '/partners',
+    text: 'Предложения от партнеров',
+    href: '/offers',
     icon: <UsergroupAddOutlined />,
   },
   {
