@@ -8,12 +8,22 @@ import { SpaceProps } from 'antd/es/space'
 const navLinks = (direction: SpaceProps['direction']) => (
   <Space direction={direction}>
     <Link href={'#what'}>
-      <Button type={'text'} shape={'round'} icon={<QuestionCircleOutlined />}>
+      <Button
+        type={'text'}
+        shape={'round'}
+        style={{ color: '#ffffff' }}
+        icon={<QuestionCircleOutlined />}
+      >
         Для чего?
       </Button>
     </Link>
     <Link href={'#possibilities'}>
-      <Button type={'text'} shape={'round'} icon={<BulbOutlined />}>
+      <Button
+        type={'text'}
+        shape={'round'}
+        style={{ color: '#ffffff' }}
+        icon={<BulbOutlined />}
+      >
         Возможности
       </Button>
     </Link>

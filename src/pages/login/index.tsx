@@ -7,13 +7,24 @@ import { FormItem } from '@/components'
 import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
 import { Meta } from '@/layouts/Meta'
+import type { LoginValuesTypes } from '@/services/auth'
+import { useLogin } from '@/services/auth/hooks'
 import { Main } from '@/templates/Main'
 
 const Login: FCC = () => {
-  const { errors } = useFormErrors() as FormErrorsHook
+  const [loginForm] = Form.useForm()
+  const { errors, setFormErrors } = useFormErrors() as FormErrorsHook
 
-  const onFinish = () => {
-    //
+  const { mutate: login, isLoading: loginIsLoading }: any = useLogin()
+  const handleLogin = (credentials: LoginValuesTypes) => {
+    login(credentials, {
+      onSuccess: () => {
+        // window.location.href = '/'
+      },
+      onError: (error: any) => {
+        setFormErrors(error?.data)
+      },
+    })
   }
   const onFinishFailed = () => {
     //
@@ -32,11 +43,12 @@ const Login: FCC = () => {
             hoverable
           >
             <Form
+              form={loginForm}
               name='basic'
               layout='vertical'
               wrapperCol={{ span: 24 }}
               initialValues={{ remember: true }}
-              onFinish={onFinish}
+              onFinish={handleLogin}
               onFinishFailed={onFinishFailed}
               autoComplete='off'
             >
@@ -74,7 +86,13 @@ const Login: FCC = () => {
               </Form.Item>
 
               <Form.Item>
-                <Button size='large' block type='primary' htmlType='submit'>
+                <Button
+                  loading={loginIsLoading}
+                  size='large'
+                  block
+                  type='primary'
+                  htmlType='submit'
+                >
                   Войти
                 </Button>
               </Form.Item>

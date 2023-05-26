@@ -1,4 +1,5 @@
 import axios from 'axios'
+import Cookie from 'js-cookie'
 import Qs from 'qs'
 
 const paramsSerializer = (params: any) => {
@@ -11,8 +12,23 @@ const config = {
   withCredentials: false,
   paramsSerializer,
 }
-const apiClient = axios.create({
-  ...config,
-})
+const apiClient = () => {
+  const instance = axios.create({
+    ...config,
+  })
+  instance.interceptors.request.use(async (request) => {
+    request.headers['X-CSRFToken'] = Cookie.get('csrftoken')
+    return request
+  })
 
-export default apiClient
+  instance.interceptors.response.use(
+    (response) => {
+      return response
+    },
+    (error) => {
+      console.log(`error`, error)
+    }
+  )
+  return instance
+}
+export default apiClient()
