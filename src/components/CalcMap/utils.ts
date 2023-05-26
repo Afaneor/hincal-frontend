@@ -51,14 +51,14 @@ export const layerFillColors = (
 
 export const setColorToSelectedLocationArea = (
   locationAreas: GeoJSON.FeatureCollection<GeoJSON.Geometry>,
-  hoverInfo: HoveInfoProps
+  hoverInfos: HoveInfoProps[]
 ) => {
   const defaultColorsData = layerFillColors(locationAreas)
+  const infoRefs = hoverInfos?.map((hi) => hi.feature?.properties?.ref)
   const features = defaultColorsData.features.map((feat) => {
-    const color =
-      hoverInfo.feature?.properties?.ref === feat.properties?.ref
-        ? '#112eff'
-        : feat.properties?.color
+    const color = infoRefs.includes(feat.properties?.ref)
+      ? '#112eff'
+      : feat.properties?.color
 
     return {
       ...feat,

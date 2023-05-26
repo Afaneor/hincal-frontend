@@ -6,9 +6,9 @@ const paramsSerializer = (params: any) => {
 }
 
 const config = {
-  baseURL: '/api',
+  baseURL: 'https://api.hincal.pavlin.tech/api',
   timeout: 30000,
-  withCredentials: true,
+  withCredentials: false,
   paramsSerializer,
 }
 const apiClient = axios.create({

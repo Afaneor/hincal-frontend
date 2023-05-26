@@ -1,7 +1,7 @@
 import type { BaseModelProps } from '@/models/Base'
 
 export interface ReportModelProps extends BaseModelProps {
-  type_business: ''
+  type_business: string
   sectors: any[]
   sub_sectors: any[]
   from_staff: number

@@ -1,0 +1,22 @@
+//@import 'src/theme/colors.module';
+
+.skeletonNode {
+  height: 20px !important;
+  width: 100% !important;
+}
+
+.listItem:hover {
+  cursor: pointer;
+  //color: $primary;
+}
+
+.scrollableListGrid {
+  width: 100% !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+}
+
+.disabledListItem {
+  pointer-events: none;
+  opacity: 0.4;
+}

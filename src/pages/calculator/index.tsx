@@ -4,25 +4,25 @@ import type { FieldData } from 'rc-field-form/lib/interface'
 import React, { useState } from 'react'
 import type { FCC } from 'src/types'
 
+import AccountingFormItem from '@/components/AccountingFormItem/AccountingFormItem'
 import { AnchorItemWrapper } from '@/components/AnchorItemWrapper'
 import { CalculateProgress } from '@/components/CalculateProgress'
 import { CalculatorResults } from '@/components/CalculatorResults'
+import EquipmentFormItem from '@/components/EquipmentFormItem/EquipmentFormItem'
+import { LandAreaFormItem } from '@/components/LandAreaFormItem'
+import MapFormItem from '@/components/MapFormItem/MapFormItem'
 import { PageWrapper } from '@/components/PageWrapper'
+import PatentFormItem from '@/components/PatentFormItem/PatentFormItem'
+import PropertyAreaFormItem from '@/components/PropertyAreaFormItem/PropertyAreaFormItem'
+import SectorFormItem from '@/components/SectorFormItem/SectorFormItem'
+import StaffFormItem from '@/components/StaffFormItem/StaffFormItem'
 import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
 import { Meta } from '@/layouts/Meta'
+import type { ReportModelProps } from '@/models/Report'
 import { ReportModel } from '@/models/Report'
-import { useChoices } from '@/services/base/hooks'
+import { useChoices, useCreateItem } from '@/services/base/hooks'
 import { Main } from '@/templates/Main'
-
-import AccountingFormItem from './components/AccountingFormItem/AccountingFormItem'
-import EquipmentFormItem from './components/EquipmentFormItem/EquipmentFormItem'
-import { LandAreaFormItem } from './components/LandAreaFormItem'
-import MapFormItem from './components/MapFormItem/MapFormItem'
-import PatentFormItem from './components/PatentFormItem/PatentFormItem'
-import PropertyAreaFormItem from './components/PropertyAreaFormItem/PropertyAreaFormItem'
-import SectorFormItem from './components/SectorFormItem/SectorFormItem'
-import StaffFormItem from './components/StaffFormItem/StaffFormItem'
 
 const anchorItems = [
   {
@@ -50,7 +50,20 @@ const Calculator: FCC = () => {
   const { errors } = useFormErrors() as FormErrorsHook
   const [ipOpen, setIpOpen] = useState(false)
   const [percent, setPercent] = useState(0)
+  const [report, setReport] = useState({} as ReportModelProps)
   useChoices(Model.modelName, Model.url())
+
+  const { mutate: createReport } = useCreateItem(Model)
+  const handleCreateReport = (newReport: ReportModelProps) => {
+    createReport(newReport, {
+      onSuccess: (data: any) => {
+        setReport(data)
+      },
+      onError: () => {
+        //
+      },
+    })
+  }
   const getPercent = (_: FieldData[], all: FieldData[]) => {
     const count = all.filter((f) => f.touched && f.value)?.length
     const weightProp = 100 / (all?.length || 0)
@@ -58,9 +71,6 @@ const Calculator: FCC = () => {
     return setPercent(Math.round(percents))
   }
 
-  const onFinish = () => {
-    setIpOpen(true)
-  }
   const onFinishFailed = () => {
     //
   }
@@ -74,6 +84,17 @@ const Calculator: FCC = () => {
         />
       }
     >
+      <CalculatorResults
+        result={report}
+        title={
+          <h3>
+            Результат расчета необходимых инвестиция в развитие промышленного
+            предприятия
+          </h3>
+        }
+        open={ipOpen}
+        onCancel={() => setIpOpen(false)}
+      />
       <PageWrapper
         title='Калькулятор инвестиций в развитие промышленного предприятия'
         subTitle='Инструмент позволит быстро и качественно рассчитать объем
@@ -89,7 +110,7 @@ const Calculator: FCC = () => {
               initialValues={{}}
               autoComplete='off'
               onFieldsChange={getPercent}
-              onFinish={onFinish}
+              onFinish={handleCreateReport}
               onFinishFailed={onFinishFailed}
             >
               <AnchorItemWrapper
@@ -139,16 +160,6 @@ const Calculator: FCC = () => {
             <AnchorCalc />
           </Col>
           <CalculateProgress percent={percent} />
-          <CalculatorResults
-            title={
-              <h3>
-                Результат расчета необходимых инвестиция в развитие
-                промышленного предприятия
-              </h3>
-            }
-            open={ipOpen}
-            onCancel={() => setIpOpen(false)}
-          />
         </Row>
       </PageWrapper>
     </Main>
