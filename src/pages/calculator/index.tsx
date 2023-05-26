@@ -8,11 +8,11 @@ import AccountingFormItem from '@/components/AccountingFormItem/AccountingFormIt
 import { AnchorItemWrapper } from '@/components/AnchorItemWrapper'
 import type { HoveInfoProps } from '@/components/CalcMap/types'
 import { CalculateProgress } from '@/components/CalculateProgress'
+import { CalculatorPageWrapper } from '@/components/CalculatorPageWrapper'
 import { CalculatorResults } from '@/components/CalculatorResults'
 import EquipmentFormItem from '@/components/EquipmentFormItem/EquipmentFormItem'
 import { LandAreaFormItem } from '@/components/LandAreaFormItem'
 import MapFormItem from '@/components/MapFormItem/MapFormItem'
-import { PageWrapper } from '@/components/PageWrapper'
 import PatentFormItem from '@/components/PatentFormItem/PatentFormItem'
 import PropertyAreaFormItem from '@/components/PropertyAreaFormItem/PropertyAreaFormItem'
 import SectorFormItem from '@/components/SectorFormItem/SectorFormItem'
@@ -127,7 +127,7 @@ const Calculator: FCC = () => {
         open={ipOpen}
         onCancel={() => setIpOpen(false)}
       />
-      <PageWrapper
+      <CalculatorPageWrapper
         title='Калькулятор инвестиций в развитие промышленного предприятия'
         subTitle='Инструмент позволит быстро и качественно рассчитать объем
                 требуемых вложений'
@@ -198,7 +198,7 @@ const Calculator: FCC = () => {
           </Col>
           <CalculateProgress percent={percent} />
         </Row>
-      </PageWrapper>
+      </CalculatorPageWrapper>
     </Main>
   )
 }

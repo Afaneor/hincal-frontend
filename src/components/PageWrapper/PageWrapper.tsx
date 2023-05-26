@@ -1,53 +1,32 @@
-import { Card, Col, Layout, Row, Space, Spin, Typography } from 'antd'
-import type { ColSize } from 'antd/es/grid/col'
+import { Card, Col, Row, Space, Typography } from 'antd'
 import React from 'react'
 import type { FCC } from 'src/types'
 
-const { Title, Text } = Typography
-const { Footer } = Layout
+import styles from './PageWrapper.module.scss'
 
+const { Title, Text } = Typography
 interface PageWrapperProps {
   title: string
   subTitle?: string
-  isLoading?: boolean
-  showFooter?: boolean
-  headerWidthMD?: number | string | ColSize
 }
-export const PageWrapper: FCC<PageWrapperProps> = ({
-  children,
-  title,
-  subTitle,
-  isLoading = false,
-  showFooter,
-  headerWidthMD,
-}) => {
+const titleStyle = { position: 'sticky', paddingTop: 10 } as Record<string, any>
+const PageWrapper: FCC<PageWrapperProps> = ({ children, subTitle, title }) => {
   return (
-    <Spin spinning={isLoading} size='large'>
-      <Row gutter={[20, 20]} justify='center' style={{ padding: '1%' }}>
-        <Col xs={24} md={20}>
-          <Row>
-            <Col xs={24} md={headerWidthMD || 22}>
-              <Card>
-                <Space direction='vertical'>
-                  <Title level={3}>{title}</Title>
-                  {subTitle ? <Text type='secondary'>{subTitle}</Text> : null}
-                </Space>
-              </Card>
-            </Col>
-          </Row>
-        </Col>
-        <Col xs={24} md={24}>
-          {children}
-        </Col>
-      </Row>
-      {showFooter ? (
+    <Row className={styles.container} justify='center'>
+      <Col xs={24} md={18}>
         <Row>
-          <Col span={24}>
-            <Footer style={{ backgroundColor: '#cecece', height: 550 }} />
+          <Col span={24} style={titleStyle}>
+            <Card>
+              <Space direction='vertical'>
+                <Title level={3}>{title}</Title>
+                {subTitle ? <Text type='secondary'>{subTitle}</Text> : null}
+              </Space>
+            </Card>
           </Col>
+          <Col span={24}>{children}</Col>
         </Row>
-      ) : null}
-    </Spin>
+      </Col>
+    </Row>
   )
 }
 

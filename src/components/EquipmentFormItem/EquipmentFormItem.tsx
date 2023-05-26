@@ -15,7 +15,10 @@ const EquipmentFormItem: FCC<PropsFormItem> = ({ errors }) => {
       wrapperCol={{ span: 12 }}
       errors={errors}
     >
-      <SelectSearchableAsync model={EquipmentModel} />
+      <SelectSearchableAsync
+        model={EquipmentModel}
+        placeholder='Выберите оборудование'
+      />
     </FormItem>
   )
 }

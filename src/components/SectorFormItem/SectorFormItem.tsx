@@ -16,7 +16,7 @@ const SectorFormItem: FCC<PropsFormItem> = ({ errors }) => {
       errors={errors}
     >
       <SelectSearchableAsync
-        placeholder='Выбрать отрасль'
+        placeholder='Выберите отрасль'
         model={SectorModel}
       />
     </FormItem>

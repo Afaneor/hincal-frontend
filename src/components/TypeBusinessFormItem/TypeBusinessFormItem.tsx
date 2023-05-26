@@ -20,6 +20,7 @@ const TypeBusinessFormItem: FCC<PropsFormItem> = ({ errors }) => {
     >
       <Select
         size='large'
+        placeholder='Выберите организационно-правовую форму'
         allowClear
         options={choiceState?.type_business?.choices?.map(
           (ch: ChoiceProps) => ({
