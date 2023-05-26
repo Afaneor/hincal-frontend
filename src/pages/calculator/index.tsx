@@ -1,7 +1,7 @@
 import { CalculatorOutlined } from '@ant-design/icons'
 import { Anchor, Button, Col, Form, Row } from 'antd'
 import type { FieldData } from 'rc-field-form/lib/interface'
-import React, { useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import type { FCC } from 'src/types'
 
 import AccountingFormItem from '@/components/AccountingFormItem/AccountingFormItem'
@@ -17,37 +17,18 @@ import PatentFormItem from '@/components/PatentFormItem/PatentFormItem'
 import PropertyAreaFormItem from '@/components/PropertyAreaFormItem/PropertyAreaFormItem'
 import SectorFormItem from '@/components/SectorFormItem/SectorFormItem'
 import StaffFormItem from '@/components/StaffFormItem/StaffFormItem'
+import { TypeBusinessFormItem } from '@/components/TypeBusinessFormItem'
+import { TypeTaxSystemFormItem } from '@/components/TypeTaxSystemFormItem'
 import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
 import { Meta } from '@/layouts/Meta'
-import type {
-  EquipmentModelProps,
-  SectorModelProps,
-  TerritorialLocationModelProps,
-} from '@/models'
-import { TerritorialLocationModel } from '@/models'
+import type { CalculatorModelProps } from '@/models/Calculator'
+import { CalculatorModel } from '@/models/Calculator'
 import type { ReportModelProps } from '@/models/Report'
 import { ReportModel } from '@/models/Report'
-import { useCreateItem, useFetchItems } from '@/services/base/hooks'
+import { useChoices, useCreateItem } from '@/services/base/hooks'
 import { Main } from '@/templates/Main'
 
-export interface CreateReportProps {
-  type_business: string
-  sectors: SectorModelProps[]
-  sub_sectors: SectorModelProps[]
-  from_staff: number
-  to_staff: number
-  territorial_locations: HoveInfoProps[]
-  from_land_area: number
-  to_land_area: number
-  from_property_area: number
-  to_property_area: number
-  equipments: EquipmentModelProps[]
-  type_tax_system: string
-  need_accounting: boolean
-  need_registration: boolean
-  other: any
-}
 const anchorItems = [
   {
     key: 'location-area',
@@ -69,32 +50,31 @@ const anchorItems = [
 const AnchorCalc = () => <Anchor offsetTop={65} items={anchorItems} />
 
 const Model = ReportModel
-const TLModel = TerritorialLocationModel
+const CalcModel = CalculatorModel
+
 const Calculator: FCC = () => {
   const [form] = Form.useForm()
+  const typeBusiness = Form.useWatch('type_business', form)
+
   const { errors } = useFormErrors() as FormErrorsHook
   const [ipOpen, setIpOpen] = useState(false)
   const [percent, setPercent] = useState(0)
   const [report, setReport] = useState({} as ReportModelProps)
-  const { results: terrLocData } = useFetchItems(TLModel, { limit: 15 })
   const { mutate: createReport } = useCreateItem(Model)
+  useChoices(CalcModel.modelName, CalcModel.url())
 
-  const prepareNewReportField = (newReport: CreateReportProps) => {
-    const shortNames = newReport?.territorial_locations?.map(
-      (tl) => tl.feature.properties.ref
+  const prepareNewReportField = (terLoc: HoveInfoProps[]) => {
+    return terLoc?.map(
+      (tl: HoveInfoProps) => tl.feature.properties.territorialLocation?.id
     )
-    return terrLocData
-      .filter((tl: TerritorialLocationModelProps) =>
-        shortNames.includes(tl.shot_name)
-      )
-      ?.map((tl: TerritorialLocationModelProps) => tl.id)
   }
-  const handleCreateReport = (newReport: CreateReportProps) => {
-    const terLocListId = prepareNewReportField(newReport)
+  const handleCreateReport = (newReport: CalculatorModelProps) => {
     createReport(
       {
         ...newReport,
-        territorial_locations: terLocListId,
+        territorial_locations: prepareNewReportField(
+          newReport?.territorial_locations
+        ),
         sectors: newReport?.sectors?.map((s) => s.id),
         equipments: newReport?.equipments?.map((eq) => eq.id),
       },
@@ -108,16 +88,28 @@ const Calculator: FCC = () => {
       }
     )
   }
-  const getPercent = (_: FieldData[], all: FieldData[]) => {
-    const count = all.filter((f) => f.touched && f.value)?.length
+  const getPercent = useCallback((_: FieldData[], all: FieldData[]) => {
+    const count = all.filter((f) => {
+      const val = Array.isArray(f.value) ? f.value.length : f.value
+      return f.touched && val
+    })?.length
     const weightProp = 100 / (all?.length || 0)
     const percents = count * weightProp
     return setPercent(Math.round(percents))
-  }
+  }, [])
 
   const onFinishFailed = () => {
     //
   }
+
+  const showTaxSystem = useMemo(
+    () => typeBusiness && typeBusiness !== 'legal',
+    [typeBusiness]
+  )
+  const showPatent = useMemo(
+    () => typeBusiness && typeBusiness === 'individual',
+    [typeBusiness]
+  )
 
   return (
     <Main
@@ -171,6 +163,10 @@ const Calculator: FCC = () => {
                 size={60}
                 bodyStyle={{ height: '85%' }}
               >
+                <TypeBusinessFormItem errors={errors.business_type} />
+                {showTaxSystem ? (
+                  <TypeTaxSystemFormItem errors={errors.type_tax_system} />
+                ) : null}
                 <SectorFormItem errors={errors.sector} />
                 <LandAreaFormItem errors={errors.land_area} />
                 <PropertyAreaFormItem errors={errors.property_area} />
@@ -196,7 +192,10 @@ const Calculator: FCC = () => {
                 ]}
               >
                 <AccountingFormItem errors={errors.is_accounting} />
-                <PatentFormItem errors={errors.is_patent} />
+                <PatentFormItem
+                  isDisabled={!showPatent}
+                  errors={errors.is_patent}
+                />
               </AnchorItemWrapper>
             </Form>
           </Col>

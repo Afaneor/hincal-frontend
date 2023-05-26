@@ -3,7 +3,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import area from '@turf/area'
 import type { Feature } from '@turf/helpers'
-import { Tag, Typography } from 'antd'
+import { Col, Row, Tag, Typography } from 'antd'
 // @ts-ignore
 import type { GeoJSON } from 'geojson'
 import { isEmpty } from 'lodash'
@@ -18,6 +18,9 @@ import {
 } from '@/components/CalcMap/utils'
 import { DrawControl } from '@/components/DrawControl'
 import { MapHoverCard } from '@/components/MapHoverCard'
+import type { TerritorialLocationModelProps } from '@/models'
+import { TerritorialLocationModel } from '@/models'
+import { useFetchItems } from '@/services/base/hooks'
 
 import ItemDegree from '../ItemDegree/ItemDegree'
 // @ts-ignore
@@ -48,8 +51,11 @@ const drawControls = {
   polygon: true,
   trash: true,
 }
+const TLModel = TerritorialLocationModel
 
 export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
+  const { results: terrLocData }: { results: TerritorialLocationModelProps[] } =
+    useFetchItems(TLModel, { limit: 15 })
   const [viewState, setViewState] = useState(initialViewState)
   const [features, setFeatures] = useState({})
   const [selectedPolygonsInMeters, setSelectedPolygonsInMeters] = useState(0)
@@ -67,7 +73,14 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
   }
 
   const handleSelectLocationArea = () => {
-    const res = [...selected, hoverInfo]
+    const territorialLocation = terrLocData?.find(
+      (tl) => tl.shot_name === hoverInfo?.feature?.properties?.ref
+    )
+    const feat = {
+      ...hoverInfo?.feature,
+      properties: { ...hoverInfo?.feature?.properties, territorialLocation },
+    }
+    const res = [...selected, { ...hoverInfo, feature: feat }]
     handleSetNewFeatureCollection(res)
     onChange?.(res, features)
   }
@@ -90,7 +103,12 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
     } = event
 
     const hoveredFeature = eventFeats?.length && eventFeats[0]
-    const hInfo = hoveredFeature && { feature: hoveredFeature, x, y }
+
+    const hInfo = hoveredFeature && {
+      feature: hoveredFeature,
+      x,
+      y,
+    }
     // prettier-ignore
     setHoverInfo(hInfo);
   }, [])
@@ -133,14 +151,18 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
           <Layer {...dataLayer} />
           <Layer {...lineStyle} />
         </Source>
-        <DrawControl
-          position='top-left'
-          displayControlsDefault={false}
-          controls={drawControls}
-          onCreate={onUpdate}
-          onUpdate={onUpdate}
-          onDelete={onUpdate}
-        />
+        <Row>
+          <Col xs={0} span={24}>
+            <DrawControl
+              position='top-left'
+              displayControlsDefault={false}
+              controls={drawControls}
+              onCreate={onUpdate}
+              onUpdate={onUpdate}
+              onDelete={onUpdate}
+            />
+          </Col>
+        </Row>
         {!isEmpty(hoverInfo) && hoverInfo.feature.properties?.name && (
           <MapHoverCard
             noSelectBtn={freezeMap}

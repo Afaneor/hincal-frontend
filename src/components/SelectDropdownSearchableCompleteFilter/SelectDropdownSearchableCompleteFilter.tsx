@@ -51,7 +51,7 @@ export const SelectDropdownSearchableCompleteFilter: FCC<
           onRemoveItem={handleRemoveItem}
         />
         <ApplyClearFilterBtns
-          textApplyBtn='Добавить'
+          textApplyBtn='Применить'
           onClear={handleClearList}
           onApply={() => onApply(list)}
         />

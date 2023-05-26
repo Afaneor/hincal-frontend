@@ -5,10 +5,16 @@ import { FormItem } from '@/components'
 import { Switcher } from '@/components/Switcher'
 import type { FCC } from '@/types'
 
-const PatentFormItem: FCC<PropsFormItem> = ({ errors }) => {
+interface PatentFormItemProps extends PropsFormItem {
+  isDisabled?: boolean
+}
+const PatentFormItem: FCC<PatentFormItemProps> = ({ errors, isDisabled }) => {
   return (
     <FormItem name='is_patent' wrapperCol={{ span: 12 }} errors={errors}>
-      <Switcher label='Оформление патента (только для индивидуальных предпринимателей)' />
+      <Switcher
+        disabled={isDisabled}
+        label='Оформление патента (только для индивидуальных предпринимателей)'
+      />
     </FormItem>
   )
 }

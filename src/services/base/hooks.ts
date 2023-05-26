@@ -50,6 +50,7 @@ export const useFetchItems = <T = any>(
     [queryKey, filter] as QueryKey,
     () => BaseServices.fetch(url, filter),
     {
+      refetchOnWindowFocus: false,
       ...options,
     }
   )

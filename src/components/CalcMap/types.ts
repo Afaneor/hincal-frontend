@@ -1,5 +1,7 @@
 import type { Feature, Geometry } from 'geojson'
 
+import type { TerritorialLocationModelProps } from '@/models'
+
 export interface HoveInfoProps {
   feature: Feature<Geometry, FeatureProps>
   x: number
@@ -29,4 +31,5 @@ export interface FeatureProps {
   '@relations': string
   averageCadastralValue: number
   color: string
+  territorialLocation?: TerritorialLocationModelProps
 }

@@ -11,6 +11,7 @@ export interface TerritorialLocationModelProps extends BaseModelProps {
   avg_property_lease_costs: number
   avg_property_purchase_costs: number
   tags: string[]
+  extraData: any
 }
 export class TerritorialLocationModel {
   static modelName = 'territorialLocation'
