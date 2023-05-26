@@ -25,7 +25,6 @@ import { Meta } from '@/layouts/Meta'
 import type { CalculatorModelProps } from '@/models/Calculator'
 import { CalculatorModel } from '@/models/Calculator'
 import type { ReportModelProps } from '@/models/Report'
-import { ReportModel } from '@/models/Report'
 import { useChoices, useCreateItem } from '@/services/base/hooks'
 import { Main } from '@/templates/Main'
 
@@ -49,7 +48,6 @@ const anchorItems = [
 
 const AnchorCalc = () => <Anchor offsetTop={65} items={anchorItems} />
 
-const Model = ReportModel
 const CalcModel = CalculatorModel
 
 const Calculator: FCC = () => {
@@ -60,7 +58,6 @@ const Calculator: FCC = () => {
   const [ipOpen, setIpOpen] = useState(false)
   const [percent, setPercent] = useState(0)
   const [report, setReport] = useState({} as ReportModelProps)
-  const { mutate: createReport } = useCreateItem(Model)
   useChoices(CalcModel.modelName, CalcModel.url())
 
   const prepareNewReportField = (terLoc: HoveInfoProps[]) => {
@@ -68,8 +65,10 @@ const Calculator: FCC = () => {
       (tl: HoveInfoProps) => tl.feature.properties.territorialLocation?.id
     )
   }
-  const handleCreateReport = (newReport: CalculatorModelProps) => {
-    createReport(
+  const { mutate: calculate } = useCreateItem(CalcModel)
+
+  const handleCalculate = (newReport: CalculatorModelProps) => {
+    calculate(
       {
         ...newReport,
         territorial_locations: prepareNewReportField(
@@ -77,6 +76,7 @@ const Calculator: FCC = () => {
         ),
         sectors: newReport?.sectors?.map((s) => s.id),
         equipments: newReport?.equipments?.map((eq) => eq.id),
+        other: [''],
       },
       {
         onSuccess: (data: any) => {
@@ -102,10 +102,6 @@ const Calculator: FCC = () => {
     //
   }
 
-  const showTaxSystem = useMemo(
-    () => typeBusiness && typeBusiness !== 'legal',
-    [typeBusiness]
-  )
   const showPatent = useMemo(
     () => typeBusiness && typeBusiness === 'individual',
     [typeBusiness]
@@ -146,7 +142,7 @@ const Calculator: FCC = () => {
               initialValues={{}}
               autoComplete='off'
               onFieldsChange={getPercent}
-              onFinish={handleCreateReport}
+              onFinish={handleCalculate}
               onFinishFailed={onFinishFailed}
             >
               <AnchorItemWrapper
@@ -164,9 +160,7 @@ const Calculator: FCC = () => {
                 bodyStyle={{ height: '85%' }}
               >
                 <TypeBusinessFormItem errors={errors.business_type} />
-                {showTaxSystem ? (
-                  <TypeTaxSystemFormItem errors={errors.type_tax_system} />
-                ) : null}
+                <TypeTaxSystemFormItem errors={errors.type_tax_system} />
                 <SectorFormItem errors={errors.sector} />
                 <LandAreaFormItem errors={errors.land_area} />
                 <PropertyAreaFormItem errors={errors.property_area} />

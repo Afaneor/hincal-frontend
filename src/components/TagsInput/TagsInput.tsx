@@ -35,9 +35,7 @@ export const TagsInput: FCC<TagsInputProps> = ({
       onClick={onClick}
     >
       {!list?.length ? (
-        <Text type='secondary' disabled>
-          {placeholderText}
-        </Text>
+        <Text type='secondary'>{placeholderText}</Text>
       ) : (
         list?.map((item: any) => (
           <Tag

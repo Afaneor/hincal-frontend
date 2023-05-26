@@ -20,7 +20,6 @@ const TypeBusinessFormItem: FCC<PropsFormItem> = ({ errors }) => {
     >
       <Select
         size='large'
-        defaultValue='individual'
         allowClear
         options={choiceState?.type_business?.choices?.map(
           (ch: ChoiceProps) => ({
