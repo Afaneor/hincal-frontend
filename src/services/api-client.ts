@@ -7,9 +7,9 @@ const paramsSerializer = (params: any) => {
 }
 
 const config = {
-  baseURL: 'https://api.hincal.pavlin.tech/api',
+  baseURL: 'http://localhost:8000/api',
   timeout: 30000,
-  withCredentials: false,
+  withCredentials: true,
   paramsSerializer,
 }
 const apiClient = () => {

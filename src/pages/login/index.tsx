@@ -19,7 +19,7 @@ const Login: FCC = () => {
   const handleLogin = (credentials: LoginValuesTypes) => {
     login(credentials, {
       onSuccess: () => {
-        // window.location.href = '/'
+        window.location.href = '/'
       },
       onError: (error: any) => {
         setFormErrors(error?.data)

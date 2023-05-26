@@ -32,6 +32,7 @@ export const useListState = (initList: any) => {
 
   const clearList = () => {
     setList([])
+    return []
   }
 
   return {

@@ -28,7 +28,9 @@ export const SelectDropdownSearchableCompleteFilter: FCC<
   const { list, addItemsToList, removeItemFromList, clearList } = useListState(
     defList || []
   )
-
+  const handleClearList = () => {
+    onApply(clearList())
+  }
   const handleSetValues = (item: string | Record<string, any>) => {
     addItemsToList([item])
   }
@@ -37,7 +39,7 @@ export const SelectDropdownSearchableCompleteFilter: FCC<
     removeItemFromList(item)
   }
   return (
-    <Card>
+    <Card hoverable style={{ maxWidth: 375 }}>
       <Space size={12} direction='vertical' className='w100'>
         <SelectDropdownSearchable
           defList={list}
@@ -49,7 +51,8 @@ export const SelectDropdownSearchableCompleteFilter: FCC<
           onRemoveItem={handleRemoveItem}
         />
         <ApplyClearFilterBtns
-          onClear={clearList}
+          textApplyBtn='Добавить'
+          onClear={handleClearList}
           onApply={() => onApply(list)}
         />
       </Space>

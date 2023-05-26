@@ -11,7 +11,7 @@ const EquipmentFormItem: FCC<PropsFormItem> = ({ errors }) => {
     <FormItem
       label='Оборудование'
       tooltip='Предполагаемое к использованию оборудование'
-      name='equipment'
+      name='equipments'
       wrapperCol={{ span: 12 }}
       errors={errors}
     >

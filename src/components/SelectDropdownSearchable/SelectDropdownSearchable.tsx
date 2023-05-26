@@ -66,6 +66,7 @@ export const SelectDropdownSearchable: FCC<
       {children || (
         <>
           <TagsInput
+            singleLine
             list={defList}
             listItemsNameKey={
               returnValueType === 'object' ? listItemsNameKey : undefined

@@ -58,7 +58,7 @@ export const SelectDropdownListContent: FCC<SelectDropdownListContentProps> = ({
           ) : null
         }
         scrollableTarget='scrollableListGrid'
-        height={200}
+        height={130}
       >
         {returnValueType === 'string' ? (
           <SelectDropdownListStringContent

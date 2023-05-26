@@ -41,7 +41,6 @@ export const TagsInput: FCC<TagsInputProps> = ({
       ) : (
         list?.map((item: any) => (
           <Tag
-            style={{ alignSelf: 'center' }}
             closable={!!tagOnCLose}
             key={item?.id || item}
             onClose={() => tagOnCLose?.(item)}

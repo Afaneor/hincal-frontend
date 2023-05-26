@@ -6,6 +6,7 @@ import type { FCC } from 'src/types'
 
 import AccountingFormItem from '@/components/AccountingFormItem/AccountingFormItem'
 import { AnchorItemWrapper } from '@/components/AnchorItemWrapper'
+import type { HoveInfoProps } from '@/components/CalcMap/types'
 import { CalculateProgress } from '@/components/CalculateProgress'
 import { CalculatorResults } from '@/components/CalculatorResults'
 import EquipmentFormItem from '@/components/EquipmentFormItem/EquipmentFormItem'
@@ -19,11 +20,34 @@ import StaffFormItem from '@/components/StaffFormItem/StaffFormItem'
 import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
 import { Meta } from '@/layouts/Meta'
+import type {
+  EquipmentModelProps,
+  SectorModelProps,
+  TerritorialLocationModelProps,
+} from '@/models'
+import { TerritorialLocationModel } from '@/models'
 import type { ReportModelProps } from '@/models/Report'
 import { ReportModel } from '@/models/Report'
-import { useChoices, useCreateItem } from '@/services/base/hooks'
+import { useCreateItem, useFetchItems } from '@/services/base/hooks'
 import { Main } from '@/templates/Main'
 
+export interface CreateReportProps {
+  type_business: string
+  sectors: SectorModelProps[]
+  sub_sectors: SectorModelProps[]
+  from_staff: number
+  to_staff: number
+  territorial_locations: HoveInfoProps[]
+  from_land_area: number
+  to_land_area: number
+  from_property_area: number
+  to_property_area: number
+  equipments: EquipmentModelProps[]
+  type_tax_system: string
+  need_accounting: boolean
+  need_registration: boolean
+  other: any
+}
 const anchorItems = [
   {
     key: 'location-area',
@@ -45,24 +69,44 @@ const anchorItems = [
 const AnchorCalc = () => <Anchor offsetTop={65} items={anchorItems} />
 
 const Model = ReportModel
+const TLModel = TerritorialLocationModel
 const Calculator: FCC = () => {
   const [form] = Form.useForm()
   const { errors } = useFormErrors() as FormErrorsHook
   const [ipOpen, setIpOpen] = useState(false)
   const [percent, setPercent] = useState(0)
   const [report, setReport] = useState({} as ReportModelProps)
-  useChoices(Model.modelName, Model.url())
-
+  const { results: terrLocData } = useFetchItems(TLModel, { limit: 15 })
   const { mutate: createReport } = useCreateItem(Model)
-  const handleCreateReport = (newReport: ReportModelProps) => {
-    createReport(newReport, {
-      onSuccess: (data: any) => {
-        setReport(data)
+
+  const prepareNewReportField = (newReport: CreateReportProps) => {
+    const shortNames = newReport?.territorial_locations?.map(
+      (tl) => tl.feature.properties.ref
+    )
+    return terrLocData
+      .filter((tl: TerritorialLocationModelProps) =>
+        shortNames.includes(tl.shot_name)
+      )
+      ?.map((tl: TerritorialLocationModelProps) => tl.id)
+  }
+  const handleCreateReport = (newReport: CreateReportProps) => {
+    const terLocListId = prepareNewReportField(newReport)
+    createReport(
+      {
+        ...newReport,
+        territorial_locations: terLocListId,
+        sectors: newReport?.sectors?.map((s) => s.id),
+        equipments: newReport?.equipments?.map((eq) => eq.id),
       },
-      onError: () => {
-        //
-      },
-    })
+      {
+        onSuccess: (data: any) => {
+          setReport(data)
+        },
+        onError: () => {
+          //
+        },
+      }
+    )
   }
   const getPercent = (_: FieldData[], all: FieldData[]) => {
     const count = all.filter((f) => f.touched && f.value)?.length
@@ -119,7 +163,7 @@ const Calculator: FCC = () => {
                 size={75}
                 bodyStyle={{ padding: 0 }}
               >
-                <MapFormItem errors={errors.location_area} />
+                <MapFormItem errors={errors.territorial_locations} />
               </AnchorItemWrapper>
               <AnchorItemWrapper
                 id='main-investment-params'

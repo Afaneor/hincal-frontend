@@ -3,6 +3,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import area from '@turf/area'
 import type { Feature } from '@turf/helpers'
+import { Tag, Typography } from 'antd'
 // @ts-ignore
 import type { GeoJSON } from 'geojson'
 import { isEmpty } from 'lodash'
@@ -18,9 +19,12 @@ import {
 import { DrawControl } from '@/components/DrawControl'
 import { MapHoverCard } from '@/components/MapHoverCard'
 
+import ItemDegree from '../ItemDegree/ItemDegree'
 // @ts-ignore
 import locationAreas from './location-areas'
 import type { HoveInfoProps } from './types'
+
+const { Text } = Typography
 
 const initialViewState = {
   longitude: 37.535096698033755,
@@ -154,10 +158,11 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
         )}
         {!freezeMap ? <NavigationControl /> : null}
       </Map>
-      <>
-        Выбранная площадь:
+      <Tag>
+        <Text>Выбранная площадь: </Text>
         {Math.round(selectedPolygonsInMeters)}
-      </>
+        <ItemDegree value='м' degree={2} />
+      </Tag>
     </>
   )
 }

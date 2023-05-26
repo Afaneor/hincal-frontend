@@ -5,36 +5,20 @@ import React, { useCallback } from 'react'
 import { useQueryCache } from '@/hooks/useQueryCache'
 import type { UsersModelProps } from '@/models'
 import { useLogout } from '@/services/auth/hooks'
-import type { PermissionRulesProps } from '@/services/base/types'
 
 const { Text } = Typography
-export interface CurrentUserModelProps {
-  id: number
-  user: UsersModelProps
-  avatar: string | null
-  phone: string | null
-  role: string
-  notification_settings: {
-    [key: string]: string | boolean
-  }
-  permission_rules: PermissionRulesProps
-}
 
 interface CurrentUserProps {
   src?: string
 }
 
-const UserName = ({ currentUser }: { currentUser: CurrentUserModelProps }) => (
-  <Text>
-    {currentUser?.user?.username || currentUser?.user?.email || 'Иванов Иван'}
-  </Text>
+const UserName = ({ currentUser }: { currentUser: UsersModelProps }) => (
+  <Text>{currentUser?.email || currentUser?.username}</Text>
 )
 
 export const CurrentUser: React.FC<CurrentUserProps> = () => {
   const { mutate: logout }: any = useLogout()
-  const { data }: { data: CurrentUserModelProps } | any =
-    useQueryCache('getInfo')
-
+  const { data }: { data: UsersModelProps } | any = useQueryCache('getInfo')
   const handleLogout = () => {
     logout(
       {},

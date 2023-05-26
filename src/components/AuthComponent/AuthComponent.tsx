@@ -11,7 +11,7 @@ const AuthComponent = () => {
   const { data }: { data: any; isLoading: boolean } = useUserGetInfo({
     refetchOnWindowFocus: false,
   })
-  if (data?.status !== 200) {
+  if (data?.status === 200) {
     return <CurrentUser />
   }
   return (
