@@ -18,6 +18,8 @@ interface SelectSearchableAsyncProps {
   single?: boolean
   placeholder?: string
   model: typeof BaseModel
+  listItemsNameKey?: string
+
   onChange?: (e: BaseSyntheticEvent) => void
 }
 
@@ -32,6 +34,7 @@ const SelectSearchableAsync: FCC<SelectSearchableAsyncProps> = ({
   model,
   onChange,
   placeholder = 'Выбрать',
+  listItemsNameKey = 'name',
 }) => {
   const [value, setValue] = useState<any[]>([])
   const contextProps = useMemo(() => ({ single }), [])
@@ -39,7 +42,7 @@ const SelectSearchableAsync: FCC<SelectSearchableAsyncProps> = ({
   useEffect(() => {
     const cValue = single ? value[0] : value
     // @ts-ignore
-    onChange({ target: { value: cValue } })
+    onChange?.({ target: { value: cValue } })
   }, [value])
 
   const DropdownRender = useCallback(() => {
@@ -47,7 +50,7 @@ const SelectSearchableAsync: FCC<SelectSearchableAsyncProps> = ({
       <SelectSearchableAsyncContext.Provider value={contextProps}>
         <SelectDropdownSearchableCompleteFilter
           filterName='name'
-          listItemsNameKey='name'
+          listItemsNameKey={listItemsNameKey}
           returnValueType='object'
           defList={value}
           model={model}
@@ -66,7 +69,7 @@ const SelectSearchableAsync: FCC<SelectSearchableAsyncProps> = ({
       <TagsInput
         singleLine
         placeholder={placeholder}
-        listItemsNameKey='name'
+        listItemsNameKey={listItemsNameKey}
         list={value}
         onClick={(e) => e.stopPropagation()}
       />
