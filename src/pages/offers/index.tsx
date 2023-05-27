@@ -27,7 +27,7 @@ const Offers: FCC = () => {
           <Col span={24} style={{ marginTop: 30 }}>
             <Card title='Хотите получать предложения одним из первых?'>
               <Row gutter={[20, 20]}>
-                <Col md={18}>
+                <Col md={13}>
                   <Input size='large' placeholder='example@site.ru' />
                 </Col>
                 <Col md={6}>

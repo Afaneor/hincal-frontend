@@ -35,6 +35,7 @@
     "@turf/area": "^6.5.0",
     "@types/mapbox__mapbox-gl-draw": "^1.4.0",
     "antd": "^5.5.0",
+    "antd-tag-input": "^1.0.17",
     "axios": "^1.4.0",
     "clsx": "^1.2.1",
     "i18next": "^22.5.0",

@@ -1,0 +1,35 @@
+.tagInput {
+  .input {
+    width: auto;
+    padding-left: 0;
+  }
+  .clear {
+    transform: translateY(-50%);
+    position: absolute;
+    top: 50%;
+    right: 10px;
+  }
+}
+
+.antInputCustom {
+  box-sizing: border-box;
+  margin: 0;
+  font-variant: tabular-nums;
+  list-style: none;
+  font-feature-settings: 'tnum';
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  min-width: 0;
+  padding: 4px 11px;
+  font-size: 14px;
+  line-height: 1.5715;
+  background-image: none;
+  color: rgba(0, 0, 0, 0.88);
+  background-color: #ffffff;
+  border-width: 1px;
+  border-style: solid;
+  border-color: #d9d9d9;
+  border-radius: 6px;
+  transition: all 0.2s;
+}

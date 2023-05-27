@@ -16,7 +16,7 @@
 
   &.overflowScroll {
     overflow-x: scroll;
-    display: flex;
+    display: inline-block;
     & span {
       margin: 0;
     }
