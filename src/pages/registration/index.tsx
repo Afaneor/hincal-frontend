@@ -1,5 +1,6 @@
 import { Button, Card, Col, Form, Input, notification, Row } from 'antd'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import type { FCC } from 'src/types'
 
@@ -7,15 +8,14 @@ import { FormItem } from '@/components'
 import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
 import { Meta } from '@/layouts/Meta'
-import { Main } from '@/templates/Main'
 import AuthServices from '@/services/auth/AuthServices'
-import { useRouter } from 'next/router'
+import { Main } from '@/templates/Main'
 
 const Registration: FCC = () => {
   const { errors, setFormErrors } = useFormErrors() as FormErrorsHook
   const router = useRouter()
 
-  const onFinish = (data) => {
+  const onFinish = (data: any) => {
     AuthServices.register(data)
       .then(() => {
         notification.success({
@@ -25,8 +25,8 @@ const Registration: FCC = () => {
         })
         router.push('/login')
       })
-      .catch(({ data }: { data: Object }) => {
-        setFormErrors(data)
+      .catch((error: { data: Object }) => {
+        setFormErrors(error.data)
       })
   }
   const onFinishFailed = () => {
