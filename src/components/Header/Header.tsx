@@ -3,9 +3,12 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import React from 'react'
 
-import { BurgerDropdownLinks } from '@/components'
+// eslint-disable-next-line import/extensions
 import { Logo } from '@/components/_icons/logo/Logo'
+// eslint-disable-next-line import/extensions
 import { AuthComponent } from '@/components/AuthComponent'
+// eslint-disable-next-line import/extensions
+import { BurgerDropdownLinks } from '@/components/BurgerDropdownLinks/BurgerDropdownLinks'
 import type { FCC } from '@/types'
 
 import styles from './Header.module.scss'
@@ -22,7 +25,7 @@ export const Header: FCC = () => {
           <Logo />
         </Col>
 
-        <Col flex='auto' xs={0} md={24}>
+        <Col flex='auto' xs={0} md={0} xl={24}>
           <Row>
             {Links.map((link) => (
               <div
@@ -45,7 +48,7 @@ export const Header: FCC = () => {
         <Col flex='auto' className={styles.authSection}>
           <AuthComponent />
         </Col>
-        <Col md={0}>
+        <Col xl={0}>
           <BurgerDropdownLinks />
         </Col>
       </Row>
