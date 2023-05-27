@@ -15,7 +15,7 @@ export class CalculatorModel {
 
 export interface CalculatorModelProps extends BaseModelProps {
   type_business: string
-  sectors: SectorModelProps[]
+  sector: SectorModelProps
   sub_sectors: SectorModelProps[]
   from_staff: number
   to_staff: number

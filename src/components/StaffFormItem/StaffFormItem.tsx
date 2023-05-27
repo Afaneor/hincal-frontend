@@ -9,7 +9,7 @@ import type { FCC } from '@/types'
 
 const staffFormItemStyle = {
   display: 'inline-block',
-  width: 'calc(45% - 12px)',
+  width: 'calc(47% - 8px)',
 }
 const StaffFormItem: FCC<PropsFormItem> = ({ errors }) => {
   return (

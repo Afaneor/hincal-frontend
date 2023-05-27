@@ -9,7 +9,7 @@ import type { FCC } from '@/types'
 
 const itemStyle = {
   display: 'inline-block',
-  width: 'calc(45% - 12px)',
+  width: 'calc(47% - 8px)',
 }
 
 const PropertyAreaFormItem: FCC<PropsFormItem> = ({ errors }) => {

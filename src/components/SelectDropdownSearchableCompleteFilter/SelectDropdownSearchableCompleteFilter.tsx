@@ -4,6 +4,7 @@ import type { BaseModel } from 'src/models'
 import type { FCC } from 'src/types'
 
 import { ApplyClearFilterBtns } from '@/components/ApplyClearFilterBtns'
+// eslint-disable-next-line import/no-cycle
 import { SelectDropdownSearchable } from '@/components/SelectDropdownSearchable'
 import { useListState } from '@/hooks/useListState'
 
@@ -15,7 +16,7 @@ interface SelectDropdownSearchableCompleteFilterProps {
   listItemsNameKey: string
   returnValueType: 'string' | 'object'
 }
-export const SelectDropdownSearchableCompleteFilter: FCC<
+const SelectDropdownSearchableCompleteFilter: FCC<
   SelectDropdownSearchableCompleteFilterProps
 > = ({
   defList,

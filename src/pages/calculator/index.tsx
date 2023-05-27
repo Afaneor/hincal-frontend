@@ -1,18 +1,17 @@
 import { CalculatorOutlined } from '@ant-design/icons'
 import { Anchor, Button, Col, Form, Row } from 'antd'
-import type { FieldData } from 'rc-field-form/lib/interface'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import type { FCC } from 'src/types'
 
 import AccountingFormItem from '@/components/AccountingFormItem/AccountingFormItem'
 import { AnchorItemWrapper } from '@/components/AnchorItemWrapper'
 import type { HoveInfoProps } from '@/components/CalcMap/types'
-import { CalculateProgress } from '@/components/CalculateProgress'
 import { CalculatorPageWrapper } from '@/components/CalculatorPageWrapper'
 import { CalculatorResults } from '@/components/CalculatorResults'
 import EquipmentFormItem from '@/components/EquipmentFormItem/EquipmentFormItem'
 import { LandAreaFormItem } from '@/components/LandAreaFormItem'
 import MapFormItem from '@/components/MapFormItem/MapFormItem'
+import { OtherFieldFormListItems } from '@/components/OtherFieldFormListItems'
 import PatentFormItem from '@/components/PatentFormItem/PatentFormItem'
 import PropertyAreaFormItem from '@/components/PropertyAreaFormItem/PropertyAreaFormItem'
 import SectorFormItem from '@/components/SectorFormItem/SectorFormItem'
@@ -56,7 +55,6 @@ const Calculator: FCC = () => {
 
   const { errors } = useFormErrors() as FormErrorsHook
   const [ipOpen, setIpOpen] = useState(false)
-  const [percent, setPercent] = useState(0)
   const [report, setReport] = useState({} as ReportModelProps)
   useChoices(CalcModel.modelName, CalcModel.url())
 
@@ -74,7 +72,7 @@ const Calculator: FCC = () => {
         territorial_locations: prepareNewReportField(
           newReport?.territorial_locations
         ),
-        sectors: newReport?.sectors?.map((s) => s.id),
+        sector: newReport?.sector?.id,
         equipments: newReport?.equipments?.map((eq) => eq.id),
         other: [''],
       },
@@ -88,15 +86,6 @@ const Calculator: FCC = () => {
       }
     )
   }
-  const getPercent = useCallback((_: FieldData[], all: FieldData[]) => {
-    const count = all.filter((f) => {
-      const val = Array.isArray(f.value) ? f.value.length : f.value
-      return f.touched && val
-    })?.length
-    const weightProp = 100 / (all?.length || 0)
-    const percents = count * weightProp
-    return setPercent(Math.round(percents))
-  }, [])
 
   const onFinishFailed = () => {
     //
@@ -106,6 +95,13 @@ const Calculator: FCC = () => {
     () => typeBusiness && typeBusiness === 'individual',
     [typeBusiness]
   )
+
+  const handleOnCreatePolygon = (selectedPolygonsInMeters: number) => {
+    form.setFieldsValue({
+      from_land_area: selectedPolygonsInMeters,
+      to_land_area: selectedPolygonsInMeters,
+    })
+  }
 
   return (
     <Main
@@ -141,7 +137,6 @@ const Calculator: FCC = () => {
               labelAlign='left'
               initialValues={{}}
               autoComplete='off'
-              onFieldsChange={getPercent}
               onFinish={handleCalculate}
               onFinishFailed={onFinishFailed}
             >
@@ -151,7 +146,10 @@ const Calculator: FCC = () => {
                 size={75}
                 bodyStyle={{ padding: 0 }}
               >
-                <MapFormItem errors={errors.territorial_locations} />
+                <MapFormItem
+                  errors={errors.territorial_locations}
+                  onCreatePolygone={handleOnCreatePolygon}
+                />
               </AnchorItemWrapper>
               <AnchorItemWrapper
                 id='main-investment-params'
@@ -190,13 +188,13 @@ const Calculator: FCC = () => {
                   isDisabled={!showPatent}
                   errors={errors.is_patent}
                 />
+                <OtherFieldFormListItems />
               </AnchorItemWrapper>
             </Form>
           </Col>
           <Col xs={0} md={4}>
             <AnchorCalc />
           </Col>
-          <CalculateProgress percent={percent} />
         </Row>
       </CalculatorPageWrapper>
     </Main>
