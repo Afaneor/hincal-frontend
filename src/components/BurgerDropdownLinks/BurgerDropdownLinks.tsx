@@ -12,7 +12,6 @@ interface BurgerDropdownLinksProps extends ButtonProps {
 }
 
 export const BurgerDropdownLinks: FCC<BurgerDropdownLinksProps> = ({
-  type = 'primary',
   dropdownRender,
 }) => {
   const items: MenuProps['items'] = useMemo(
@@ -36,7 +35,6 @@ export const BurgerDropdownLinks: FCC<BurgerDropdownLinksProps> = ({
       dropdownRender={dropdownRender ? () => dropdownRender : undefined}
     >
       <Button
-        type={type}
         shape='circle'
         icon={<MenuOutlined />}
         onClick={(e) => e.preventDefault()}
