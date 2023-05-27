@@ -17,7 +17,7 @@ const OtherFieldFormListItems: FCC<OtherFieldFormListItemsProps> = () => {
   return (
     <FormItem
       label='Прочие расходы'
-      tooltip='Прочие расходы, которые вы хотели бы включить в рассчет'
+      tooltip='Прочие расходы, которые вы хотели бы включить в расчет'
       wrapperCol={{ span: 18 }}
     >
       <Form.List name='other'>
