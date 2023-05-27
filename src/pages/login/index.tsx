@@ -1,4 +1,13 @@
-import { Button, Card, Checkbox, Col, Form, Input, Row } from 'antd'
+import {
+  Button,
+  Card,
+  Checkbox,
+  Col,
+  Form,
+  Input,
+  notification,
+  Row,
+} from 'antd'
 import Link from 'next/link'
 import React from 'react'
 import type { FCC } from 'src/types'
@@ -23,6 +32,11 @@ const Login: FCC = () => {
       },
       onError: (error: any) => {
         setFormErrors(error?.data)
+        if (error?.data?.detail) {
+          notification.error({
+            message: error.data.detail,
+          })
+        }
       },
     })
   }
