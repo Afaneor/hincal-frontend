@@ -38,7 +38,7 @@ const Offers: FCC = () => {
               </Row>
             </Card>
           </Col>
-          <Col md={24}>
+          <Col xs={24} md={24}>
             <OffersList model={Model} />
           </Col>
         </Row>
