@@ -9,6 +9,8 @@ import React from 'react'
 
 import NotificationMessageProvider from '@/components/NotificationMessage/NotificationMessage'
 
+import RenderDelay from '../components/RenderDelay/RenderDelay'
+
 const qClientConfig = {
   defaultOptions: {},
 }
@@ -16,11 +18,13 @@ const qClientConfig = {
 const queryClient = new QueryClient(qClientConfig)
 const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
-    <QueryClientProvider client={queryClient}>
-      <NotificationMessageProvider>
-        <Component {...pageProps} />
-      </NotificationMessageProvider>
-    </QueryClientProvider>
+    <RenderDelay>
+      <QueryClientProvider client={queryClient}>
+        <NotificationMessageProvider>
+          <Component {...pageProps} />
+        </NotificationMessageProvider>
+      </QueryClientProvider>
+    </RenderDelay>
   )
 }
 

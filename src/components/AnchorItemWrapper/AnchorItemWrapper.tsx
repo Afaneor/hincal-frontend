@@ -10,6 +10,7 @@ interface AnchorItemWrapperProps {
   size?: number
   bodyStyle?: React.CSSProperties
   actions?: React.ReactNode[]
+  extra?: React.ReactNode
 }
 const bodyStyleDefault = { height: '90%', overflow: 'auto' }
 
@@ -20,6 +21,7 @@ export const AnchorItemWrapper: FCC<AnchorItemWrapperProps> = ({
   // size = 98,
   bodyStyle,
   actions,
+  extra,
 }) => {
   return (
     <Card
@@ -30,6 +32,7 @@ export const AnchorItemWrapper: FCC<AnchorItemWrapperProps> = ({
       bodyStyle={{ ...bodyStyleDefault, ...bodyStyle }}
       className={styles.container}
       actions={actions}
+      extra={extra}
     >
       {children}
     </Card>

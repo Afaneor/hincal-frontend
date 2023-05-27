@@ -3,11 +3,11 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import area from '@turf/area'
 import type { Feature } from '@turf/helpers'
-import { Col, Row, Tag, Typography } from 'antd'
+import { Col, Row } from 'antd'
 // @ts-ignore
 import type { GeoJSON } from 'geojson'
 import { isEmpty } from 'lodash'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import Map, { Layer, NavigationControl, Source } from 'react-map-gl'
 import type { FCC } from 'src/types'
 
@@ -17,17 +17,15 @@ import {
   setColorToSelectedLocationArea,
 } from '@/components/CalcMap/utils'
 import { DrawControl } from '@/components/DrawControl'
+import type { ModeChangeType } from '@/components/DrawControl/DrawControl'
 import { MapHoverCard } from '@/components/MapHoverCard'
 import type { TerritorialLocationModelProps } from '@/models'
 import { TerritorialLocationModel } from '@/models'
 import { useFetchItems } from '@/services/base/hooks'
 
-import ItemDegree from '../ItemDegree/ItemDegree'
 // @ts-ignore
 import locationAreas from './location-areas'
 import type { HoveInfoProps } from './types'
-
-const { Text } = Typography
 
 const initialViewState = {
   longitude: 37.535096698033755,
@@ -45,6 +43,7 @@ interface CalcMapProps {
       | HoveInfoProps[],
     features: any
   ) => void
+  onCreatePolygon?: (selectedPolygonsInMeters: number) => void
 }
 
 const drawControls = {
@@ -53,7 +52,11 @@ const drawControls = {
 }
 const TLModel = TerritorialLocationModel
 
-export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
+export const CalcMap: FCC<CalcMapProps> = ({
+  onChange,
+  freezeMap,
+  onCreatePolygon,
+}) => {
   const { results: terrLocData }: { results: TerritorialLocationModelProps[] } =
     useFetchItems(TLModel, { limit: 15 })
   const [viewState, setViewState] = useState(initialViewState)
@@ -64,6 +67,13 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
   >(layerFillColors(locationAreas))
   const [selected, setSelected] = useState([] as HoveInfoProps[])
   const [hoverInfo, setHoverInfo] = useState<HoveInfoProps>({} as HoveInfoProps)
+  const [startDrawPolygon, setStartDrawPolygon] = useState(false)
+
+  useEffect(() => {
+    if (onCreatePolygon) {
+      onCreatePolygon(Math.round(selectedPolygonsInMeters))
+    }
+  }, [selectedPolygonsInMeters])
 
   const handleSetNewFeatureCollection = (currentHoverInfo: HoveInfoProps[]) => {
     const collection = setColorToSelectedLocationArea(allData, currentHoverInfo)
@@ -129,6 +139,14 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
     })
   }, [])
 
+  const handleOnModeChange = useCallback(({ mode }: ModeChangeType) => {
+    if (mode === 'draw_polygon') {
+      setStartDrawPolygon(true)
+    } else {
+      setStartDrawPolygon(false)
+    }
+  }, [])
+
   const areaIsSelected = useMemo(() => {
     const sList = selected?.map((s) => s.feature?.properties?.ref)
     const hList = hoverInfo?.feature?.properties?.ref
@@ -136,21 +154,21 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
   }, [hoverInfo])
 
   return (
-    <>
-      <Map
-        {...viewState}
-        locale={{ ru: 'ru-Ru' }}
-        mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
-        style={mapStyle}
-        interactiveLayerIds={['administrativeDistrictPolygons']}
-        mapStyle='mapbox://styles/mapbox/streets-v9'
-        onMouseMove={onHover}
-        onMove={(evt) => !freezeMap && setViewState(evt.viewState)}
-      >
-        <Source id='polygon-source' type='geojson' data={allData}>
-          <Layer {...dataLayer} />
-          <Layer {...lineStyle} />
-        </Source>
+    <Map
+      {...viewState}
+      locale={{ ru: 'ru-Ru' }}
+      mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
+      style={mapStyle}
+      interactiveLayerIds={['administrativeDistrictPolygons']}
+      mapStyle='mapbox://styles/mapbox/streets-v9'
+      onMouseMove={onHover}
+      onMove={(evt) => !freezeMap && setViewState(evt.viewState)}
+    >
+      <Source id='polygon-source' type='geojson' data={allData}>
+        <Layer {...dataLayer} />
+        <Layer {...lineStyle} />
+      </Source>
+      {!freezeMap ? (
         <Row>
           <Col xs={0} span={24}>
             <DrawControl
@@ -160,10 +178,14 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
               onCreate={onUpdate}
               onUpdate={onUpdate}
               onDelete={onUpdate}
+              onModechange={handleOnModeChange}
             />
           </Col>
         </Row>
-        {!isEmpty(hoverInfo) && hoverInfo.feature.properties?.name && (
+      ) : null}
+      {!startDrawPolygon &&
+        !isEmpty(hoverInfo) &&
+        hoverInfo.feature.properties?.name && (
           <MapHoverCard
             noSelectBtn={freezeMap}
             isSelected={areaIsSelected}
@@ -178,14 +200,8 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
             onDiselect={handleDiselectLocationArea}
           />
         )}
-        {!freezeMap ? <NavigationControl /> : null}
-      </Map>
-      <Tag>
-        <Text>Выбранная площадь: </Text>
-        {Math.round(selectedPolygonsInMeters)}
-        <ItemDegree value='м' degree={2} />
-      </Tag>
-    </>
+      {!freezeMap ? <NavigationControl /> : null}
+    </Map>
   )
 }
 
