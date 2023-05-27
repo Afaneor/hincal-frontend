@@ -13,6 +13,7 @@ import { CalculatorResults } from '@/components/CalculatorResults'
 import EquipmentFormItem from '@/components/EquipmentFormItem/EquipmentFormItem'
 import { LandAreaFormItem } from '@/components/LandAreaFormItem'
 import MapFormItem from '@/components/MapFormItem/MapFormItem'
+import { OtherFieldFormListItems } from '@/components/OtherFieldFormListItems'
 import PatentFormItem from '@/components/PatentFormItem/PatentFormItem'
 import PropertyAreaFormItem from '@/components/PropertyAreaFormItem/PropertyAreaFormItem'
 import SectorFormItem from '@/components/SectorFormItem/SectorFormItem'
@@ -74,7 +75,7 @@ const Calculator: FCC = () => {
         territorial_locations: prepareNewReportField(
           newReport?.territorial_locations
         ),
-        sectors: newReport?.sectors?.map((s) => s.id),
+        sector: newReport?.sector?.id,
         equipments: newReport?.equipments?.map((eq) => eq.id),
         other: [''],
       },
@@ -106,6 +107,13 @@ const Calculator: FCC = () => {
     () => typeBusiness && typeBusiness === 'individual',
     [typeBusiness]
   )
+
+  const handleOnCreatePolygon = (selectedPolygonsInMeters: number) => {
+    form.setFieldsValue({
+      from_land_area: selectedPolygonsInMeters,
+      to_land_area: selectedPolygonsInMeters,
+    })
+  }
 
   return (
     <Main
@@ -151,7 +159,10 @@ const Calculator: FCC = () => {
                 size={75}
                 bodyStyle={{ padding: 0 }}
               >
-                <MapFormItem errors={errors.territorial_locations} />
+                <MapFormItem
+                  errors={errors.territorial_locations}
+                  onCreatePolygone={handleOnCreatePolygon}
+                />
               </AnchorItemWrapper>
               <AnchorItemWrapper
                 id='main-investment-params'
@@ -190,6 +201,7 @@ const Calculator: FCC = () => {
                   isDisabled={!showPatent}
                   errors={errors.is_patent}
                 />
+                <OtherFieldFormListItems />
               </AnchorItemWrapper>
             </Form>
           </Col>

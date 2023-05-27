@@ -5,10 +5,13 @@ import { FormItem } from '@/components'
 import { CalcMap } from '@/components/CalcMap'
 import type { FCC } from '@/types'
 
-const MapFormItem: FCC<PropsFormItem> = () => {
+interface MapFormItemProps extends PropsFormItem {
+  onCreatePolygone?: (selectedPolygonsInMeters: number) => void
+}
+const MapFormItem: FCC<MapFormItemProps> = ({ onCreatePolygone }) => {
   return (
     <FormItem name='territorial_locations' shouldUpdate>
-      <CalcMap />
+      <CalcMap onCreatePolygon={onCreatePolygone} />
     </FormItem>
   )
 }
