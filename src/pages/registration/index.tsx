@@ -1,4 +1,4 @@
-import { Button, Card, Col, Form, Input, Row } from 'antd'
+import { Button, Card, Col, Form, Input, notification, Row } from 'antd'
 import Link from 'next/link'
 import React from 'react'
 import type { FCC } from 'src/types'
@@ -8,15 +8,32 @@ import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
 import { Meta } from '@/layouts/Meta'
 import { Main } from '@/templates/Main'
+import AuthServices from '@/services/auth/AuthServices'
+import { useRouter } from 'next/router'
 
 const Registration: FCC = () => {
-  const { errors } = useFormErrors() as FormErrorsHook
+  const { errors, setFormErrors } = useFormErrors() as FormErrorsHook
+  const router = useRouter()
 
-  const onFinish = () => {
-    //
+  const onFinish = (data) => {
+    AuthServices.register(data)
+      .then(() => {
+        notification.success({
+          message:
+            'Вам отправлено сообщение на почту для подтвеждения регистрации',
+          duration: 3,
+        })
+        router.push('/login')
+      })
+      .catch(({ data }: { data: Object }) => {
+        setFormErrors(data)
+      })
   }
   const onFinishFailed = () => {
-    //
+    notification.error({
+      message: 'Исправьте введенные данные',
+      duration: 3,
+    })
   }
   return (
     <Main meta={<Meta title='Регистрация' description='' />}>
@@ -38,7 +55,7 @@ const Registration: FCC = () => {
                 <Col xs={24} md={8}>
                   <FormItem
                     label='Фамилия'
-                    name='secondName'
+                    name='second_name'
                     errors={errors.secondName}
                   >
                     <Input size='large' />
@@ -46,9 +63,9 @@ const Registration: FCC = () => {
                 </Col>
                 <Col xs={24} md={8}>
                   <FormItem
-                    label='Иия'
-                    name='firstName'
-                    errors={errors.firstName}
+                    label='Имя'
+                    name='first_name'
+                    errors={errors.first_name}
                   >
                     <Input size='large' />
                   </FormItem>
@@ -56,15 +73,15 @@ const Registration: FCC = () => {
                 <Col xs={24} md={8}>
                   <FormItem
                     label='Отчество'
-                    name='lastName'
-                    errors={errors.lastName}
+                    name='last_name'
+                    errors={errors.last_name}
                   >
                     <Input size='large' />
                   </FormItem>
                 </Col>
               </Row>
               <FormItem
-                label='ИНН'
+                label='ИНН (если регистрируетесь, как ИП или компания)'
                 name='inn'
                 wrapperCol={{ span: 12 }}
                 errors={errors.inn}
@@ -80,6 +97,7 @@ const Registration: FCC = () => {
                     type: 'email',
                     message: 'Введите корректный адрес электронной почты',
                   },
+                  { required: true, message: 'Пожалуйста, введите email' },
                 ]}
                 errors={errors.email}
               >
@@ -88,71 +106,46 @@ const Registration: FCC = () => {
               <Row gutter={20}>
                 <Col xs={24} md={12}>
                   <FormItem
-                    label='Наименование организации'
-                    name='companyName'
-                    wrapperCol={{ span: 24 }}
-                    errors={errors.companyName}
+                    label='Пароль'
+                    name='password1'
+                    rules={[
+                      { required: true, message: 'Пожалуйста, введите пароль' },
+                    ]}
+                    errors={errors.password}
+                    hasFeedback
                   >
-                    <Input size='large' />
+                    <Input.Password
+                      placeholder='Введите ваш пароль'
+                      size='large'
+                    />
                   </FormItem>
                 </Col>
                 <Col xs={24} md={12}>
                   <FormItem
-                    label='Должность'
-                    name='staffPosition'
-                    wrapperCol={{ span: 24 }}
-                    errors={errors.staffPosition}
+                    label='Повторите пароль'
+                    name='password2'
+                    rules={[
+                      { required: true, message: 'Пожалуйста, введите пароль' },
+                      ({ getFieldValue }) => ({
+                        validator(_, value) {
+                          if (!value || getFieldValue('password1') === value) {
+                            return Promise.resolve()
+                          }
+                          return Promise.reject(
+                            new Error('Пароли должны совпадать!')
+                          )
+                        },
+                      }),
+                    ]}
+                    errors={errors.password}
                   >
-                    <Input size='large' />
+                    <Input.Password
+                      placeholder='Введите ваш пароль'
+                      size='large'
+                    />
                   </FormItem>
                 </Col>
               </Row>
-
-              <Row gutter={20}>
-                <Col xs={24} md={12}>
-                  <FormItem
-                    label='Страна'
-                    name='country'
-                    wrapperCol={{ span: 24 }}
-                    errors={errors.country}
-                  >
-                    <Input size='large' />
-                  </FormItem>
-                </Col>
-                <Col xs={24} md={12}>
-                  <FormItem
-                    label='Город'
-                    name='city'
-                    wrapperCol={{ span: 24 }}
-                    errors={errors.city}
-                  >
-                    <Input size='large' />
-                  </FormItem>
-                </Col>
-              </Row>
-              <FormItem
-                label='Пароль'
-                name='password'
-                wrapperCol={{ span: 12 }}
-                rules={[
-                  { required: true, message: 'Пожалуйста, введите пароль' },
-                ]}
-                errors={errors.password}
-              >
-                <Input.Password placeholder='Введите ваш пароль' size='large' />
-              </FormItem>
-              <FormItem
-                label='Повторите пароль'
-                name='password2'
-                wrapperCol={{ span: 12 }}
-                rules={[
-                  { required: true, message: 'Пожалуйста, введите пароль' },
-                ]}
-                errors={errors.password}
-              >
-                <Input.Password placeholder='Введите ваш пароль' size='large' />
-              </FormItem>
-
               <Form.Item>
                 <Button size='large' block type='primary' htmlType='submit'>
                   Зарегистрироваться

@@ -19,9 +19,13 @@ export interface FormErrorObj {
 }
 
 const getErrorsObj = (errors: string[]): FormError => {
+  let errorsMessages = ''
+  try {
+    errorsMessages = errors?.join(', ')
+  } catch (err) {}
   return {
     validateStatus: 'error',
-    help: errors?.join(', '),
+    help: errorsMessages,
   }
 }
 /**

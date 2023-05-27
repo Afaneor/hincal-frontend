@@ -1,6 +1,7 @@
 import type { LoginValuesTypes } from 'src/services/auth/types'
 
 import apiClient from '../api-client'
+import { IRegister } from 'src/services/auth/types'
 
 const userApi = 'user/users'
 const usersProfileApi = 'user/users'
@@ -39,10 +40,10 @@ export default class AuthServices {
    * @param username
    * @param email
    */
-  static register({ username, email }: any) {
+  static register(data: IRegister) {
     return new Promise((resolve, reject) => {
       apiClient
-        .post(`${userApi}/register/`, { username, email })
+        .post(`${userApi}/register/`, data)
         .then((response: any) => {
           return resolve(response)
         })
