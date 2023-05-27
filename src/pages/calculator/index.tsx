@@ -1,13 +1,11 @@
 import { CalculatorOutlined } from '@ant-design/icons'
 import { Anchor, Button, Col, Form, Row } from 'antd'
-import type { FieldData } from 'rc-field-form/lib/interface'
-import React, { useCallback, useMemo, useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import type { FCC } from 'src/types'
 
 import AccountingFormItem from '@/components/AccountingFormItem/AccountingFormItem'
 import { AnchorItemWrapper } from '@/components/AnchorItemWrapper'
 import type { HoveInfoProps } from '@/components/CalcMap/types'
-import { CalculateProgress } from '@/components/CalculateProgress'
 import { CalculatorPageWrapper } from '@/components/CalculatorPageWrapper'
 import { CalculatorResults } from '@/components/CalculatorResults'
 import EquipmentFormItem from '@/components/EquipmentFormItem/EquipmentFormItem'
@@ -57,7 +55,6 @@ const Calculator: FCC = () => {
 
   const { errors } = useFormErrors() as FormErrorsHook
   const [ipOpen, setIpOpen] = useState(false)
-  const [percent, setPercent] = useState(0)
   const [report, setReport] = useState({} as ReportModelProps)
   useChoices(CalcModel.modelName, CalcModel.url())
 
@@ -89,15 +86,6 @@ const Calculator: FCC = () => {
       }
     )
   }
-  const getPercent = useCallback((_: FieldData[], all: FieldData[]) => {
-    const count = all.filter((f) => {
-      const val = Array.isArray(f.value) ? f.value.length : f.value
-      return f.touched && val
-    })?.length
-    const weightProp = 100 / (all?.length || 0)
-    const percents = count * weightProp
-    return setPercent(Math.round(percents))
-  }, [])
 
   const onFinishFailed = () => {
     //
@@ -149,7 +137,6 @@ const Calculator: FCC = () => {
               labelAlign='left'
               initialValues={{}}
               autoComplete='off'
-              onFieldsChange={getPercent}
               onFinish={handleCalculate}
               onFinishFailed={onFinishFailed}
             >
@@ -208,7 +195,6 @@ const Calculator: FCC = () => {
           <Col xs={0} md={4}>
             <AnchorCalc />
           </Col>
-          <CalculateProgress percent={percent} />
         </Row>
       </CalculatorPageWrapper>
     </Main>
