@@ -25,6 +25,11 @@ export const Links = [
     icon: <UsergroupAddOutlined />,
   },
   {
+    text: 'Меры поддержки',
+    href: '/supports',
+    icon: <SketchOutlined />,
+  },
+  {
     text: 'Промплощадки',
     href: '/areas',
     icon: <SketchOutlined />,
