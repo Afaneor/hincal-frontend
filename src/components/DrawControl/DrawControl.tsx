@@ -1,6 +1,9 @@
+import type { DrawEventType, DrawMode } from '@mapbox/mapbox-gl-draw'
 import MapboxDraw from '@mapbox/mapbox-gl-draw'
 import type { ControlPosition, MapRef } from 'react-map-gl'
 import { useControl } from 'react-map-gl'
+
+export type ModeChangeType = { mode: DrawMode; type: DrawEventType }
 
 type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
   position?: ControlPosition
@@ -8,6 +11,7 @@ type DrawControlProps = ConstructorParameters<typeof MapboxDraw>[0] & {
   onCreate?: (evt: { features: object[] }) => void
   onUpdate?: (evt: { features: object[]; action: string }) => void
   onDelete?: (evt: { features: object[] }) => void
+  onModechange?: (evt: ModeChangeType) => void
 }
 
 export default function DrawControl(props: DrawControlProps) {
@@ -20,6 +24,8 @@ export default function DrawControl(props: DrawControlProps) {
       map.on('draw.update', props.onUpdate)
       // @ts-ignore
       map.on('draw.delete', props.onDelete)
+      // @ts-ignore
+      map.on('draw.modechange', props.onModechange)
     },
     ({ map }: { map: MapRef }) => {
       // @ts-ignore
@@ -28,6 +34,8 @@ export default function DrawControl(props: DrawControlProps) {
       map.off('draw.update', props.onUpdate)
       // @ts-ignore
       map.off('draw.delete', props.onDelete)
+      // @ts-ignore
+      map.on('draw.modechange', props.onModechange)
     },
     {
       position: props.position,
@@ -41,4 +49,5 @@ DrawControl.defaultProps = {
   onCreate: () => {},
   onUpdate: () => {},
   onDelete: () => {},
+  onModechange: () => {},
 }

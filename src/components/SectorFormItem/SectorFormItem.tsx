@@ -11,11 +11,12 @@ const SectorFormItem: FCC<PropsFormItem> = ({ errors }) => {
     <FormItem
       label='Отрасль'
       tooltip='Отрасль ведения хозяйственной деятельности'
-      name='sectors'
+      name='sector'
       wrapperCol={{ span: 12 }}
       errors={errors}
     >
       <SelectSearchableAsync
+        single
         placeholder='Выберите отрасль'
         model={SectorModel}
       />

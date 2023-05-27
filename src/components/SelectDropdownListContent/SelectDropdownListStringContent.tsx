@@ -1,9 +1,12 @@
 import { List } from 'antd'
 import clsx from 'clsx'
 import { get } from 'lodash'
-import React from 'react'
+import React, { useContext } from 'react'
 import type { SelectDropdownListsContentCommonProps } from 'src/components/SelectDropdownListContent'
 import type { FCC } from 'src/types'
+
+// eslint-disable-next-line import/no-cycle
+import { SelectSearchableAsyncContext } from '@/components/SelectSearchableAsync/SelectSearchableAsync'
 
 import styles from './style.module.scss'
 
@@ -15,6 +18,8 @@ interface SelectDropdownListStringContentProps
 export const SelectDropdownListStringContent: FCC<
   SelectDropdownListStringContentProps
 > = ({ isLoading, dataSource, itemName, onSelect, selected }) => {
+  const context = useContext(SelectSearchableAsyncContext)
+
   const prep = dataSource.map((item: Record<string, any>) =>
     get(item, itemName, '-')
   )
@@ -30,7 +35,10 @@ export const SelectDropdownListStringContent: FCC<
           className={clsx(
             styles.listItem,
             // eslint-disable-next-line
-            !~selected.indexOf(item) ? '' : styles.disabledListItem
+            !~selected.indexOf(item) ? '' : styles.disabledListItem,
+            context?.single && selected.length > 1
+              ? styles.disabledListItem
+              : ''
           )}
           key={item}
           onClick={() => {
