@@ -2,13 +2,14 @@ import Document, { Head, Html, Main, NextScript } from 'next/document'
 
 import { AppConfig } from '@/utils/AppConfig'
 
+const bodyStyle = { height: '100%' }
 // Need to create a custom _document because i18n support is not compatible with `next export`.
 class MyDocument extends Document {
   render() {
     return (
       <Html lang={AppConfig.locale}>
         <Head />
-        <body style={{ height: '100%' }}>
+        <body style={bodyStyle}>
           <Main />
           <NextScript />
         </body>

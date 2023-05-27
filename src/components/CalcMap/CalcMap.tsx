@@ -1,10 +1,13 @@
 import 'mapbox-gl/dist/mapbox-gl.css'
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
+
 import area from '@turf/area'
+import type { Feature } from '@turf/helpers'
+import { Col, Row, Tag, Typography } from 'antd'
 // @ts-ignore
 import type { GeoJSON } from 'geojson'
 import { isEmpty } from 'lodash'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import Map, { Layer, NavigationControl, Source } from 'react-map-gl'
 import type { FCC } from 'src/types'
 
@@ -13,13 +16,18 @@ import {
   layerFillColors,
   setColorToSelectedLocationArea,
 } from '@/components/CalcMap/utils'
+import { DrawControl } from '@/components/DrawControl'
 import { MapHoverCard } from '@/components/MapHoverCard'
+import type { TerritorialLocationModelProps } from '@/models'
+import { TerritorialLocationModel } from '@/models'
+import { useFetchItems } from '@/services/base/hooks'
 
+import ItemDegree from '../ItemDegree/ItemDegree'
 // @ts-ignore
 import locationAreas from './location-areas'
 import type { HoveInfoProps } from './types'
-import { DrawControl } from '@/components/DrawControl'
-import { Feature } from '@turf/helpers'
+
+const { Text } = Typography
 
 const initialViewState = {
   longitude: 37.535096698033755,
@@ -32,45 +40,82 @@ interface CalcMapProps {
   freezeMap?: boolean
 
   onChange?: (
-    feature: GeoJSON.FeatureCollection<GeoJSON.Geometry>['features']
+    feature:
+      | GeoJSON.FeatureCollection<GeoJSON.Geometry>['features'][]
+      | HoveInfoProps[],
+    features: any
   ) => void
 }
 
+const drawControls = {
+  polygon: true,
+  trash: true,
+}
+const TLModel = TerritorialLocationModel
+
 export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
+  const { results: terrLocData }: { results: TerritorialLocationModelProps[] } =
+    useFetchItems(TLModel, { limit: 15 })
   const [viewState, setViewState] = useState(initialViewState)
   const [features, setFeatures] = useState({})
   const [selectedPolygonsInMeters, setSelectedPolygonsInMeters] = useState(0)
   const [allData, setAllData] = useState<
     GeoJSON.FeatureCollection<GeoJSON.Geometry>
   >(layerFillColors(locationAreas))
+  const [selected, setSelected] = useState([] as HoveInfoProps[])
+  const [hoverInfo, setHoverInfo] = useState<HoveInfoProps>({} as HoveInfoProps)
 
-  const handleSetNewFeatureCollection = (currentHoverInfo: HoveInfoProps) => {
+  const handleSetNewFeatureCollection = (currentHoverInfo: HoveInfoProps[]) => {
     const collection = setColorToSelectedLocationArea(allData, currentHoverInfo)
+    setSelected(currentHoverInfo)
     // @ts-ignore
     setAllData(collection)
   }
-  const [hoverInfo, setHoverInfo] = useState<HoveInfoProps>({} as HoveInfoProps)
 
   const handleSelectLocationArea = () => {
-    handleSetNewFeatureCollection(hoverInfo)
-    onChange?.(hoverInfo.feature?.properties?.ref)
+    const territorialLocation = terrLocData?.find(
+      (tl) => tl.shot_name === hoverInfo?.feature?.properties?.ref
+    )
+    const feat = {
+      ...hoverInfo?.feature,
+      properties: { ...hoverInfo?.feature?.properties, territorialLocation },
+    }
+    const res = [...selected, { ...hoverInfo, feature: feat }]
+    handleSetNewFeatureCollection(res)
+    onChange?.(res, features)
+  }
+  const handleDiselectLocationArea = () => {
+    const index = selected.findIndex(
+      (sel) =>
+        sel.feature?.properties?.ref === hoverInfo?.feature?.properties?.ref
+    )
+    const tempSelected = [...selected]
+    tempSelected.splice(index, 1)
+
+    handleSetNewFeatureCollection(tempSelected)
+    onChange?.(tempSelected, features)
   }
 
   const onHover = useCallback((event: any) => {
     const {
-      features,
+      features: eventFeats,
       point: { x, y },
     } = event
 
-    const hoveredFeature = features?.length && features[0]
-    const hInfo = hoveredFeature && { feature: hoveredFeature, x, y }
+    const hoveredFeature = eventFeats?.length && eventFeats[0]
+
+    const hInfo = hoveredFeature && {
+      feature: hoveredFeature,
+      x,
+      y,
+    }
     // prettier-ignore
     setHoverInfo(hInfo);
   }, [])
 
-  const onUpdate = useCallback((e) => {
+  const onUpdate = useCallback((e: { features: Record<string, any>[] }) => {
     setFeatures((currFeatures) => {
-      const newFeatures = { ...currFeatures }
+      const newFeatures = { ...currFeatures } as Record<string, any>
       for (const f of e.features) {
         newFeatures[f.id] = f
       }
@@ -84,21 +129,11 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
     })
   }, [])
 
-  const onDelete = useCallback((e) => {
-    setFeatures((currFeatures) => {
-      const newFeatures = { ...currFeatures }
-      for (const f of e.features) {
-        delete newFeatures[f.id]
-      }
-      setSelectedPolygonsInMeters(
-        Object.values(newFeatures).reduce(
-          (value: number, feature: Feature) => area(feature) + value,
-          0
-        ) || 0
-      )
-      return newFeatures
-    })
-  }, [])
+  const areaIsSelected = useMemo(() => {
+    const sList = selected?.map((s) => s.feature?.properties?.ref)
+    const hList = hoverInfo?.feature?.properties?.ref
+    return sList.includes(hList)
+  }, [hoverInfo])
 
   return (
     <>
@@ -116,20 +151,22 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
           <Layer {...dataLayer} />
           <Layer {...lineStyle} />
         </Source>
-        <DrawControl
-          position='top-left'
-          displayControlsDefault={false}
-          controls={{
-            polygon: true,
-            trash: true,
-          }}
-          onCreate={onUpdate}
-          onUpdate={onUpdate}
-          onDelete={onDelete}
-        />
+        <Row>
+          <Col xs={0} span={24}>
+            <DrawControl
+              position='top-left'
+              displayControlsDefault={false}
+              controls={drawControls}
+              onCreate={onUpdate}
+              onUpdate={onUpdate}
+              onDelete={onUpdate}
+            />
+          </Col>
+        </Row>
         {!isEmpty(hoverInfo) && hoverInfo.feature.properties?.name && (
           <MapHoverCard
             noSelectBtn={freezeMap}
+            isSelected={areaIsSelected}
             name={`${hoverInfo.feature.properties.name}`}
             x={hoverInfo.x}
             y={hoverInfo.y}
@@ -138,14 +175,16 @@ export const CalcMap: FCC<CalcMapProps> = ({ onChange, freezeMap }) => {
               hoverInfo.feature.properties.averageCadastralValue
             }
             onSelect={handleSelectLocationArea}
+            onDiselect={handleDiselectLocationArea}
           />
         )}
         {!freezeMap ? <NavigationControl /> : null}
       </Map>
-      <>
-        Выбранная площадь:
+      <Tag>
+        <Text>Выбранная площадь: </Text>
         {Math.round(selectedPolygonsInMeters)}
-      </>
+        <ItemDegree value='м' degree={2} />
+      </Tag>
     </>
   )
 }

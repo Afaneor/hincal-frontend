@@ -6,6 +6,7 @@ import { useMoneyFormat } from '@/hooks/useMoneyFormat'
 import type { FCC } from '@/types'
 
 interface CalculatorPreviewProps {
+  result: Record<string, any>
   amountOfInvestment?: number
   open: boolean
   title: React.ReactNode

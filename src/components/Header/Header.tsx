@@ -1,4 +1,3 @@
-import { UserOutlined } from '@ant-design/icons'
 import { Button, Col, Layout, Row } from 'antd'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -6,6 +5,7 @@ import React from 'react'
 
 import { BurgerDropdownLinks } from '@/components'
 import { Logo } from '@/components/_icons/logo/Logo'
+import { AuthComponent } from '@/components/AuthComponent'
 import type { FCC } from '@/types'
 
 import styles from './Header.module.scss'
@@ -34,7 +34,7 @@ export const Header: FCC = () => {
                 } ${styles.navLink}`}
               >
                 <Link href={link.href}>
-                  <Button color='black' type='link' icon={link.icon}>
+                  <Button color='black' type='link'>
                     {link.text}
                   </Button>
                 </Link>
@@ -43,9 +43,7 @@ export const Header: FCC = () => {
           </Row>
         </Col>
         <Col flex='auto' className={styles.authSection}>
-          <Link href='/login'>
-            <Button shape='circle' icon={<UserOutlined />} />
-          </Link>
+          <AuthComponent />
         </Col>
         <Col md={0}>
           <BurgerDropdownLinks />

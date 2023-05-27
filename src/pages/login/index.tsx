@@ -6,79 +6,101 @@ import type { FCC } from 'src/types'
 import { FormItem } from '@/components'
 import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
+import { Meta } from '@/layouts/Meta'
+import type { LoginValuesTypes } from '@/services/auth'
+import { useLogin } from '@/services/auth/hooks'
+import { Main } from '@/templates/Main'
 
 const Login: FCC = () => {
-  const { errors } = useFormErrors() as FormErrorsHook
+  const [loginForm] = Form.useForm()
+  const { errors, setFormErrors } = useFormErrors() as FormErrorsHook
 
-  const onFinish = () => {
-    //
+  const { mutate: login, isLoading: loginIsLoading }: any = useLogin()
+  const handleLogin = (credentials: LoginValuesTypes) => {
+    login(credentials, {
+      onSuccess: () => {
+        window.location.href = '/'
+      },
+      onError: (error: any) => {
+        setFormErrors(error?.data)
+      },
+    })
   }
   const onFinishFailed = () => {
     //
   }
   return (
-    <Row justify='center' style={{ padding: '1% 0' }}>
-      <Col xs={24} md={8}>
-        <Card
-          title='Авторизация'
-          extra={
-            <Col xs={8}>
-              <Link href='/registration'>Зарегистрироваться?</Link>
-            </Col>
-          }
-          hoverable
-        >
-          <Form
-            name='basic'
-            layout='vertical'
-            wrapperCol={{ span: 24 }}
-            initialValues={{ remember: true }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
-            autoComplete='off'
+    <Main meta={<Meta title='Логин' description='' />}>
+      <Row justify='center' style={{ padding: '1% 0' }}>
+        <Col xs={24} md={8}>
+          <Card
+            title='Авторизация'
+            extra={
+              <Col xs={8}>
+                <Link href='/registration'>Зарегистрироваться?</Link>
+              </Col>
+            }
+            hoverable
           >
-            <FormItem
-              label='Электронная почта'
-              name='email'
-              rules={[
-                {
-                  type: 'email',
-                  message: 'Введите корректный адрес электронной почты',
-                },
-              ]}
-              errors={errors.email}
+            <Form
+              form={loginForm}
+              name='basic'
+              layout='vertical'
+              wrapperCol={{ span: 24 }}
+              initialValues={{ remember: true }}
+              onFinish={handleLogin}
+              onFinishFailed={onFinishFailed}
+              autoComplete='off'
             >
-              <Input placeholder='name@example.ru' size='large' />
-            </FormItem>
+              <FormItem
+                label='Электронная почта'
+                name='email'
+                rules={[
+                  {
+                    type: 'email',
+                    message: 'Введите корректный адрес электронной почты',
+                  },
+                ]}
+                errors={errors.email}
+              >
+                <Input placeholder='name@example.ru' size='large' />
+              </FormItem>
 
-            <FormItem
-              label='Пароль'
-              name='password'
-              rules={[
-                { required: true, message: 'Пожалуйста, введите пароль' },
-              ]}
-              errors={errors.password}
-            >
-              <Input.Password placeholder='Введите ваш пароль' size='large' />
-            </FormItem>
+              <FormItem
+                label='Пароль'
+                name='password'
+                rules={[
+                  { required: true, message: 'Пожалуйста, введите пароль' },
+                ]}
+                errors={errors.password}
+              >
+                <Input.Password placeholder='Введите ваш пароль' size='large' />
+              </FormItem>
 
-            <Form.Item
-              name='remember'
-              valuePropName='checked'
-              wrapperCol={{ offset: 0, span: 16 }}
-            >
-              <Checkbox>Запомнить меня</Checkbox>
-            </Form.Item>
+              <Form.Item
+                name='remember'
+                valuePropName='checked'
+                wrapperCol={{ offset: 0, span: 16 }}
+              >
+                <Checkbox>Запомнить меня</Checkbox>
+              </Form.Item>
 
-            <Form.Item>
-              <Button size='large' block type='primary' htmlType='submit'>
-                Войти
-              </Button>
-            </Form.Item>
-          </Form>
-        </Card>
-      </Col>
-    </Row>
+              <Form.Item>
+                <Button
+                  loading={loginIsLoading}
+                  size='large'
+                  block
+                  type='primary'
+                  htmlType='submit'
+                >
+                  Войти
+                </Button>
+              </Form.Item>
+            </Form>
+          </Card>
+        </Col>
+      </Row>
+    </Main>
   )
 }
 

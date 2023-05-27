@@ -1,50 +1,32 @@
-import { Card, Col, Layout, Row, Space, Spin, Typography } from 'antd'
+import { Col, Row, Space, Typography } from 'antd'
 import React from 'react'
 import type { FCC } from 'src/types'
 
-const { Title, Text } = Typography
-const { Footer } = Layout
+import styles from './PageWrapper.module.scss'
 
+const { Title, Text } = Typography
 interface PageWrapperProps {
-  title: string
-  subTitle: string
-  isLoading?: boolean
-  showFooter?: boolean
+  title?: string
+  subTitle?: string
 }
-export const PageWrapper: FCC<PageWrapperProps> = ({
-  children,
-  title,
-  subTitle,
-  isLoading = false,
-  showFooter,
-}) => {
+const titleStyle = { paddingTop: 10 } as Record<string, any>
+const PageWrapper: FCC<PageWrapperProps> = ({ children, subTitle, title }) => {
   return (
-    <Spin spinning={isLoading} size='large'>
-      <Row gutter={[20, 20]} justify='center' style={{ padding: '1%' }}>
-        <Col xs={24} md={20}>
-          <Row>
-            <Col xs={24} md={20}>
-              <Card>
-                <Space direction='vertical'>
-                  <Title level={3}>{title}</Title>
-                  <Text type='secondary'>{subTitle}</Text>
-                </Space>
-              </Card>
-            </Col>
-          </Row>
-        </Col>
-        <Col xs={24} md={20}>
-          {children}
-        </Col>
-      </Row>
-      {showFooter ? (
+    <Row className={styles.container} justify='center'>
+      <Col xs={24} md={16}>
         <Row>
-          <Col span={24}>
-            <Footer style={{ backgroundColor: '#cecece', height: 550 }} />
-          </Col>
+          {title ? (
+            <Col xs={24} md={12} style={titleStyle}>
+              <Space direction='vertical'>
+                <Title level={2}>{title}</Title>
+                {subTitle ? <Text type='secondary'>{subTitle}</Text> : null}
+              </Space>
+            </Col>
+          ) : null}
+          <Col span={24}>{children}</Col>
         </Row>
-      ) : null}
-    </Spin>
+      </Col>
+    </Row>
   )
 }
 

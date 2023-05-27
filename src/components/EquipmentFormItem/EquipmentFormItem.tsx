@@ -1,9 +1,9 @@
-import { ToolOutlined } from '@ant-design/icons'
-import { Input } from 'antd'
 import React from 'react'
 
 import type { PropsFormItem } from '@/components'
 import { FormItem } from '@/components'
+import { SelectSearchableAsync } from '@/components/SelectSearchableAsync/'
+import { EquipmentModel } from '@/models'
 import type { FCC } from '@/types'
 
 const EquipmentFormItem: FCC<PropsFormItem> = ({ errors }) => {
@@ -11,14 +11,13 @@ const EquipmentFormItem: FCC<PropsFormItem> = ({ errors }) => {
     <FormItem
       label='Оборудование'
       tooltip='Предполагаемое к использованию оборудование'
-      name='equipment'
+      name='equipments'
       wrapperCol={{ span: 12 }}
       errors={errors}
     >
-      <Input
-        placeholder='name@example.ru'
-        size='large'
-        addonBefore={<ToolOutlined />}
+      <SelectSearchableAsync
+        model={EquipmentModel}
+        placeholder='Выберите оборудование'
       />
     </FormItem>
   )

@@ -7,7 +7,7 @@ import type { FCC } from '@/types'
 
 const MapFormItem: FCC<PropsFormItem> = () => {
   return (
-    <FormItem name='location_area' shouldUpdate>
+    <FormItem name='territorial_locations' shouldUpdate>
       <CalcMap />
     </FormItem>
   )
