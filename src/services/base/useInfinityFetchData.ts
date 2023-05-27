@@ -31,7 +31,8 @@ const fetchData = async <ModelType>({
     ...filters,
   })
     .then((response: any) => {
-      const nextPage = response.data.next ? offset + 10 : undefined
+      const offsetCount = filters?.limit || 10
+      const nextPage = response.data.next ? offset + offsetCount : undefined
       stagesCounter = response.data.stagesCounter
       return {
         data: response.data.results,

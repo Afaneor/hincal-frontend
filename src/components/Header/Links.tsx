@@ -25,8 +25,8 @@ export const Links = [
     icon: <UsergroupAddOutlined />,
   },
   {
-    text: 'Крупным инвесторам',
-    href: '/investors',
+    text: 'Промплощадки',
+    href: '/areas',
     icon: <SketchOutlined />,
   },
   {

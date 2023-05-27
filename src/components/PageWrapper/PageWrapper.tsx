@@ -9,7 +9,7 @@ interface PageWrapperProps {
   title?: string
   subTitle?: string
 }
-const titleStyle = { paddingTop: 10 } as Record<string, any>
+const titleStyle = { paddingTop: 10, marginBottom: 10 } as Record<string, any>
 const PageWrapper: FCC<PageWrapperProps> = ({ children, subTitle, title }) => {
   return (
     <Row className={styles.container} justify='center'>

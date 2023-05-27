@@ -1,3 +1,4 @@
+export * from './Area'
 export * from './Base'
 export * from './Calculator'
 export * from './Equipment'
