@@ -7,7 +7,7 @@ const paramsSerializer = (params: any) => {
 }
 
 const config = {
-  baseURL: 'http://localhost:8000/api',
+  baseURL: '/api',
   timeout: 30000,
   withCredentials: true,
   paramsSerializer,
