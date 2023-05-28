@@ -14,6 +14,10 @@ export class CalculatorModel {
   static url() {
     return '/hincal/reports/calculator'
   }
+
+  static getFileUrl(id: number | string) {
+    return `/hincal/reports/${id}/get-file/`
+  }
 }
 
 export interface PropertyOtherTypeProps {
@@ -50,7 +54,7 @@ export interface ResultCalculate extends BaseModelProps {
 }
 
 export interface ResultCalculateContext {
-  create_date: '2023-05-28 07:50:59.648064'
+  create_date: string
   business: Record<any, any>
   initial_data: CalculatorModelProps
   archive: ResultCalculateContextArchive

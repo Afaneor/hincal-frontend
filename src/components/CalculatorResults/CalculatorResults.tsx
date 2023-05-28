@@ -2,8 +2,10 @@ import { CloseCircleOutlined, DownloadOutlined } from '@ant-design/icons'
 import { Button, Descriptions, Modal, Result } from 'antd'
 import React from 'react'
 
+import { useFileDownload } from '@/hooks/useFileDownload'
 import { useMoneyFormat } from '@/hooks/useMoneyFormat'
 import type { ResultCalculate } from '@/models'
+import { CalculatorModel } from '@/models'
 import type { FCC } from '@/types'
 
 interface CalculatorPreviewProps {
@@ -15,6 +17,7 @@ interface CalculatorPreviewProps {
   onCancel?: () => void
 }
 
+const Model = CalculatorModel
 export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
   open,
   onCancel,
@@ -22,10 +25,17 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
   results,
 }) => {
   const moneyFormat = useMoneyFormat()
+  const downloadFile = useFileDownload()
+
+  const handleDownloadFile = () => {
+    downloadFile({
+      url: Model.getFileUrl(results.id),
+      name: results?.context?.create_date,
+    })
+  }
   const toMillion = (val: number) => val * 1000
   return (
     <Modal
-      // title={title}
       centered
       open={open}
       onOk={onOk}
@@ -45,43 +55,43 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
           type='primary'
           size='large'
           icon={<DownloadOutlined />}
-          onClick={() => ({})}
+          onClick={handleDownloadFile}
         >
-          Скачать отчет
+          Скачать персонализированный отчет
         </Button>,
       ]}
     >
       <Result
         status='success'
         title={moneyFormat(
-          toMillion(results.context.context_for_file.all_possible_costs_bi)
+          toMillion(results?.context?.context_for_file?.all_possible_costs_bi)
         )}
         subTitle='Общая сумма всех затрат'
       />
       <Descriptions title='Затраты'>
         <Descriptions.Item label='Персонал'>
           {moneyFormat(
-            toMillion(results.context.context_for_file.all_staff_costs_bi)
+            toMillion(results?.context?.context_for_file?.all_staff_costs_bi)
           )}
         </Descriptions.Item>
         <Descriptions.Item label='Земля и имущество'>
           {moneyFormat(
-            toMillion(results.context.context_for_file.all_lp_lease_costs_bi)
+            toMillion(results?.context?.context_for_file?.all_lp_lease_costs_bi)
           )}
         </Descriptions.Item>
         <Descriptions.Item label='Оборудование'>
           {moneyFormat(
-            toMillion(results.context.context_for_file.equipment_costs_bi)
+            toMillion(results?.context?.context_for_file?.equipment_costs_bi)
           )}
         </Descriptions.Item>
         <Descriptions.Item label='Налоги'>
           {moneyFormat(
-            toMillion(results.context.context_for_file.all_tax_costs_bi)
+            toMillion(results?.context?.context_for_file?.all_tax_costs_bi)
           )}
         </Descriptions.Item>
         <Descriptions.Item label='Сервисы'>
           {moneyFormat(
-            toMillion(results.context.context_for_file.all_services_costs_bi)
+            toMillion(results?.context?.context_for_file?.all_services_costs_bi)
           )}
         </Descriptions.Item>
       </Descriptions>
