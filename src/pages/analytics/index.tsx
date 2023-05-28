@@ -30,27 +30,24 @@ const valueStyle = { color: '#3f8600' }
 const Model = StatisticsAllModel
 
 const Analytics = () => {
-  const { data } = useFetchItems(Model)
+  const { data, isLoading } = useFetchItems(Model)
   const statistics: StatisticsAllModelProps = data?.data
-  const amount = Object.entries(statistics).filter(
-    ([key]) => key !== 'popular_sector'
-  )
+  const amount =
+    statistics &&
+    Object.entries(statistics).filter(([key]) => key !== 'popular_sector')
 
   return (
     <Main
       meta={
-        <Meta
-          title='Площадки'
-          description='Площадки для осуществления деятельности'
-        />
+        <Meta title='Аналитика' description='Аналитические данные по системе' />
       }
     >
-      <PageWrapper title='' subTitle=''>
+      <PageWrapper title='' subTitle='' isLoading={isLoading}>
         <Row gutter={gutter} style={paddingTop}>
           <Col span={24}>
             <Title level={2}>Популярные отрасли</Title>
           </Col>
-          {statistics.popular_sector.map((sec) => (
+          {statistics?.popular_sector.map((sec) => (
             <Col key={sec.sector_name} xs={24} md={6}>
               <Card bordered={false} style={{ height: 100 }}>
                 <Statistic
@@ -68,7 +65,7 @@ const Analytics = () => {
           <Col span={24}>
             <Title level={2}>Количественные показатели</Title>
           </Col>
-          {amount.map(([key, val]) => (
+          {amount?.map(([key, val]) => (
             <Col key={key} xs={24} md={8}>
               <Card bordered={false} style={{ height: '100%' }}>
                 <Statistic
