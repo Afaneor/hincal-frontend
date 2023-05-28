@@ -31,7 +31,7 @@ const Supports = () => {
     >
       <PageWrapper
         title='Меры поддержки бизнеса'
-        subTitle='Здесь собраны площадки для осуществления промышленной деятельности'
+        subTitle='Здесь собраны все доступные меры поддержки для вашего бизнеса'
       >
         <FetchMoreItemsComponent
           model={Model}
