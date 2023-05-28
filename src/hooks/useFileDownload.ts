@@ -18,7 +18,9 @@ export const useFileDownload = () => {
         window.open(url)
         return
       }
-      const res: any = await BaseServices.fetch(url, params)
+      const res = await BaseServices.create(url, params, {
+        responseType: 'arraybuffer',
+      })
       const contentType = res.headers['content-type']
         ? res.headers['content-type']
         : 'application/pdf'
