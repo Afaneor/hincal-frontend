@@ -7,16 +7,16 @@ const paramsSerializer = (params: any) => {
 }
 
 const config = {
-  baseURL: 'https://api.hincal.pavlin.tech/api',
+  baseURL: 'https://hincal.pavlin.tech/api',
   timeout: 30000,
-  withCredentials: false,
+  withCredentials: true,
   paramsSerializer,
 }
 const apiClient = () => {
   const instance = axios.create({
     ...config,
   })
-  instance.interceptors.request.use(async (request) => {
+  instance.interceptors.request.use((request) => {
     request.headers['X-CSRFToken'] = Cookie.get('csrftoken')
     return request
   })

@@ -15,6 +15,7 @@ const SectorFormItem: FCC<PropsFormItem> = ({ errors }) => {
       name='sector'
       wrapperCol={{ span: 12 }}
       errors={errors}
+      rules={[{ required: true, message: 'Пожалуйста, выберете сектор' }]}
     >
       <SelectSearchableAsync
         single

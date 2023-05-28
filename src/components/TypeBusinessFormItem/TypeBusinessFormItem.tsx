@@ -17,6 +17,7 @@ const TypeBusinessFormItem: FCC<PropsFormItem> = ({ errors }) => {
       name='type_business'
       wrapperCol={{ span: 12 }}
       errors={errors}
+      rules={[{ required: true, message: 'Пожалуйста, выберите ОПФ' }]}
     >
       <Select
         size='large'
