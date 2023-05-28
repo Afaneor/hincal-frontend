@@ -1,29 +1,31 @@
 import { CloseCircleOutlined, DownloadOutlined } from '@ant-design/icons'
-import { Button, Modal, Statistic } from 'antd'
+import { Button, Descriptions, Modal, Result } from 'antd'
 import React from 'react'
 
 import { useMoneyFormat } from '@/hooks/useMoneyFormat'
+import type { ResultCalculate } from '@/models'
 import type { FCC } from '@/types'
 
 interface CalculatorPreviewProps {
-  result: Record<string, any>
+  results: ResultCalculate
   amountOfInvestment?: number
   open: boolean
   title: React.ReactNode
   onOk?: () => void
   onCancel?: () => void
 }
+
 export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
   open,
   onCancel,
   onOk,
-  title,
+  results,
 }) => {
   const moneyFormat = useMoneyFormat()
-
+  const toMillion = (val: number) => val * 1000
   return (
     <Modal
-      title={title}
+      // title={title}
       centered
       open={open}
       onOk={onOk}
@@ -36,7 +38,7 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
           icon={<CloseCircleOutlined />}
           onClick={onCancel}
         >
-          Отмена
+          Закрыть
         </Button>,
         <Button
           key='submit'
@@ -49,11 +51,40 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
         </Button>,
       ]}
     >
-      <Statistic
-        title='Общая сумма инвестиций'
-        value={moneyFormat(112893)}
-        precision={2}
+      <Result
+        status='success'
+        title={moneyFormat(
+          toMillion(results.context.context_for_file.all_possible_costs_bi)
+        )}
+        subTitle='Общая сумма всех затрат'
       />
+      <Descriptions title='Затраты'>
+        <Descriptions.Item label='Персонал'>
+          {moneyFormat(
+            toMillion(results.context.context_for_file.all_staff_costs_bi)
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item label='Земля и имущество'>
+          {moneyFormat(
+            toMillion(results.context.context_for_file.all_lp_lease_costs_bi)
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item label='Оборудование'>
+          {moneyFormat(
+            toMillion(results.context.context_for_file.equipment_costs_bi)
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item label='Налоги'>
+          {moneyFormat(
+            toMillion(results.context.context_for_file.all_tax_costs_bi)
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item label='Сервисы'>
+          {moneyFormat(
+            toMillion(results.context.context_for_file.all_services_costs_bi)
+          )}
+        </Descriptions.Item>
+      </Descriptions>
     </Modal>
   )
 }
