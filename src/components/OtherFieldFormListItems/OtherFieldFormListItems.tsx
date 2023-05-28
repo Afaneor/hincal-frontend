@@ -27,7 +27,7 @@ const OtherFieldFormListItems: FCC<OtherFieldFormListItemsProps> = () => {
           <InputNumber
             placeholder='Сумма в рублях'
             size='large'
-            addonAfter={<span>₽</span>}
+            addonAfter={<span>тыс. ₽</span>}
           />
         </FormItem>
       </>
