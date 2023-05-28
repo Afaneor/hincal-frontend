@@ -1,6 +1,6 @@
 import { CloseCircleOutlined, DownloadOutlined } from '@ant-design/icons'
-import { Button, Descriptions, Modal, Result } from 'antd'
-import React from 'react'
+import { Button, Descriptions, Modal, Result, Spin } from 'antd'
+import React, { useState } from 'react'
 
 import { useFileDownload } from '@/hooks/useFileDownload'
 import { useMoneyFormat } from '@/hooks/useMoneyFormat'
@@ -25,14 +25,18 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
   onOk,
   results,
 }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const moneyFormat = useMoneyFormat()
   const downloadFile = useFileDownload()
   const { data }: { data: UsersModelProps } | any = useQueryCache('getInfo')
   const handleDownloadFile = () => {
+    setIsLoading(true)
     downloadFile({
       url: Model.getFileUrl(results.id),
       name: 'расчет_инвестиций_в_пром_предприятие.pdf',
     })
+      .then(() => setIsLoading(false))
+      .finally(() => setIsLoading(false))
   }
   const toMillion = (val: number) => val * 1000
   return (
@@ -64,71 +68,81 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
         ) : undefined,
       ]}
     >
-      <Result
-        status='success'
-        title={moneyFormat(
-          toMillion(results?.context?.context_for_file?.all_possible_costs_bi)
-        )}
-        subTitle='Общая сумма всех затрат'
-      />
-      <Descriptions title='Затраты на основе введенных вами данных'>
-        <Descriptions.Item label='Персонал'>
-          {moneyFormat(
-            toMillion(results?.context?.context_for_file?.all_staff_costs_math)
+      <Spin spinning={isLoading} size='large'>
+        <Result
+          status='success'
+          title={moneyFormat(
+            toMillion(results?.context?.context_for_file?.all_possible_costs_bi)
           )}
-        </Descriptions.Item>
-        <Descriptions.Item label='Земля и имущество'>
-          {moneyFormat(
-            toMillion(
-              results?.context?.context_for_file?.all_lp_lease_costs_math
-            )
-          )}
-        </Descriptions.Item>
-        <Descriptions.Item label='Оборудование'>
-          {moneyFormat(
-            toMillion(results?.context?.context_for_file?.equipment_costs_math)
-          )}
-        </Descriptions.Item>
-        <Descriptions.Item label='Налоги'>
-          {moneyFormat(
-            toMillion(results?.context?.context_for_file?.all_tax_costs_math)
-          )}
-        </Descriptions.Item>
-        <Descriptions.Item label='Сервисы'>
-          {moneyFormat(
-            toMillion(
-              results?.context?.context_for_file?.all_services_costs_math
-            )
-          )}
-        </Descriptions.Item>
-      </Descriptions>
-      <Descriptions title='В среднем тратят компании в выбранной отрасли'>
-        <Descriptions.Item label='Персонал'>
-          {moneyFormat(
-            toMillion(results?.context?.context_for_file?.all_staff_costs_bi)
-          )}
-        </Descriptions.Item>
-        <Descriptions.Item label='Земля и имущество'>
-          {moneyFormat(
-            toMillion(results?.context?.context_for_file?.all_lp_lease_costs_bi)
-          )}
-        </Descriptions.Item>
-        <Descriptions.Item label='Оборудование'>
-          {moneyFormat(
-            toMillion(results?.context?.context_for_file?.equipment_costs_bi)
-          )}
-        </Descriptions.Item>
-        <Descriptions.Item label='Налоги'>
-          {moneyFormat(
-            toMillion(results?.context?.context_for_file?.all_tax_costs_bi)
-          )}
-        </Descriptions.Item>
-        <Descriptions.Item label='Сервисы'>
-          {moneyFormat(
-            toMillion(results?.context?.context_for_file?.all_services_costs_bi)
-          )}
-        </Descriptions.Item>
-      </Descriptions>
+          subTitle='Общая сумма всех затрат'
+        />
+        <Descriptions title='Затраты на основе введенных вами данных'>
+          <Descriptions.Item label='Персонал'>
+            {moneyFormat(
+              toMillion(
+                results?.context?.context_for_file?.all_staff_costs_math
+              )
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label='Земля и имущество'>
+            {moneyFormat(
+              toMillion(
+                results?.context?.context_for_file?.all_lp_lease_costs_math
+              )
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label='Оборудование'>
+            {moneyFormat(
+              toMillion(
+                results?.context?.context_for_file?.equipment_costs_math
+              )
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label='Налоги'>
+            {moneyFormat(
+              toMillion(results?.context?.context_for_file?.all_tax_costs_math)
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label='Сервисы'>
+            {moneyFormat(
+              toMillion(
+                results?.context?.context_for_file?.all_services_costs_math
+              )
+            )}
+          </Descriptions.Item>
+        </Descriptions>
+        <Descriptions title='В среднем тратят компании в выбранной отрасли'>
+          <Descriptions.Item label='Персонал'>
+            {moneyFormat(
+              toMillion(results?.context?.context_for_file?.all_staff_costs_bi)
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label='Земля и имущество'>
+            {moneyFormat(
+              toMillion(
+                results?.context?.context_for_file?.all_lp_lease_costs_bi
+              )
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label='Оборудование'>
+            {moneyFormat(
+              toMillion(results?.context?.context_for_file?.equipment_costs_bi)
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label='Налоги'>
+            {moneyFormat(
+              toMillion(results?.context?.context_for_file?.all_tax_costs_bi)
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item label='Сервисы'>
+            {moneyFormat(
+              toMillion(
+                results?.context?.context_for_file?.all_services_costs_bi
+              )
+            )}
+          </Descriptions.Item>
+        </Descriptions>
+      </Spin>
     </Modal>
   )
 }
