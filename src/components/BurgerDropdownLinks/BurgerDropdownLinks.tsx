@@ -19,9 +19,7 @@ export const BurgerDropdownLinks: FCC<BurgerDropdownLinksProps> = ({
       Links?.map((link) => ({
         label: (
           <Link href={link.href}>
-            <Button type='link' icon={link.icon}>
-              {link.text}
-            </Button>
+            <Button type='link'>{link.text}</Button>
           </Link>
         ),
         key: link.href,
