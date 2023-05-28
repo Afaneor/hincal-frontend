@@ -62,7 +62,7 @@ const Areas = () => {
                       style={{ height: '100%' }}
                       cover={
                         <img
-                          style={{ height: 170 }}
+                          style={{ height: 200 }}
                           alt={area.title}
                           src={area.preview_image}
                         />
