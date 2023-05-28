@@ -1,5 +1,4 @@
 import {
-  BarChartOutlined,
   CalculatorOutlined,
   HomeOutlined,
   LaptopOutlined,
@@ -33,11 +32,6 @@ export const Links = [
     text: 'Промплощадки',
     href: '/areas',
     icon: <SketchOutlined />,
-  },
-  {
-    text: 'Аналитика',
-    href: '/analytics',
-    icon: <BarChartOutlined />,
   },
   {
     text: 'Блог',

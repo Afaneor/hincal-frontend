@@ -1,5 +1,5 @@
-import { Button, Card, Col, Input, Row } from 'antd'
-import React from 'react'
+import { Alert, Button, Card, Col, Input, Row } from 'antd'
+import React, { useState } from 'react'
 import type { FCC } from 'src/types'
 
 import { HorizontalScrolling } from '@/components/HorizontalScrolling'
@@ -12,6 +12,7 @@ import { Main } from '@/templates/Main'
 
 const Model = OfferModel
 const Offers: FCC = () => {
+  const [isSubscribe, setIsSubscribe] = useState(false)
   const { results } = useFetchItems(Model)
 
   return (
@@ -28,12 +29,25 @@ const Offers: FCC = () => {
             <Card title='Хотите получать предложения одним из первых?'>
               <Row gutter={[20, 20]}>
                 <Col md={13}>
-                  <Input size='large' placeholder='example@site.ru' />
+                  {!isSubscribe ? (
+                    <Input size='large' placeholder='example@site.ru' />
+                  ) : (
+                    <Alert
+                      type='info'
+                      message='Вы успешно подписались на партнерскую рассылку'
+                    />
+                  )}
                 </Col>
                 <Col md={6}>
-                  <Button size='large' type='primary'>
-                    Подписаться на предложения
-                  </Button>
+                  {!isSubscribe ? (
+                    <Button
+                      size='large'
+                      type='primary'
+                      onClick={() => setIsSubscribe(true)}
+                    >
+                      Подписаться на предложения
+                    </Button>
+                  ) : null}
                 </Col>
               </Row>
             </Card>
