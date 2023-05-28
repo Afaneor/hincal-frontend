@@ -34,6 +34,11 @@ export const Links = [
     icon: <SketchOutlined />,
   },
   {
+    text: 'Аналитика',
+    href: '/analytics',
+    icon: <SketchOutlined />,
+  },
+  {
     text: 'Блог',
     href: '/blog',
     icon: <LaptopOutlined />,
