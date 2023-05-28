@@ -55,8 +55,14 @@ const Registration: FCC = () => {
                 <Col xs={24} md={8}>
                   <FormItem
                     label='Фамилия'
-                    name='second_name'
+                    name='last_name'
                     errors={errors.secondName}
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Пожалуйста, введите фамилию',
+                      },
+                    ]}
                   >
                     <Input size='large' />
                   </FormItem>
@@ -66,6 +72,9 @@ const Registration: FCC = () => {
                     label='Имя'
                     name='first_name'
                     errors={errors.first_name}
+                    rules={[
+                      { required: true, message: 'Пожалуйста, введите имя' },
+                    ]}
                   >
                     <Input size='large' />
                   </FormItem>
@@ -73,7 +82,7 @@ const Registration: FCC = () => {
                 <Col xs={24} md={8}>
                   <FormItem
                     label='Отчество'
-                    name='last_name'
+                    name='middle_name'
                     errors={errors.last_name}
                   >
                     <Input size='large' />
@@ -81,10 +90,11 @@ const Registration: FCC = () => {
                 </Col>
               </Row>
               <FormItem
-                label='ИНН (если регистрируетесь, как ИП или компания)'
+                label='ИНН'
                 name='inn'
                 wrapperCol={{ span: 12 }}
                 errors={errors.inn}
+                rules={[{ required: true, message: 'Пожалуйста, введите ИНН' }]}
               >
                 <Input size='large' />
               </FormItem>

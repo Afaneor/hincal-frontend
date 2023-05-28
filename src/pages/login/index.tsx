@@ -9,6 +9,7 @@ import {
   Row,
 } from 'antd'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import React from 'react'
 import type { FCC } from 'src/types'
 
@@ -23,12 +24,13 @@ import { Main } from '@/templates/Main'
 const Login: FCC = () => {
   const [loginForm] = Form.useForm()
   const { errors, setFormErrors } = useFormErrors() as FormErrorsHook
+  const router = useRouter()
 
   const { mutate: login, isLoading: loginIsLoading }: any = useLogin()
   const handleLogin = (credentials: LoginValuesTypes) => {
     login(credentials, {
       onSuccess: () => {
-        window.location.href = '/'
+        router.push('/calculator')
       },
       onError: (error: any) => {
         setFormErrors(error?.data)
