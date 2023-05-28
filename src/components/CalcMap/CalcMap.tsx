@@ -70,7 +70,7 @@ export const CalcMap: FCC<CalcMapProps> = ({
   const [startDrawPolygon, setStartDrawPolygon] = useState(false)
 
   useEffect(() => {
-    if (onCreatePolygon) {
+    if (onCreatePolygon && selectedPolygonsInMeters) {
       onCreatePolygon(Math.round(selectedPolygonsInMeters))
     }
   }, [selectedPolygonsInMeters])

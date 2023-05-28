@@ -1,6 +1,6 @@
 import { GatewayOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import { InputNumber, Popover, Typography } from 'antd'
-import React, { useState } from 'react'
+import React from 'react'
 
 import type { PropsFormItem } from '@/components'
 import { FormItem } from '@/components'
@@ -39,7 +39,6 @@ const LandAreaFormItem: FCC<SLandAreaFormItemProps> = ({
   errorsFromLandArea,
   errorsToLandArea,
 }) => {
-  const [startingNumber, setStartingNumber] = useState(0)
   return (
     <FormItem
       label='Площадь земельного участка (кв.м.)'
@@ -52,13 +51,23 @@ const LandAreaFormItem: FCC<SLandAreaFormItemProps> = ({
         name='from_land_area'
         style={itemStyle}
         errors={errorsFromLandArea}
+        rules={[
+          ({ getFieldValue, setFieldValue }) => ({
+            validator(_, value) {
+              const toLAndArea = getFieldValue('to_land_area')
+              if (value > toLAndArea) {
+                setFieldValue('to_land_area', value)
+              }
+              return Promise.resolve()
+            },
+          }),
+        ]}
       >
         <InputNumber
           placeholder='10'
           size='large'
           min={0}
           addonBefore={<GatewayOutlined />}
-          onChange={setStartingNumber}
           addonAfter={
             <span>
               м<sup>2</sup>
@@ -72,11 +81,21 @@ const LandAreaFormItem: FCC<SLandAreaFormItemProps> = ({
         name='to_land_area'
         style={itemStyle}
         errors={errorsToLandArea}
+        rules={[
+          ({ getFieldValue, setFieldValue }) => ({
+            validator(_, value) {
+              const fromLandArea = getFieldValue('from_land_area')
+              if (value < fromLandArea) {
+                setFieldValue('to_land_area', fromLandArea)
+              }
+              return Promise.resolve()
+            },
+          }),
+        ]}
       >
         <InputNumber
           placeholder='1000'
           size='large'
-          min={startingNumber}
           addonBefore={<GatewayOutlined />}
           addonAfter={
             <span>

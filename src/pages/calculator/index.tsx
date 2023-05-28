@@ -1,9 +1,11 @@
 import { CalculatorOutlined } from '@ant-design/icons'
 import { Anchor, Button, Col, Form, Row } from 'antd'
 import { isEmpty } from 'lodash'
+import { useRouter } from 'next/router'
 import React, { useMemo, useState } from 'react'
 import type { FCC } from 'src/types'
 
+import { FormItem } from '@/components'
 import AccountingFormItem from '@/components/AccountingFormItem/AccountingFormItem'
 import { AnchorItemWrapper } from '@/components/AnchorItemWrapper'
 import type { HoveInfoProps } from '@/components/CalcMap/types'
@@ -54,10 +56,11 @@ const AnchorCalc = () => <Anchor offsetTop={65} items={anchorItems} />
 const CalcModel = CalculatorModel
 
 const Calculator: FCC = () => {
+  const router = useRouter()
   const [form] = Form.useForm()
   const typeBusiness = Form.useWatch('type_business', form)
   const { errors, setFormErrors } = useFormErrors() as FormErrorsHook
-  const [ipOpen, setIpOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   const [report, setReport] = useState<ResultCalculate>({} as ResultCalculate)
   useChoices(CalcModel.modelName, CalcModel.url())
 
@@ -95,7 +98,7 @@ const Calculator: FCC = () => {
           if (!isEmpty(data)) {
             // @ts-ignore
             setReport(data?.data)
-            setIpOpen(true)
+            setIsOpen(true)
           }
         },
         onError: (error: any) => {
@@ -127,6 +130,7 @@ const Calculator: FCC = () => {
       }
     >
       <CalculatorResults
+        open={isOpen}
         results={report}
         title={
           <h3>
@@ -134,8 +138,7 @@ const Calculator: FCC = () => {
             предприятия
           </h3>
         }
-        open={ipOpen}
-        onCancel={() => setIpOpen(false)}
+        onCancel={() => setIsOpen(false)}
       />
       <CalculatorPageWrapper
         title='Калькулятор инвестиций в развитие промышленного предприятия'
@@ -152,6 +155,9 @@ const Calculator: FCC = () => {
               initialValues={{}}
               autoComplete='off'
               onFinish={handleCalculate}
+              onFinishFailed={() => {
+                router.push('#main-investment-params')
+              }}
             >
               <AnchorItemWrapper
                 id='location-area'
@@ -190,17 +196,21 @@ const Calculator: FCC = () => {
                 title='Дополнительные инвестиционные затраты'
                 size={50}
                 actions={[
-                  <Button
-                    size='large'
-                    key='SubmitBtn'
-                    type='primary'
-                    loading={isLoadingCalculate}
-                    htmlType='submit'
-                    icon={<CalculatorOutlined />}
-                    shape='round'
-                  >
-                    Рассчитать
-                  </Button>,
+                  <FormItem key='SubmitBtnFormItem' shouldUpdate>
+                    {() => (
+                      <Button
+                        size='large'
+                        key='SubmitBtn'
+                        type='primary'
+                        loading={isLoadingCalculate}
+                        htmlType='submit'
+                        icon={<CalculatorOutlined />}
+                        shape='round'
+                      >
+                        Рассчитать
+                      </Button>
+                    )}
+                  </FormItem>,
                 ]}
               >
                 <AccountingFormItem errors={errors.is_accounting} />

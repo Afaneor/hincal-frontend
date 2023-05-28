@@ -4,7 +4,8 @@ import React from 'react'
 
 import { useFileDownload } from '@/hooks/useFileDownload'
 import { useMoneyFormat } from '@/hooks/useMoneyFormat'
-import type { ResultCalculate } from '@/models'
+import { useQueryCache } from '@/hooks/useQueryCache'
+import type { ResultCalculate, UsersModelProps } from '@/models'
 import { CalculatorModel } from '@/models'
 import type { FCC } from '@/types'
 
@@ -26,7 +27,7 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
 }) => {
   const moneyFormat = useMoneyFormat()
   const downloadFile = useFileDownload()
-
+  const { data }: { data: UsersModelProps } | any = useQueryCache('getInfo')
   const handleDownloadFile = () => {
     downloadFile({
       url: Model.getFileUrl(results.id),
@@ -50,15 +51,17 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
         >
           Закрыть
         </Button>,
-        <Button
-          key='submit'
-          type='primary'
-          size='large'
-          icon={<DownloadOutlined />}
-          onClick={handleDownloadFile}
-        >
-          Скачать персонализированный отчет
-        </Button>,
+        data ? (
+          <Button
+            key='submit'
+            type='primary'
+            size='large'
+            icon={<DownloadOutlined />}
+            onClick={handleDownloadFile}
+          >
+            Скачать персонализированный отчет
+          </Button>
+        ) : undefined,
       ]}
     >
       <Result

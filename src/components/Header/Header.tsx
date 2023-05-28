@@ -16,12 +16,14 @@ import { Links } from './Links'
 
 const { Header: AntdHeader } = Layout
 
+const logoStyle = { display: 'flex', alignItems: 'center' }
+
 export const Header: FCC = () => {
   const router = useRouter()
   return (
     <AntdHeader className={styles.headerContainer}>
       <Row justify='space-between' style={{ width: '100%' }} gutter={[5, 10]}>
-        <Col flex='auto' style={{ display: 'flex', alignItems: 'center' }}>
+        <Col flex='auto' style={logoStyle}>
           <Logo />
         </Col>
 

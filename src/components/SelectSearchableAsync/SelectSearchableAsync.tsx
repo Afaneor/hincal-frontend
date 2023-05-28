@@ -1,12 +1,6 @@
 import { Dropdown } from 'antd'
 import type { BaseSyntheticEvent } from 'react'
-import React, {
-  createContext,
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-} from 'react'
+import React, { createContext, useCallback, useMemo, useState } from 'react'
 import type { FCC } from 'src/types'
 
 // eslint-disable-next-line import/no-cycle
@@ -42,12 +36,23 @@ const SelectSearchableAsync: FCC<SelectSearchableAsyncProps> = ({
   const [value, setValue] = useState<any[]>([])
   const contextProps = useMemo(() => ({ single }), [])
 
-  useEffect(() => {
-    const cValue = single ? value[0] : value
+  // TODO: пока не убираю
+  // useEffect(() => {
+  //   console.log('xxx')
+  //   const cValue = single ? value[0] : value
+  //   if (value !== undefined) {
+  //     // @ts-ignore
+  //     onChange?.({ target: { value: cValue } })
+  //   }
+  // }, [value])
+
+  const handleSetV = (list: any[]) => {
+    const cValue = single ? list[0] : list
     // @ts-ignore
     onChange?.({ target: { value: cValue } })
-  }, [value])
 
+    setValue(list)
+  }
   const DropdownRender = useCallback(() => {
     return (
       <SelectSearchableAsyncContext.Provider value={contextProps}>
@@ -57,7 +62,7 @@ const SelectSearchableAsync: FCC<SelectSearchableAsyncProps> = ({
           returnValueType='object'
           defList={value}
           model={model}
-          onApply={(list: any[]) => setValue(list)}
+          onApply={handleSetV}
         />
       </SelectSearchableAsyncContext.Provider>
     )

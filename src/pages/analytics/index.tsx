@@ -35,7 +35,7 @@ const Analytics = () => {
   const amount = Object.entries(statistics).filter(
     ([key]) => key !== 'popular_sector'
   )
-  console.log(amount)
+
   return (
     <Main
       meta={
