@@ -1,10 +1,11 @@
-import { Input, Space } from 'antd'
+import { Form, Input, Space } from 'antd'
 import React, { useRef, useState } from 'react'
 import { useDebouncedCallback } from 'src/hooks/useDebouncedCallback'
 import type { BaseModel } from 'src/models'
 import { useInfinityFetchData } from 'src/services/base/useInfinityFetchData'
 import type { FCC, HTMLElementEvent } from 'src/types'
 
+// eslint-disable-next-line import/no-cycle
 import { SelectDropdownListContent } from '@/components/SelectDropdownListContent'
 import { TagsInput } from '@/components/TagsInput'
 
@@ -54,14 +55,15 @@ export const SelectDropdownSearchable: FCC<
   return (
     <Space direction='vertical' className='w100'>
       {!withoutSearch ? (
-        <Search
-          ref={refSearch}
-          data-testid='test-SearchInput'
-          placeholder='Поиск'
-          size='large'
-          allowClear
-          onChange={debounceHandleChange}
-        />
+        <Form.Item name='searchInput'>
+          <Search
+            ref={refSearch}
+            placeholder='Поиск'
+            size='large'
+            allowClear
+            onChange={debounceHandleChange}
+          />
+        </Form.Item>
       ) : null}
       {children || (
         <>

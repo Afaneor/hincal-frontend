@@ -5,6 +5,7 @@ import React from 'react'
 import type { PropsFormItem } from '@/components'
 import { FormItem } from '@/components'
 import FormItemDash from '@/components/FormItemDash/FormItemDash'
+import type { FormError } from '@/hooks/useFormErrors'
 import type { FCC } from '@/types'
 
 import styles from './LandAreaFormItem.module.scss'
@@ -28,7 +29,16 @@ const popoverContent = (
   </div>
 )
 
-const LandAreaFormItem: FCC<PropsFormItem> = ({ errors }) => {
+interface SLandAreaFormItemProps extends PropsFormItem {
+  errorsFromLandArea?: FormError
+  errorsToLandArea?: FormError
+}
+
+const LandAreaFormItem: FCC<SLandAreaFormItemProps> = ({
+  errors,
+  errorsFromLandArea,
+  errorsToLandArea,
+}) => {
   return (
     <FormItem
       label='Площадь земельного участка (кв.м.)'
@@ -36,21 +46,11 @@ const LandAreaFormItem: FCC<PropsFormItem> = ({ errors }) => {
       wrapperCol={{ span: 18 }}
       errors={errors}
     >
-      <FormItem style={btnStyle}>
-        <Popover
-          placement='top'
-          title='Вы можете посчитать площадь на карте'
-          trigger='hover'
-          content={popoverContent}
-        >
-          <InfoCircleOutlined />
-        </Popover>
-      </FormItem>
       <FormItem
         help='от'
         name='from_land_area'
         style={itemStyle}
-        errors={errors}
+        errors={errorsFromLandArea}
       >
         <InputNumber
           placeholder='10'
@@ -64,7 +64,12 @@ const LandAreaFormItem: FCC<PropsFormItem> = ({ errors }) => {
         />
       </FormItem>
       <FormItemDash />
-      <FormItem help='до' name='to_land_area' style={itemStyle} errors={errors}>
+      <FormItem
+        help='до'
+        name='to_land_area'
+        style={itemStyle}
+        errors={errorsToLandArea}
+      >
         <InputNumber
           placeholder='1000'
           size='large'
@@ -75,6 +80,16 @@ const LandAreaFormItem: FCC<PropsFormItem> = ({ errors }) => {
             </span>
           }
         />
+      </FormItem>
+      <FormItem style={btnStyle}>
+        <Popover
+          placement='top'
+          title='Вы можете посчитать площадь на карте'
+          trigger='hover'
+          content={popoverContent}
+        >
+          <InfoCircleOutlined />
+        </Popover>
       </FormItem>
     </FormItem>
   )

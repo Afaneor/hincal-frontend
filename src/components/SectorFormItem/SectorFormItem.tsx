@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash'
 import React from 'react'
 
 import type { PropsFormItem } from '@/components'
@@ -18,6 +19,7 @@ const SectorFormItem: FCC<PropsFormItem> = ({ errors }) => {
       <SelectSearchableAsync
         single
         placeholder='Выберите отрасль'
+        hasError={!isEmpty(errors)}
         model={SectorModel}
       />
     </FormItem>

@@ -13,7 +13,7 @@ import { LandAreaFormItem } from '@/components/LandAreaFormItem'
 import MapFormItem from '@/components/MapFormItem/MapFormItem'
 import { OtherFieldFormListItems } from '@/components/OtherFieldFormListItems'
 import PatentFormItem from '@/components/PatentFormItem/PatentFormItem'
-import PropertyAreaFormItem from '@/components/PropertyAreaFormItem/PropertyAreaFormItem'
+import { PropertyTypeFormItem } from '@/components/PropertyTypeFormItem'
 import SectorFormItem from '@/components/SectorFormItem/SectorFormItem'
 import StaffFormItem from '@/components/StaffFormItem/StaffFormItem'
 import { TypeBusinessFormItem } from '@/components/TypeBusinessFormItem'
@@ -21,7 +21,10 @@ import { TypeTaxSystemFormItem } from '@/components/TypeTaxSystemFormItem'
 import type { FormErrorsHook } from '@/hooks/useFormErrors'
 import { useFormErrors } from '@/hooks/useFormErrors'
 import { Meta } from '@/layouts/Meta'
-import type { CalculatorModelProps } from '@/models/Calculator'
+import type {
+  CalculatorModelProps,
+  PropertyOtherTypeProps,
+} from '@/models/Calculator'
 import { CalculatorModel } from '@/models/Calculator'
 import type { ReportModelProps } from '@/models/Report'
 import { useChoices, useCreateItem } from '@/services/base/hooks'
@@ -53,7 +56,7 @@ const Calculator: FCC = () => {
   const [form] = Form.useForm()
   const typeBusiness = Form.useWatch('type_business', form)
 
-  const { errors } = useFormErrors() as FormErrorsHook
+  const { errors, setFormErrors } = useFormErrors() as FormErrorsHook
   const [ipOpen, setIpOpen] = useState(false)
   const [report, setReport] = useState({} as ReportModelProps)
   useChoices(CalcModel.modelName, CalcModel.url())
@@ -65,6 +68,14 @@ const Calculator: FCC = () => {
   }
   const { mutate: calculate } = useCreateItem(CalcModel)
 
+  const prepareEmptyFields = (fields?: PropertyOtherTypeProps[]) => {
+    if (fields?.length) {
+      return fields.filter((type: PropertyOtherTypeProps) => {
+        return type.name && type.cost && type
+      })
+    }
+    return undefined
+  }
   const handleCalculate = (newReport: CalculatorModelProps) => {
     calculate(
       {
@@ -74,14 +85,15 @@ const Calculator: FCC = () => {
         ),
         sector: newReport?.sector?.id,
         equipments: newReport?.equipments?.map((eq) => eq.id),
-        other: [''],
+        properties: prepareEmptyFields(newReport?.properties),
+        others: prepareEmptyFields(newReport?.others),
       },
       {
         onSuccess: (data: any) => {
           setReport(data)
         },
-        onError: () => {
-          //
+        onError: (error: any) => {
+          setFormErrors(error.response.data)
         },
       }
     )
@@ -157,13 +169,16 @@ const Calculator: FCC = () => {
                 size={60}
                 bodyStyle={{ height: '85%' }}
               >
-                <TypeBusinessFormItem errors={errors.business_type} />
+                <TypeBusinessFormItem errors={errors.type_business} />
                 <TypeTaxSystemFormItem errors={errors.type_tax_system} />
                 <SectorFormItem errors={errors.sector} />
                 <LandAreaFormItem errors={errors.land_area} />
-                <PropertyAreaFormItem errors={errors.property_area} />
-                <StaffFormItem errors={errors.staff} />
+                <StaffFormItem
+                  errorsFromStaff={errors.from_staff}
+                  errorsToStaff={errors.to_staff}
+                />
                 <EquipmentFormItem errors={errors.equipment} />
+                <PropertyTypeFormItem />
               </AnchorItemWrapper>
 
               <AnchorItemWrapper

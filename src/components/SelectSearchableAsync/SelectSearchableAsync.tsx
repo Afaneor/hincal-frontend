@@ -14,27 +14,30 @@ import { SelectDropdownSearchableCompleteFilter } from '@/components/SelectDropd
 import { TagsInput } from '@/components/TagsInput'
 import type { BaseModel } from '@/models'
 
-interface SelectSearchableAsyncProps {
-  single?: boolean
-  placeholder?: string
-  model: typeof BaseModel
-  listItemsNameKey?: string
-
-  onChange?: (e: BaseSyntheticEvent) => void
-}
-
 interface SelectContextProps {
   single?: boolean
 }
 export const SelectSearchableAsyncContext = createContext<SelectContextProps>(
   {} as SelectContextProps
 )
+
+interface SelectSearchableAsyncProps {
+  single?: boolean
+  placeholder?: string
+  model: typeof BaseModel
+  listItemsNameKey?: string
+  hasError?: boolean
+
+  onChange?: (e: BaseSyntheticEvent) => void
+}
+
 const SelectSearchableAsync: FCC<SelectSearchableAsyncProps> = ({
   single,
   model,
   onChange,
   placeholder = 'Выбрать',
   listItemsNameKey = 'name',
+  hasError,
 }) => {
   const [value, setValue] = useState<any[]>([])
   const contextProps = useMemo(() => ({ single }), [])
@@ -68,6 +71,7 @@ const SelectSearchableAsync: FCC<SelectSearchableAsyncProps> = ({
     >
       <TagsInput
         singleLine
+        hasError={hasError}
         placeholder={placeholder}
         listItemsNameKey={listItemsNameKey}
         list={value}

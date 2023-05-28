@@ -5,13 +5,23 @@ import React from 'react'
 import type { PropsFormItem } from '@/components'
 import { FormItem } from '@/components'
 import FormItemDash from '@/components/FormItemDash/FormItemDash'
+import type { FormError } from '@/hooks/useFormErrors'
 import type { FCC } from '@/types'
 
 const staffFormItemStyle = {
   display: 'inline-block',
-  width: 'calc(47% - 8px)',
+  width: 'calc(48% - 8px)',
 }
-const StaffFormItem: FCC<PropsFormItem> = ({ errors }) => {
+
+interface StaffFormItemProps extends PropsFormItem {
+  errorsFromStaff?: FormError
+  errorsToStaff?: FormError
+}
+const StaffFormItem: FCC<StaffFormItemProps> = ({
+  errors,
+  errorsFromStaff,
+  errorsToStaff,
+}) => {
   return (
     <FormItem
       label='Штатная численность работников'
@@ -22,7 +32,7 @@ const StaffFormItem: FCC<PropsFormItem> = ({ errors }) => {
         help='минимальная'
         name='from_staff'
         style={staffFormItemStyle}
-        errors={errors}
+        errors={errorsFromStaff}
       >
         <InputNumber
           addonBefore={<UserOutlined />}
@@ -35,7 +45,7 @@ const StaffFormItem: FCC<PropsFormItem> = ({ errors }) => {
         name='to_staff'
         help='максимальная'
         style={staffFormItemStyle}
-        errors={errors}
+        errors={errorsToStaff}
       >
         <InputNumber
           addonBefore={<TeamOutlined />}

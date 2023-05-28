@@ -1,5 +1,3 @@
-//@import 'src/theme/colors.module';
-
 .tagsInput {
   width: 100%;
   border-radius: 8px;
@@ -20,4 +18,8 @@
       margin: 0;
     }
   }
+}
+
+.hasError {
+  border-color: #ff7875;
 }

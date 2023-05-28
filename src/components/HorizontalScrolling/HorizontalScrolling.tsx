@@ -98,7 +98,7 @@ const HorizontalScrolling = ({ data }: HorizontalScrollingProps) => {
       {data?.map((item: Record<string, any>) => (
         <CardS
           itemId={item.id} // NOTE: itemId is required for track items
-          title={item.title}
+          title={`${item.title} ${item?.interest_rate}`}
           site={item.site}
           key={item.id}
           onClick={handleClick(item.id)}

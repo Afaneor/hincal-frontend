@@ -15,6 +15,7 @@ interface TagsInputProps {
   placeholder?: string
   singleLine?: boolean
   listItemsNameKey?: string
+  hasError?: boolean
 }
 export const TagsInput: FCC<TagsInputProps> = ({
   tagOnCLose,
@@ -23,6 +24,7 @@ export const TagsInput: FCC<TagsInputProps> = ({
   placeholder = '',
   singleLine,
   listItemsNameKey,
+  hasError,
 }) => {
   const placeholderText = placeholder || 'Выбрать...'
   return (
@@ -30,7 +32,8 @@ export const TagsInput: FCC<TagsInputProps> = ({
     <div
       className={clsx(
         styles.tagsInput,
-        singleLine ? styles.overflowScroll : ''
+        singleLine ? styles.overflowScroll : '',
+        hasError ? styles.hasError : ''
       )}
       onClick={onClick}
     >

@@ -13,6 +13,10 @@ export class CalculatorModel {
   }
 }
 
+export interface PropertyOtherTypeProps {
+  name: string
+  cost: number
+}
 export interface CalculatorModelProps extends BaseModelProps {
   type_business: string
   sector: SectorModelProps
@@ -28,7 +32,8 @@ export interface CalculatorModelProps extends BaseModelProps {
   type_tax_system: string
   need_accounting: boolean
   need_registration: boolean
-  other: any
+  others: PropertyOtherTypeProps[]
+  properties: PropertyOtherTypeProps[]
 }
 
 export interface ResultCalculate extends BaseModelProps {
