@@ -26,9 +26,10 @@ import type {
   PropertyOtherTypeProps,
 } from '@/models/Calculator'
 import { CalculatorModel } from '@/models/Calculator'
-import type { ReportModelProps } from '@/models/Report'
 import { useChoices, useCreateItem } from '@/services/base/hooks'
 import { Main } from '@/templates/Main'
+
+import { results } from './res'
 
 const anchorItems = [
   {
@@ -44,7 +45,7 @@ const anchorItems = [
   {
     key: 'advanced-investment-params',
     href: '#advanced-investment-params',
-    title: 'Дополнительные инвестиционные требования',
+    title: 'Дополнительные инвестиционные затраты',
   },
 ]
 
@@ -55,10 +56,9 @@ const CalcModel = CalculatorModel
 const Calculator: FCC = () => {
   const [form] = Form.useForm()
   const typeBusiness = Form.useWatch('type_business', form)
-
   const { errors, setFormErrors } = useFormErrors() as FormErrorsHook
   const [ipOpen, setIpOpen] = useState(false)
-  const [report, setReport] = useState({} as ReportModelProps)
+  const [report, setReport] = useState<any>(results as any)
   useChoices(CalcModel.modelName, CalcModel.url())
 
   const prepareNewReportField = (terLoc: HoveInfoProps[]) => {
@@ -66,7 +66,8 @@ const Calculator: FCC = () => {
       (tl: HoveInfoProps) => tl.feature.properties.territorialLocation?.id
     )
   }
-  const { mutate: calculate } = useCreateItem(CalcModel)
+  const { mutate: calculate, isLoading: isLoadingCalculate } =
+    useCreateItem(CalcModel)
 
   const prepareEmptyFields = (fields?: PropertyOtherTypeProps[]) => {
     if (fields?.length) {
@@ -125,7 +126,7 @@ const Calculator: FCC = () => {
       }
     >
       <CalculatorResults
-        result={report}
+        results={report}
         title={
           <h3>
             Результат расчета необходимых инвестиция в развитие промышленного
@@ -150,6 +151,7 @@ const Calculator: FCC = () => {
               initialValues={{}}
               autoComplete='off'
               onFinish={handleCalculate}
+              // onFinish={() => setIpOpen(true)}
               onFinishFailed={onFinishFailed}
             >
               <AnchorItemWrapper
@@ -172,7 +174,10 @@ const Calculator: FCC = () => {
                 <TypeBusinessFormItem errors={errors.type_business} />
                 <TypeTaxSystemFormItem errors={errors.type_tax_system} />
                 <SectorFormItem errors={errors.sector} />
-                <LandAreaFormItem errors={errors.land_area} />
+                <LandAreaFormItem
+                  errorsToLandArea={errors.to_land_area}
+                  errorsFromLandArea={errors.from_land_area}
+                />
                 <StaffFormItem
                   errorsFromStaff={errors.from_staff}
                   errorsToStaff={errors.to_staff}
@@ -183,13 +188,14 @@ const Calculator: FCC = () => {
 
               <AnchorItemWrapper
                 id='advanced-investment-params'
-                title='Дополнительные инвестиционные требования'
+                title='Дополнительные инвестиционные затраты'
                 size={50}
                 actions={[
                   <Button
                     size='large'
                     key='SubmitBtn'
                     type='primary'
+                    loading={isLoadingCalculate}
                     htmlType='submit'
                     icon={<CalculatorOutlined />}
                     shape='round'
