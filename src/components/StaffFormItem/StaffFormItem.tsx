@@ -1,6 +1,6 @@
 import { TeamOutlined, UserOutlined } from '@ant-design/icons'
 import { InputNumber } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 
 import type { PropsFormItem } from '@/components'
 import { FormItem } from '@/components'
@@ -16,14 +16,13 @@ const staffFormItemStyle = {
 interface StaffFormItemProps extends PropsFormItem {
   errorsFromStaff?: FormError
   errorsToStaff?: FormError
-  min?: number
 }
 const StaffFormItem: FCC<StaffFormItemProps> = ({
   errors,
   errorsFromStaff,
   errorsToStaff,
-  min,
 }) => {
+  const [startingNumber, setStartingNumber] = useState<any>(0)
   return (
     <FormItem
       label='Штатная численность работников'
@@ -35,23 +34,13 @@ const StaffFormItem: FCC<StaffFormItemProps> = ({
         name='from_staff'
         style={staffFormItemStyle}
         errors={errorsFromStaff}
-        rules={[
-          ({ getFieldValue, setFieldValue }) => ({
-            validator(_, value) {
-              const toStaff = getFieldValue('to_staff')
-              if (value > toStaff) {
-                setFieldValue('to_staff', value)
-              }
-              return Promise.resolve()
-            },
-          }),
-        ]}
       >
         <InputNumber
           addonBefore={<UserOutlined />}
           placeholder='1'
           size='large'
           min={0}
+          onChange={setStartingNumber}
         />
       </FormItem>
       <FormItemDash />
@@ -60,24 +49,12 @@ const StaffFormItem: FCC<StaffFormItemProps> = ({
         help='максимальная'
         style={staffFormItemStyle}
         errors={errorsToStaff}
-        shouldUpdate
-        rules={[
-          ({ getFieldValue, setFieldValue }) => ({
-            validator(_, value) {
-              const fromStaff = getFieldValue('from_staff')
-              if (value < fromStaff) {
-                setFieldValue('to_staff', fromStaff)
-              }
-              return Promise.resolve()
-            },
-          }),
-        ]}
       >
-        <InputNumber<number>
+        <InputNumber
           addonBefore={<TeamOutlined />}
           placeholder='999'
           size='large'
-          min={min}
+          min={startingNumber}
         />
       </FormItem>
     </FormItem>

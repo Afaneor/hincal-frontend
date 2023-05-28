@@ -71,7 +71,38 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
         )}
         subTitle='Общая сумма всех затрат'
       />
-      <Descriptions title='Затраты'>
+      <Descriptions title='Затраты на основе введенных вами данных'>
+        <Descriptions.Item label='Персонал'>
+          {moneyFormat(
+            toMillion(results?.context?.context_for_file?.all_staff_costs_math)
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item label='Земля и имущество'>
+          {moneyFormat(
+            toMillion(
+              results?.context?.context_for_file?.all_lp_lease_costs_math
+            )
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item label='Оборудование'>
+          {moneyFormat(
+            toMillion(results?.context?.context_for_file?.equipment_costs_math)
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item label='Налоги'>
+          {moneyFormat(
+            toMillion(results?.context?.context_for_file?.all_tax_costs_math)
+          )}
+        </Descriptions.Item>
+        <Descriptions.Item label='Сервисы'>
+          {moneyFormat(
+            toMillion(
+              results?.context?.context_for_file?.all_services_costs_math
+            )
+          )}
+        </Descriptions.Item>
+      </Descriptions>
+      <Descriptions title='В среднем тратят компании в выбранной отрасли'>
         <Descriptions.Item label='Персонал'>
           {moneyFormat(
             toMillion(results?.context?.context_for_file?.all_staff_costs_bi)

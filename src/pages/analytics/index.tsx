@@ -62,7 +62,7 @@ const Analytics = () => {
       <PageWrapper title='' subTitle='' isLoading={isLoading}>
         <Row gutter={gutter} style={paddingTop}>
           <Col span={24}>
-            <Title level={2}>Популярные отрасли</Title>
+            <Title level={2}>Популярные отрасли на основе данных</Title>
           </Col>
           {statistics?.popular_sector.map((sec) => (
             <Col key={sec.sector_name} xs={24} md={6}>
