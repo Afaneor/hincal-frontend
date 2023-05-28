@@ -1,5 +1,5 @@
 import { GatewayOutlined } from '@ant-design/icons'
-import { InputNumber, Select } from 'antd'
+import { Col, InputNumber, Row, Select } from 'antd'
 import React, { useCallback } from 'react'
 import type { FCC } from 'src/types'
 
@@ -30,36 +30,34 @@ const propertyTypes = [
 const PropertyTypeFormItem: FCC<PropsFormItem> = () => {
   const inputsRender = useCallback(
     (name: number, restField: FormListRestField) => (
-      <>
-        <FormItem
-          wrapperCol={{ xs: 8, md: 24 }}
-          {...restField}
-          name={[name, 'name']}
-        >
-          <Select
-            size='large'
-            allowClear
-            placeholder='Тип здания/сооружения'
-            options={propertyTypes}
-          />
-        </FormItem>
-        <FormItem
-          wrapperCol={{ xs: 24, md: 24 }}
-          {...restField}
-          name={[name, 'cost']}
-        >
-          <InputNumber
-            placeholder='Площадь'
-            size='large'
-            addonBefore={<GatewayOutlined />}
-            addonAfter={
-              <span>
-                м<sup>2</sup>
-              </span>
-            }
-          />
-        </FormItem>
-      </>
+      <Row gutter={20}>
+        <Col xs={24} md={12}>
+          <FormItem {...restField} className='w100' name={[name, 'name']}>
+            <Select
+              size='large'
+              allowClear
+              className='w100'
+              placeholder='Тип здания/сооружения'
+              options={propertyTypes}
+            />
+          </FormItem>
+        </Col>
+        <Col xs={24} md={12}>
+          <FormItem {...restField} name={[name, 'cost']}>
+            <InputNumber
+              placeholder='Площадь'
+              size='large'
+              className='w100'
+              addonBefore={<GatewayOutlined />}
+              addonAfter={
+                <span>
+                  м<sup>2</sup>
+                </span>
+              }
+            />
+          </FormItem>
+        </Col>
+      </Row>
     ),
     []
   )

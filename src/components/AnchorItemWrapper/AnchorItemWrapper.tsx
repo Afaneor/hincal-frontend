@@ -28,7 +28,6 @@ export const AnchorItemWrapper: FCC<AnchorItemWrapperProps> = ({
       id={id}
       title={title}
       hoverable
-      // style={{ height: `${size}vh` }}
       bodyStyle={{ ...bodyStyleDefault, ...bodyStyle }}
       className={styles.container}
       actions={actions}

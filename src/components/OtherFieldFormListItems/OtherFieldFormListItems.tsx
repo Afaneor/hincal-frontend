@@ -1,5 +1,5 @@
 import { WalletOutlined } from '@ant-design/icons'
-import { Input, InputNumber } from 'antd'
+import { Col, Input, InputNumber, Row } from 'antd'
 import React, { useCallback } from 'react'
 import type { FCC } from 'src/types'
 
@@ -15,22 +15,28 @@ interface OtherFieldFormListItemsProps {
 const OtherFieldFormListItems: FCC<OtherFieldFormListItemsProps> = () => {
   const inputsRender = useCallback(
     (name: number, restField: FormListRestField) => (
-      <>
-        <FormItem {...restField} name={[name, 'name']}>
-          <Input
-            addonBefore={<WalletOutlined />}
-            size='large'
-            placeholder='Вид расхода'
-          />
-        </FormItem>
-        <FormItem {...restField} name={[name, 'cost']}>
-          <InputNumber
-            placeholder='Сумма в рублях'
-            size='large'
-            addonAfter={<span>тыс. ₽</span>}
-          />
-        </FormItem>
-      </>
+      <Row gutter={20}>
+        <Col xs={24} md={12}>
+          <FormItem {...restField} name={[name, 'name']}>
+            <Input
+              className='w100'
+              addonBefore={<WalletOutlined />}
+              size='large'
+              placeholder='Вид расхода'
+            />
+          </FormItem>
+        </Col>
+        <Col xs={24} md={12}>
+          <FormItem {...restField} name={[name, 'cost']}>
+            <InputNumber
+              className='w100'
+              placeholder='Сумма в рублях'
+              size='large'
+              addonAfter={<span>тыс. ₽</span>}
+            />
+          </FormItem>
+        </Col>
+      </Row>
     ),
     []
   )
@@ -39,7 +45,7 @@ const OtherFieldFormListItems: FCC<OtherFieldFormListItemsProps> = () => {
     <FormItem
       label='Прочие расходы'
       tooltip='Прочие расходы, которые вы хотели бы включить в расчет'
-      wrapperCol={{ span: 18 }}
+      wrapperCol={{ span: 12 }}
     >
       <DynamicFormNestItems
         formListName='others'

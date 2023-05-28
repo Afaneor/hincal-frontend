@@ -1,22 +1,15 @@
 import { GatewayOutlined, InfoCircleOutlined } from '@ant-design/icons'
-import { InputNumber, Popover, Typography } from 'antd'
+import { Col, InputNumber, Popover, Row, Typography } from 'antd'
 import React from 'react'
 
 import type { PropsFormItem } from '@/components'
 import { FormItem } from '@/components'
-import FormItemDash from '@/components/FormItemDash/FormItemDash'
 import type { FormError } from '@/hooks/useFormErrors'
 import type { FCC } from '@/types'
 
 import styles from './LandAreaFormItem.module.scss'
 
 const { Text } = Typography
-
-const itemStyle = {
-  display: 'inline-block',
-  width: 'calc(39% - 11px)',
-}
-const btnStyle = { display: 'inline-block', width: 'calc(4%)', marginLeft: 4 }
 
 const popoverContent = (
   <div>
@@ -43,77 +36,87 @@ const LandAreaFormItem: FCC<SLandAreaFormItemProps> = ({
     <FormItem
       label='Площадь земельного участка (кв.м.)'
       tooltip='Площадь земельного участка для расположения промышленного производства (в квадратных метрах)'
-      wrapperCol={{ span: 18 }}
+      wrapperCol={{ span: 12 }}
       errors={errors}
     >
-      <FormItem
-        help='от'
-        name='from_land_area'
-        style={itemStyle}
-        errors={errorsFromLandArea}
-        rules={[
-          ({ getFieldValue, setFieldValue }) => ({
-            validator(_, value) {
-              const toLAndArea = getFieldValue('to_land_area')
-              if (value > toLAndArea) {
-                setFieldValue('to_land_area', value)
+      <Row gutter={20}>
+        <Col xs={24} md={10}>
+          <FormItem
+            help='от'
+            name='from_land_area'
+            errors={errorsFromLandArea}
+            rules={[
+              ({ getFieldValue, setFieldValue }) => ({
+                validator(_, value) {
+                  const toLAndArea = getFieldValue('to_land_area')
+                  if (value > toLAndArea) {
+                    setFieldValue('to_land_area', value)
+                  }
+                  return Promise.resolve()
+                },
+              }),
+            ]}
+          >
+            <InputNumber
+              placeholder='10'
+              size='large'
+              min={0}
+              className='w100'
+              addonBefore={<GatewayOutlined />}
+              addonAfter={
+                <span>
+                  м<sup>2</sup>
+                </span>
               }
-              return Promise.resolve()
-            },
-          }),
-        ]}
-      >
-        <InputNumber
-          placeholder='10'
-          size='large'
-          min={0}
-          addonBefore={<GatewayOutlined />}
-          addonAfter={
-            <span>
-              м<sup>2</sup>
-            </span>
-          }
-        />
-      </FormItem>
-      <FormItemDash />
-      <FormItem
-        help='до'
-        name='to_land_area'
-        style={itemStyle}
-        errors={errorsToLandArea}
-        rules={[
-          ({ getFieldValue, setFieldValue }) => ({
-            validator(_, value) {
-              const fromLandArea = getFieldValue('from_land_area')
-              if (value < fromLandArea) {
-                setFieldValue('to_land_area', fromLandArea)
+            />
+          </FormItem>
+        </Col>
+        <Col md={1} xs={0}>
+          -
+        </Col>
+        <Col md={11} xs={22}>
+          <FormItem
+            help='до'
+            name='to_land_area'
+            errors={errorsToLandArea}
+            rules={[
+              ({ getFieldValue, setFieldValue }) => ({
+                validator(_, value) {
+                  const fromLandArea = getFieldValue('from_land_area')
+                  if (value < fromLandArea) {
+                    setFieldValue('to_land_area', fromLandArea)
+                  }
+                  return Promise.resolve()
+                },
+              }),
+            ]}
+          >
+            <InputNumber
+              placeholder='1000'
+              size='large'
+              className='w100'
+              addonBefore={<GatewayOutlined />}
+              addonAfter={
+                <span>
+                  м<sup>2</sup>
+                </span>
               }
-              return Promise.resolve()
-            },
-          }),
-        ]}
-      >
-        <InputNumber
-          placeholder='1000'
-          size='large'
-          addonBefore={<GatewayOutlined />}
-          addonAfter={
-            <span>
-              м<sup>2</sup>
-            </span>
-          }
-        />
-      </FormItem>
-      <FormItem style={btnStyle}>
-        <Popover
-          placement='top'
-          title='Вы можете посчитать площадь на карте'
-          trigger='hover'
-          content={popoverContent}
-        >
-          <InfoCircleOutlined />
-        </Popover>
-      </FormItem>
+            />
+          </FormItem>
+        </Col>
+        <Col xs={1} md={1}>
+          <FormItem>
+            <Popover
+              placement='top'
+              title='Вы можете посчитать площадь на карте'
+              trigger='hover'
+              content={popoverContent}
+            >
+              <InfoCircleOutlined />
+            </Popover>
+          </FormItem>
+        </Col>
+      </Row>
     </FormItem>
   )
 }
