@@ -31,7 +31,7 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
   const handleDownloadFile = () => {
     downloadFile({
       url: Model.getFileUrl(results.id),
-      name: results?.context?.create_date,
+      name: 'расчет_инвестиций_в_пром_предприятие.pdf',
     })
   }
   const toMillion = (val: number) => val * 1000
