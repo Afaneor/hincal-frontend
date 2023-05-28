@@ -1,5 +1,6 @@
 import { CalculatorOutlined } from '@ant-design/icons'
 import { Anchor, Button, Col, Form, Row } from 'antd'
+import { isEmpty } from 'lodash'
 import React, { useMemo, useState } from 'react'
 import type { FCC } from 'src/types'
 
@@ -24,12 +25,11 @@ import { Meta } from '@/layouts/Meta'
 import type {
   CalculatorModelProps,
   PropertyOtherTypeProps,
+  ResultCalculate,
 } from '@/models/Calculator'
 import { CalculatorModel } from '@/models/Calculator'
 import { useChoices, useCreateItem } from '@/services/base/hooks'
 import { Main } from '@/templates/Main'
-
-import { results } from './res'
 
 const anchorItems = [
   {
@@ -58,7 +58,7 @@ const Calculator: FCC = () => {
   const typeBusiness = Form.useWatch('type_business', form)
   const { errors, setFormErrors } = useFormErrors() as FormErrorsHook
   const [ipOpen, setIpOpen] = useState(false)
-  const [report, setReport] = useState<any>(results as any)
+  const [report, setReport] = useState<ResultCalculate>({} as ResultCalculate)
   useChoices(CalcModel.modelName, CalcModel.url())
 
   const prepareNewReportField = (terLoc: HoveInfoProps[]) => {
@@ -77,6 +77,7 @@ const Calculator: FCC = () => {
     }
     return undefined
   }
+
   const handleCalculate = (newReport: CalculatorModelProps) => {
     calculate(
       {
@@ -90,18 +91,18 @@ const Calculator: FCC = () => {
         others: prepareEmptyFields(newReport?.others),
       },
       {
-        onSuccess: (data: any) => {
-          setReport(data)
+        onSuccess: (data: { data: ResultCalculate } | unknown) => {
+          if (!isEmpty(data)) {
+            // @ts-ignore
+            setReport(data?.data)
+            setIpOpen(true)
+          }
         },
         onError: (error: any) => {
           setFormErrors(error.response.data)
         },
       }
     )
-  }
-
-  const onFinishFailed = () => {
-    //
   }
 
   const showPatent = useMemo(
@@ -151,8 +152,6 @@ const Calculator: FCC = () => {
               initialValues={{}}
               autoComplete='off'
               onFinish={handleCalculate}
-              // onFinish={() => setIpOpen(true)}
-              onFinishFailed={onFinishFailed}
             >
               <AnchorItemWrapper
                 id='location-area'
