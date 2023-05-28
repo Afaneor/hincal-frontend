@@ -38,6 +38,7 @@ const PropertyTypeFormItem: FCC<PropsFormItem> = () => {
         >
           <Select
             size='large'
+            allowClear
             placeholder='Тип здания/сооружения'
             options={propertyTypes}
           />
