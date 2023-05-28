@@ -1,6 +1,6 @@
 import { GatewayOutlined, InfoCircleOutlined } from '@ant-design/icons'
 import { InputNumber, Popover, Typography } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 
 import type { PropsFormItem } from '@/components'
 import { FormItem } from '@/components'
@@ -39,6 +39,7 @@ const LandAreaFormItem: FCC<SLandAreaFormItemProps> = ({
   errorsFromLandArea,
   errorsToLandArea,
 }) => {
+  const [startingNumber, setStartingNumber] = useState(0)
   return (
     <FormItem
       label='Площадь земельного участка (кв.м.)'
@@ -55,7 +56,9 @@ const LandAreaFormItem: FCC<SLandAreaFormItemProps> = ({
         <InputNumber
           placeholder='10'
           size='large'
+          min={0}
           addonBefore={<GatewayOutlined />}
+          onChange={setStartingNumber}
           addonAfter={
             <span>
               м<sup>2</sup>
@@ -73,6 +76,7 @@ const LandAreaFormItem: FCC<SLandAreaFormItemProps> = ({
         <InputNumber
           placeholder='1000'
           size='large'
+          min={startingNumber}
           addonBefore={<GatewayOutlined />}
           addonAfter={
             <span>
