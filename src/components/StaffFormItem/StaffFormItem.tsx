@@ -1,6 +1,6 @@
 import { TeamOutlined, UserOutlined } from '@ant-design/icons'
 import { InputNumber } from 'antd'
-import React from 'react'
+import React, { useState } from 'react'
 
 import type { PropsFormItem } from '@/components'
 import { FormItem } from '@/components'
@@ -22,6 +22,7 @@ const StaffFormItem: FCC<StaffFormItemProps> = ({
   errorsFromStaff,
   errorsToStaff,
 }) => {
+  const [startingNumber, setStartingNumber] = useState(0)
   return (
     <FormItem
       label='Штатная численность работников'
@@ -38,6 +39,8 @@ const StaffFormItem: FCC<StaffFormItemProps> = ({
           addonBefore={<UserOutlined />}
           placeholder='1'
           size='large'
+          min={0}
+          onChange={setStartingNumber}
         />
       </FormItem>
       <FormItemDash />
@@ -51,6 +54,7 @@ const StaffFormItem: FCC<StaffFormItemProps> = ({
           addonBefore={<TeamOutlined />}
           placeholder='999'
           size='large'
+          min={startingNumber}
         />
       </FormItem>
     </FormItem>
