@@ -1,88 +1,73 @@
-import { Avatar, Button, Card, List, Skeleton } from 'antd'
+import { Card, List, Tag } from 'antd'
 import Link from 'next/link'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import type { FCC } from 'src/types'
 
-import { useFilter } from '@/hooks/useFilter'
+import { FetchMoreItemsComponent } from '@/components/FetchMoreItemsComponent'
 import type { BaseModel } from '@/models'
-import { useFetchItems } from '@/services/base/hooks'
+import type { OfferModelProps } from '@/models/Offer'
 
 interface OffersListProps {
   model: typeof BaseModel
 }
 
-const count = 3
+const ItemText = ({
+  label,
+  value,
+}: {
+  label: string
+  value: string | number
+}) => (
+  <div>
+    <span>{label}:</span> <Tag>{value}</Tag>
+  </div>
+)
 
-const OffersList: FCC<OffersListProps> = ({ model }) => {
-  const [limit, setLimit] = useState(2)
-  const [filter, setFilter] = useFilter({ limit: 2 })
-  const [list, setList] = useState<any[]>([])
-
-  const { data, results } = useFetchItems(model, filter)
-
-  useEffect(() => {
-    setList([])
-  }, [results])
-
-  const onLoadMore = () => {
-    setLimit((prevState) => prevState + 1)
-    setFilter({ limit: limit + 1 })
-    setList(
-      list.concat(
-        [...new Array(count)].map(() => ({
-          loading: true,
-          name: {},
-          picture: {},
-        }))
-      )
-    )
-    window.dispatchEvent(new Event('resize'))
-  }
-
-  const loadMore =
-    data?.data?.count > results?.length ? (
-      <div
-        style={{
-          textAlign: 'center',
-          marginTop: 12,
-          height: 32,
-          lineHeight: '32px',
-        }}
-      >
-        <Button onClick={onLoadMore}>Показать ещё</Button>
-      </div>
-    ) : null
-
+const OffersList: FCC<OffersListProps> = ({ model: Model }) => {
   return (
     <Card style={{ marginTop: 20 }} title='Все предложения'>
-      <List
-        className='demo-loadmore-list'
-        // loading={isLoading}
-        itemLayout='horizontal'
-        loadMore={loadMore}
-        dataSource={results}
-        renderItem={(item: any) => (
-          <List.Item
-            actions={[
-              <Link target='_blank' key='detail-link' href={item?.site}>
-                Подробнее
-              </Link>,
-            ]}
-          >
-            <Skeleton avatar title={false} loading={item.loading} active>
-              <List.Item.Meta
-                avatar={<Avatar src={item?.picture?.large || ''} />}
-                title={
-                  <Link target='_blank' href={item?.site}>
-                    {item?.title}
-                  </Link>
-                }
-                description={item?.text}
-              />
-            </Skeleton>
-          </List.Item>
-        )}
-      />
+      <List itemLayout='vertical'>
+        <FetchMoreItemsComponent
+          model={Model}
+          defFilters={{ limit: 2 }}
+          renderItems={(rowData) =>
+            rowData?.map((item: OfferModelProps) => (
+              <List.Item
+                key={item.id}
+                actions={[
+                  <ItemText
+                    key='interest_rate'
+                    label='Процентная ставка'
+                    value={item.interest_rate}
+                  />,
+                  <ItemText
+                    key='loan_term'
+                    label='Срок займа'
+                    value={item.loan_term}
+                  />,
+                  <ItemText
+                    key='amount'
+                    label='Сумма займа'
+                    value={item.amount}
+                  />,
+                  <Link target='_blank' key='detail-link' href={item?.site}>
+                    Подробнее
+                  </Link>,
+                ]}
+              >
+                <List.Item.Meta
+                  title={
+                    <Link target='_blank' href={item?.site}>
+                      {item?.title}
+                    </Link>
+                  }
+                  description={item?.text}
+                />
+              </List.Item>
+            ))
+          }
+        />
+      </List>
     </Card>
   )
 }

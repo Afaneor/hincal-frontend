@@ -6,6 +6,9 @@ export interface OfferModelProps extends BaseModelProps {
   site: string
   extra_data: any
   tags: string[]
+  interest_rate: ''
+  loan_term: ''
+  amount: ''
 }
 export class OfferModel {
   static modelName = 'offer'
