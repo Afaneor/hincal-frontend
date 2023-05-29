@@ -53,11 +53,7 @@ const BlogPostListItems: React.FC<BlogPostListItemsProps> = ({
                 {item.text}
               </Col>
               <Col xs={{ order: 0, span: 24 }} md={4}>
-                <img
-                  width='100%'
-                  alt='logo'
-                  src='https://gw.alipayobjects.com/zos/rmsportal/mqaQswcyDLcXyDKnZfES.png'
-                />
+                <img width='100%' alt='logo' src={item.preview_image} />
               </Col>
             </Row>
           </List.Item>
