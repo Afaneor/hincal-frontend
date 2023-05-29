@@ -28,14 +28,26 @@ export const MapHoverCard: FCC<MapHoverCardProps> = ({
   isSelected,
 }) => {
   const moneyFormat = useMoneyFormat()
+
+  const canvasContainer = document.getElementById('map-box-canvas')
+  const canvasHeight = canvasContainer?.offsetHeight || 0
+
+  const card = document.getElementById('card-map-hover')
+  const cardOffsetHeight = card?.offsetHeight || 0
+  let top = y
+  if (y + cardOffsetHeight > canvasHeight) {
+    top = y - cardOffsetHeight
+  }
+
   return (
     <Card
+      id='card-map-hover'
       title={name}
       type='inner'
       style={{
-        position: 'absolute',
-        left: x,
-        top: y,
+        position: 'relative',
+        left: x + 5,
+        top,
         width: 350,
       }}
     >

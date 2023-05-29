@@ -155,6 +155,7 @@ export const CalcMap: FCC<CalcMapProps> = ({
 
   return (
     <Map
+      id='map-box-canvas'
       {...viewState}
       locale={{ ru: 'ru-Ru' }}
       mapboxAccessToken={process.env.NEXT_PUBLIC_MAPBOX_TOKEN}
