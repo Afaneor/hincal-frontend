@@ -1,5 +1,14 @@
 import { CloseCircleOutlined, DownloadOutlined } from '@ant-design/icons'
-import { Button, Descriptions, Modal, Result, Spin } from 'antd'
+import {
+  Button,
+  Col,
+  Descriptions,
+  Modal,
+  Result,
+  Row,
+  Space,
+  Spin,
+} from 'antd'
 import React, { useState } from 'react'
 
 import { useFileDownload } from '@/hooks/useFileDownload'
@@ -46,27 +55,7 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
       onOk={onOk}
       width={1000}
       onCancel={onCancel}
-      footer={[
-        <Button
-          key='back'
-          size='large'
-          icon={<CloseCircleOutlined />}
-          onClick={onCancel}
-        >
-          Закрыть
-        </Button>,
-        data ? (
-          <Button
-            key='submit'
-            type='primary'
-            size='large'
-            icon={<DownloadOutlined />}
-            onClick={handleDownloadFile}
-          >
-            Скачать персонализированный отчет
-          </Button>
-        ) : undefined,
-      ]}
+      footer={[]}
     >
       <Spin spinning={isLoading} size='large'>
         <Result
@@ -142,6 +131,31 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
             )}
           </Descriptions.Item>
         </Descriptions>
+        <Row gutter={[20, 20]} justify='end'>
+          <Col>
+            <Space wrap>
+              <Button
+                key='back'
+                size='large'
+                icon={<CloseCircleOutlined />}
+                onClick={onCancel}
+              >
+                Закрыть
+              </Button>
+              {data ? (
+                <Button
+                  key='submit'
+                  type='primary'
+                  size='large'
+                  icon={<DownloadOutlined />}
+                  onClick={handleDownloadFile}
+                >
+                  Скачать персонализированный отчет
+                </Button>
+              ) : undefined}
+            </Space>
+          </Col>
+        </Row>
       </Spin>
     </Modal>
   )

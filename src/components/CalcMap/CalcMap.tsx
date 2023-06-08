@@ -3,7 +3,7 @@ import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css'
 
 import area from '@turf/area'
 import type { Feature } from '@turf/helpers'
-import { Col, Row } from 'antd'
+import { Col } from 'antd'
 // @ts-ignore
 import type { GeoJSON } from 'geojson'
 import { isEmpty } from 'lodash'
@@ -170,19 +170,17 @@ export const CalcMap: FCC<CalcMapProps> = ({
         <Layer {...lineStyle} />
       </Source>
       {!freezeMap ? (
-        <Row>
-          <Col xs={0} span={24}>
-            <DrawControl
-              position='top-left'
-              displayControlsDefault={false}
-              controls={drawControls}
-              onCreate={onUpdate}
-              onUpdate={onUpdate}
-              onDelete={onUpdate}
-              onModechange={handleOnModeChange}
-            />
-          </Col>
-        </Row>
+        <Col xs={0} md={24}>
+          <DrawControl
+            position='top-left'
+            displayControlsDefault={false}
+            controls={drawControls}
+            onCreate={onUpdate}
+            onUpdate={onUpdate}
+            onDelete={onUpdate}
+            onModechange={handleOnModeChange}
+          />
+        </Col>
       ) : null}
       {!startDrawPolygon &&
         !isEmpty(hoverInfo) &&

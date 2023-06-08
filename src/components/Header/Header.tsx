@@ -24,7 +24,9 @@ export const Header: FCC = () => {
     <AntdHeader className={styles.headerContainer}>
       <Row justify='space-between' style={{ width: '100%' }} gutter={[5, 10]}>
         <Col flex='auto' style={logoStyle}>
-          <Logo />
+          <Link href='/calculator' style={logoStyle}>
+            <Logo />
+          </Link>
         </Col>
 
         <Col flex='auto' xs={0} md={0} xl={24}>

@@ -2,8 +2,8 @@ import type { PermissionRulesProps } from 'src/services/base/types'
 
 export interface BaseModelProps {
   id: string | number
-  createdAt: string
-  updatedAt: string
+  created_at: string
+  updated_at: string
   permissionRules: PermissionRulesProps
   contentType: string | number
 }

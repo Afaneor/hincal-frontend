@@ -35,23 +35,14 @@ const SelectSearchableAsync: FCC<SelectSearchableAsyncProps> = ({
 }) => {
   const [value, setValue] = useState<any[]>([])
   const contextProps = useMemo(() => ({ single }), [])
-
-  // TODO: пока не убираю
-  // useEffect(() => {
-  //   console.log('xxx')
-  //   const cValue = single ? value[0] : value
-  //   if (value !== undefined) {
-  //     // @ts-ignore
-  //     onChange?.({ target: { value: cValue } })
-  //   }
-  // }, [value])
-
+  const [isOpen, setIsOpen] = useState(false)
   const handleSetV = (list: any[]) => {
     const cValue = single ? list[0] : list
     // @ts-ignore
     onChange?.({ target: { value: cValue } })
 
     setValue(list)
+    setIsOpen(false)
   }
   const DropdownRender = useCallback(() => {
     return (
@@ -70,6 +61,8 @@ const SelectSearchableAsync: FCC<SelectSearchableAsyncProps> = ({
 
   return (
     <Dropdown
+      open={isOpen}
+      onOpenChange={setIsOpen}
       placement='bottom'
       dropdownRender={DropdownRender}
       trigger={['click']}

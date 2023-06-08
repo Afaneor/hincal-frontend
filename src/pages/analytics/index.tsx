@@ -66,7 +66,7 @@ const Analytics = () => {
           </Col>
           {statistics?.popular_sector.map((sec) => (
             <Col key={sec.sector_name} xs={24} md={6}>
-              <Card bordered={false} style={{ height: 100 }}>
+              <Card bordered={false} style={{ height: 150 }}>
                 <Statistic
                   title={sec.sector_name || 'Без названия'}
                   value={sec.count}

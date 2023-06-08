@@ -1,4 +1,4 @@
-import { Button, Row, Spin } from 'antd'
+import { Button, Divider, Row, Spin } from 'antd'
 import React from 'react'
 import type { FCC } from 'src/types'
 
@@ -10,6 +10,7 @@ import styles from './FetchMoreItemsComponent.module.scss'
 interface FetchMoreItemsComponentProps {
   model: typeof BaseModel
   defFilters?: Record<string, any>
+  options?: Record<string, any>
   renderItems: (data: any[]) => React.ReactNode
 }
 
@@ -17,9 +18,10 @@ const FetchMoreItemsComponent: FCC<FetchMoreItemsComponentProps> = ({
   model: Model,
   defFilters,
   renderItems,
+  options,
 }) => {
   const { rowData, fetchNextPage, isLoading, isFetching, hasNextPage }: any =
-    useInfinityFetchData(Model, defFilters, {})
+    useInfinityFetchData(Model, defFilters, { ...options })
 
   return (
     <>
@@ -30,7 +32,9 @@ const FetchMoreItemsComponent: FCC<FetchMoreItemsComponentProps> = ({
             Показать еще
           </Button>
         </Row>
-      ) : null}
+      ) : (
+        <Divider>Больше нет</Divider>
+      )}
     </>
   )
 }

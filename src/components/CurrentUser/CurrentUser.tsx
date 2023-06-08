@@ -1,5 +1,10 @@
-import { LogoutOutlined, UserOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Dropdown, Row, Typography } from 'antd'
+import {
+  LogoutOutlined,
+  PieChartOutlined,
+  UserOutlined,
+} from '@ant-design/icons'
+import { Button, Card, Col, Dropdown, Row, Space, Typography } from 'antd'
+import Link from 'next/link'
 import React, { useCallback } from 'react'
 
 import { useQueryCache } from '@/hooks/useQueryCache'
@@ -33,16 +38,29 @@ export const CurrentUser: React.FC<CurrentUserProps> = () => {
   const DropdownRender = useCallback(
     () => (
       <Card>
-        <Button
-          type='text'
-          icon={<LogoutOutlined />}
-          onClick={(e) => {
-            e.stopPropagation()
-            handleLogout()
-          }}
-        >
-          Выйти
-        </Button>
+        <Space direction='vertical'>
+          <Link href={`/calculations/${data?.id}`}>
+            <Button
+              type='text'
+              icon={<PieChartOutlined />}
+              onClick={(e) => {
+                e.stopPropagation()
+              }}
+            >
+              Мои расчеты
+            </Button>
+          </Link>
+          <Button
+            type='text'
+            icon={<LogoutOutlined />}
+            onClick={(e) => {
+              e.stopPropagation()
+              handleLogout()
+            }}
+          >
+            Выйти
+          </Button>
+        </Space>
       </Card>
     ),
     []
