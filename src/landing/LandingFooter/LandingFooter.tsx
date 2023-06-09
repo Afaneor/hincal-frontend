@@ -5,6 +5,7 @@ export const LandingFooter = () => {
   return (
     <div className={styles.container} data-testid='test-LandingFooter'>
       <Logo color={'white'} />
+      <span>Сделано с ♥️ командой DST</span>
     </div>
   )
 }
