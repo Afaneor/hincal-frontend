@@ -113,6 +113,8 @@ export interface ResultCalculateContext {
   avg_land_lease_costs: number
   avg_land_purchase_costs: number
   context_for_file: ContextForFile
+  all_lp_tax_costs_bi: number
+  all_lp_tax_costs_math: number
 }
 
 export interface ResultCalculateContextArchive {
@@ -221,4 +223,8 @@ export interface ContextForFile {
   others_costs: string
   equipments: string
   offers_and_wishes: string
+  avg_income_tax_math: number
+  avg_income_tax_bi: number
+  all_lp_tax_costs_bi: number
+  all_lp_tax_costs_math: number
 }

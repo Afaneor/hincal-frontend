@@ -56,7 +56,7 @@ const Analytics = () => {
       <PageWrapper title='Мои расчеты' subTitle=''>
         <FetchMoreItemsComponent
           model={Model}
-          defFilters={{ user: currentUser?.id }}
+          // defFilters={{ user: currentUser?.id }}
           options={{ enabled: !!currentUser?.id }}
           renderItems={(rowData) => (
             <Row gutter={gutter}>
@@ -84,7 +84,7 @@ const Analytics = () => {
                         {moneyFormat(
                           toMillion(
                             report?.context?.context_for_file
-                              ?.all_possible_costs_bi
+                              ?.all_possible_costs_math
                           )
                         )}
                       </Descriptions.Item>

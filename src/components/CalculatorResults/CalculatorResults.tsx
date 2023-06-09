@@ -1,16 +1,18 @@
-import { CloseCircleOutlined, DownloadOutlined } from '@ant-design/icons'
+import { CloseCircleOutlined, FileDoneOutlined } from '@ant-design/icons'
 import {
   Button,
   Col,
   Descriptions,
+  Divider,
   Modal,
   Result,
   Row,
-  Space,
   Spin,
 } from 'antd'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 
+import { LoginOrRegisterToGetPersonInfo } from '@/components/LoginOrRegisterToGetPersonInfo'
+import { SpecialForYou } from '@/components/SpecialForYou'
 import { useFileDownload } from '@/hooks/useFileDownload'
 import { useMoneyFormat } from '@/hooks/useMoneyFormat'
 import { useQueryCache } from '@/hooks/useQueryCache'
@@ -48,6 +50,16 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
       .finally(() => setIsLoading(false))
   }
   const toMillion = (val: number) => val * 1000
+
+  const showSpecialForYou = useMemo(
+    () =>
+      data &&
+      (results.areas?.length ||
+        results.offers?.length ||
+        results?.supports?.length),
+    [results]
+  )
+
   return (
     <Modal
       centered
@@ -61,38 +73,55 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
         <Result
           status='success'
           title={moneyFormat(
-            toMillion(results?.context?.context_for_file?.all_possible_costs_bi)
+            toMillion(
+              results?.context?.context_for_file?.all_possible_costs_math
+            )
           )}
           subTitle='Общая сумма всех затрат'
         />
+        {data ? (
+          <Row justify='center' style={{ marginBottom: 20 }}>
+            <Col>
+              <Button
+                key='submit'
+                danger
+                icon={<FileDoneOutlined />}
+                onClick={handleDownloadFile}
+              >
+                Получить персонализированный отчет
+              </Button>
+            </Col>
+          </Row>
+        ) : (
+          <LoginOrRegisterToGetPersonInfo />
+        )}
+        <Divider />
         <Descriptions title='Затраты на основе введенных вами данных'>
-          <Descriptions.Item label='Персонал'>
+          <Descriptions.Item span={1} label='Персонал'>
             {moneyFormat(
               toMillion(
                 results?.context?.context_for_file?.all_staff_costs_math
               )
             )}
           </Descriptions.Item>
-          <Descriptions.Item label='Земля и имущество'>
+          <Descriptions.Item span={2} label='Земля, имущество и транспорт'>
             {moneyFormat(
               toMillion(
-                results?.context?.context_for_file?.all_lp_lease_costs_math
+                results?.context?.context_for_file?.all_lp_tax_costs_math
               )
             )}
           </Descriptions.Item>
-          <Descriptions.Item label='Оборудование'>
+          <Descriptions.Item span={1} label='Оборудование'>
             {moneyFormat(
               toMillion(
                 results?.context?.context_for_file?.equipment_costs_math
               )
             )}
           </Descriptions.Item>
-          <Descriptions.Item label='Налоги'>
-            {moneyFormat(
-              toMillion(results?.context?.context_for_file?.all_tax_costs_math)
-            )}
+          <Descriptions.Item span={2} label='Налог на прибыль'>
+            {moneyFormat(toMillion(results?.context?.avg_income_tax_math))}
           </Descriptions.Item>
-          <Descriptions.Item label='Сервисы'>
+          <Descriptions.Item span={1} label='Сервисы'>
             {moneyFormat(
               toMillion(
                 results?.context?.context_for_file?.all_services_costs_math
@@ -100,30 +129,31 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
             )}
           </Descriptions.Item>
         </Descriptions>
-        <Descriptions title='В среднем тратят компании в выбранной отрасли'>
-          <Descriptions.Item label='Персонал'>
+        <Divider />
+        <Descriptions
+          title={`В среднем тратят компании в выбранной отрасли ${moneyFormat(
+            toMillion(results?.context?.context_for_file?.all_possible_costs_bi)
+          )}`}
+        >
+          <Descriptions.Item span={1} label='Персонал'>
             {moneyFormat(
               toMillion(results?.context?.context_for_file?.all_staff_costs_bi)
             )}
           </Descriptions.Item>
-          <Descriptions.Item label='Земля и имущество'>
+          <Descriptions.Item span={2} label='Земля, имущество и транспорт'>
             {moneyFormat(
-              toMillion(
-                results?.context?.context_for_file?.all_lp_lease_costs_bi
-              )
+              toMillion(results?.context?.context_for_file?.all_lp_tax_costs_bi)
             )}
           </Descriptions.Item>
-          <Descriptions.Item label='Оборудование'>
+          <Descriptions.Item span={1} label='Оборудование'>
             {moneyFormat(
               toMillion(results?.context?.context_for_file?.equipment_costs_bi)
             )}
           </Descriptions.Item>
-          <Descriptions.Item label='Налоги'>
-            {moneyFormat(
-              toMillion(results?.context?.context_for_file?.all_tax_costs_bi)
-            )}
+          <Descriptions.Item span={2} label='Налог на прибыль'>
+            {moneyFormat(toMillion(results?.context?.avg_income_tax_bi))}
           </Descriptions.Item>
-          <Descriptions.Item label='Сервисы'>
+          <Descriptions.Item span={1} label='Сервисы'>
             {moneyFormat(
               toMillion(
                 results?.context?.context_for_file?.all_services_costs_bi
@@ -131,29 +161,29 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
             )}
           </Descriptions.Item>
         </Descriptions>
-        <Row gutter={[20, 20]} justify='end'>
+        {showSpecialForYou ? (
+          <Row>
+            <Col span={24}>
+              <SpecialForYou
+                areas={results.areas}
+                offers={results.offers}
+                supports={results.supports}
+              />
+            </Col>
+          </Row>
+        ) : null}
+
+        <Row justify='end'>
+          <Divider />
           <Col>
-            <Space wrap>
-              <Button
-                key='back'
-                size='large'
-                icon={<CloseCircleOutlined />}
-                onClick={onCancel}
-              >
-                Закрыть
-              </Button>
-              {data ? (
-                <Button
-                  key='submit'
-                  type='primary'
-                  size='large'
-                  icon={<DownloadOutlined />}
-                  onClick={handleDownloadFile}
-                >
-                  Скачать персонализированный отчет
-                </Button>
-              ) : undefined}
-            </Space>
+            <Button
+              key='back'
+              size='large'
+              icon={<CloseCircleOutlined />}
+              onClick={onCancel}
+            >
+              Закрыть
+            </Button>
           </Col>
         </Row>
       </Spin>
