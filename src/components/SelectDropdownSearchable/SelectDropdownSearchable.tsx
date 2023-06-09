@@ -55,7 +55,7 @@ export const SelectDropdownSearchable: FCC<
   return (
     <Space direction='vertical' className='w100'>
       {!withoutSearch ? (
-        <Form.Item name='searchInput'>
+        <Form.Item>
           <Search
             ref={refSearch}
             placeholder='Поиск'

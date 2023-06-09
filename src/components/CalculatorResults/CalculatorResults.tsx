@@ -92,9 +92,7 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
               </Button>
             </Col>
           </Row>
-        ) : (
-          <LoginOrRegisterToGetPersonInfo />
-        )}
+        ) : null}
         <Divider />
         <Descriptions title='Затраты на основе введенных вами данных'>
           <Descriptions.Item span={1} label='Персонал'>
@@ -119,12 +117,21 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
             )}
           </Descriptions.Item>
           <Descriptions.Item span={2} label='Налог на прибыль'>
-            {moneyFormat(toMillion(results?.context?.avg_income_tax_math))}
+            {moneyFormat(
+              toMillion(results?.context?.context_for_file?.avg_income_tax_math)
+            )}
           </Descriptions.Item>
           <Descriptions.Item span={1} label='Сервисы'>
             {moneyFormat(
               toMillion(
                 results?.context?.context_for_file?.all_services_costs_math
+              )
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item span={2} label='Другие налоги'>
+            {moneyFormat(
+              toMillion(
+                results?.context?.context_for_file?.avg_other_taxes_math
               )
             )}
           </Descriptions.Item>
@@ -151,13 +158,20 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
             )}
           </Descriptions.Item>
           <Descriptions.Item span={2} label='Налог на прибыль'>
-            {moneyFormat(toMillion(results?.context?.avg_income_tax_bi))}
+            {moneyFormat(
+              toMillion(results?.context?.context_for_file?.avg_income_tax_bi)
+            )}
           </Descriptions.Item>
           <Descriptions.Item span={1} label='Сервисы'>
             {moneyFormat(
               toMillion(
                 results?.context?.context_for_file?.all_services_costs_bi
               )
+            )}
+          </Descriptions.Item>
+          <Descriptions.Item span={2} label='Другие налоги'>
+            {moneyFormat(
+              toMillion(results?.context?.context_for_file?.avg_other_taxes_bi)
             )}
           </Descriptions.Item>
         </Descriptions>
@@ -169,6 +183,14 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
                 offers={results.offers}
                 supports={results.supports}
               />
+            </Col>
+          </Row>
+        ) : null}
+        {!data ? (
+          <Row justify='center'>
+            <Divider />
+            <Col span={24}>
+              <LoginOrRegisterToGetPersonInfo />
             </Col>
           </Row>
         ) : null}
@@ -191,6 +213,6 @@ export const CalculatorResults: FCC<CalculatorPreviewProps> = ({
   )
 }
 
-CalculatorResults.displayName = 'CalculatorPreview'
+CalculatorResults.displayName = 'CalculatorResults'
 
 export default CalculatorResults

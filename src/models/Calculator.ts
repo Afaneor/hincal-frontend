@@ -227,4 +227,6 @@ export interface ContextForFile {
   avg_income_tax_bi: number
   all_lp_tax_costs_bi: number
   all_lp_tax_costs_math: number
+  avg_other_taxes_bi: number
+  avg_other_taxes_math: number
 }
