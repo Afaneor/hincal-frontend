@@ -16,7 +16,7 @@ const Offers: FCC = () => {
   const { results } = useFetchItems(Model)
 
   return (
-    <Main meta={<Meta title='Логин' description='' />}>
+    <Main meta={<Meta title='Предложения от партнеров' description='' />}>
       <PageWrapper
         title='Выгодные предложения от партнеров'
         subTitle='Ищете партнера? Хотите найти самое выгодное предложение? Тогда вам будет полезно ознакомится с предложениями наших партнеров. Наш сервис позволит отыскать лучшее, что сейчас есть на рынке.'

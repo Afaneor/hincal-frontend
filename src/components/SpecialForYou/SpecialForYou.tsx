@@ -1,10 +1,13 @@
-import { Button, Collapse, Divider, Typography } from 'antd'
+import { Button, Collapse, Divider, Popover, Typography } from 'antd'
 import Link from 'next/link'
 import React from 'react'
 import type { FCC } from 'src/types'
 
+import { OfferCard } from '@/components/OfferCard'
+import { SupportCard } from '@/components/SupportCard'
 import type { AreaModelProps, SupportModelProps } from '@/models'
 import type { OfferModelProps } from '@/models/Offer'
+import { AreaCard } from '@/pages/areas'
 
 const { Panel } = Collapse
 const { Text } = Typography
@@ -13,16 +16,22 @@ interface SpecialForYouProps {
   offers?: OfferModelProps[]
   supports?: SupportModelProps[]
 }
-const ExternalBtnLink = ({
-  item,
-}: {
-  item: AreaModelProps | OfferModelProps | SupportModelProps
-}) => (
-  <Link href={item.site} target='_blank'>
-    <Button style={{ maxWidth: 400, margin: '0 10px 10px 0' }}>
-      <Text ellipsis>{item.title}</Text>
-    </Button>
-  </Link>
+
+interface ExternalBtnLinkProps {
+  title?: string
+  site: string
+  content?: React.ReactNode
+}
+
+const styleBtn = { maxWidth: 300, margin: '0 10px 10px 0' }
+const ExternalBtnLink = ({ title, site, content }: ExternalBtnLinkProps) => (
+  <Popover content={content}>
+    <Link href={site} target='_blank'>
+      <Button size='small' style={styleBtn}>
+        <Text ellipsis>{title}</Text>
+      </Button>
+    </Link>
+  </Popover>
 )
 
 const SpecialForYou: FCC<SpecialForYouProps> = ({
@@ -41,7 +50,22 @@ const SpecialForYou: FCC<SpecialForYouProps> = ({
             extra={<Link href='/areas'>Все промлощадки</Link>}
           >
             {areas?.map((area) => (
-              <ExternalBtnLink key={area.id} item={area} />
+              <ExternalBtnLink
+                key={area.id}
+                title={area.title}
+                site={area.site}
+                content={
+                  <AreaCard
+                    title={area.title}
+                    preview_image={area.preview_image}
+                    territorial_location={area.territorial_location}
+                    address={area.address}
+                    text={area.text}
+                    bordered={false}
+                    style={{ width: 400 }}
+                  />
+                }
+              />
             ))}
           </Panel>
         ) : null}
@@ -56,7 +80,20 @@ const SpecialForYou: FCC<SpecialForYouProps> = ({
             }
           >
             {offers?.map((offer) => (
-              <ExternalBtnLink key={offer.id} item={offer} />
+              <ExternalBtnLink
+                title={offer.title}
+                key={offer.id}
+                site={offer.site}
+                content={
+                  <OfferCard
+                    title={offer.title}
+                    description={offer.text}
+                    loan_term={offer.loan_term}
+                    amount={offer.amount}
+                    interest_rate={offer.interest_rate}
+                  />
+                }
+              />
             ))}
           </Panel>
         ) : null}
@@ -67,7 +104,20 @@ const SpecialForYou: FCC<SpecialForYouProps> = ({
             extra={<Link href='/supports'>Все меры поддержки</Link>}
           >
             {supports?.map((support) => (
-              <ExternalBtnLink key={support.id} item={support} />
+              <ExternalBtnLink
+                key={support.id}
+                title={support.title}
+                site={support.site}
+                content={
+                  <SupportCard
+                    title={support.title}
+                    text={support.text}
+                    amount={support.amount}
+                    is_actual={support.is_actual}
+                    style={{ maxWidth: 400 }}
+                  />
+                }
+              />
             ))}
           </Panel>
         ) : null}

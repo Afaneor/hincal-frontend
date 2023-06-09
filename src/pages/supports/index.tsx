@@ -1,24 +1,14 @@
-import {
-  Badge,
-  Card,
-  Col,
-  Descriptions,
-  Divider,
-  Row,
-  Tag,
-  Typography,
-} from 'antd'
+import { Badge, Col, Row } from 'antd'
 import Link from 'next/link'
 import React from 'react'
 
 import { FetchMoreItemsComponent } from '@/components/FetchMoreItemsComponent'
 import { PageWrapper } from '@/components/PageWrapper'
+import { SupportCard } from '@/components/SupportCard'
 import { Meta } from '@/layouts/Meta'
 import type { SupportModelProps } from '@/models'
 import { SupportModel } from '@/models'
 import { Main } from '@/templates/Main'
-
-const { Title, Text } = Typography
 
 const Model = SupportModel
 
@@ -44,20 +34,12 @@ const Supports = () => {
                       text={support.is_actual ? 'Актуально' : 'Не актуально'}
                       color={support.is_actual ? 'blue' : 'red'}
                     >
-                      <Card hoverable style={{ height: '100%' }}>
-                        <Title level={5}>{support.title}</Title>
-                        <Divider />
-                        <Descriptions column={1}>
-                          <Descriptions.Item label='Размер субсидий'>
-                            {support?.amount ? (
-                              <Tag>{support.amount}</Tag>
-                            ) : (
-                              '-'
-                            )}
-                          </Descriptions.Item>
-                        </Descriptions>
-                        <Text type='secondary'>{support.text}</Text>
-                      </Card>
+                      <SupportCard
+                        title={support.title}
+                        text={support.text}
+                        amount={support.amount}
+                        is_actual={support.is_actual}
+                      />
                     </Badge.Ribbon>
                   </Link>
                 </Col>
