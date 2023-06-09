@@ -1,23 +1,21 @@
 import { UserOutlined } from '@ant-design/icons'
 import { Button, Spin } from 'antd'
 import Link from 'next/link'
-import React from 'react'
+import React, { useContext } from 'react'
 
-import { useUserGetInfo } from '@/services/auth/hooks'
+import { CurrentUserContext } from '@/components/CurrentUserProvider/CurrentUserProvider'
 
 import { CurrentUser } from '../CurrentUser'
 
 const AuthComponent = () => {
-  const { data, isLoading }: { data: any; isLoading: boolean } = useUserGetInfo(
-    {
-      refetchOnWindowFocus: false,
-    }
-  )
-  if (data?.status === 200) {
-    return <CurrentUser />
+  const { currentUser } = useContext(CurrentUserContext)
+
+  if (currentUser) {
+    return <CurrentUser currentUser={currentUser} />
   }
+
   return (
-    <Spin spinning={isLoading}>
+    <Spin spinning={false}>
       <Link href='/login'>
         <Button shape='circle' icon={<UserOutlined />} />
       </Link>

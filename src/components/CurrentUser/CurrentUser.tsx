@@ -7,23 +7,22 @@ import { Button, Card, Col, Dropdown, Row, Space, Typography } from 'antd'
 import Link from 'next/link'
 import React, { useCallback } from 'react'
 
-import { useQueryCache } from '@/hooks/useQueryCache'
 import type { UsersModelProps } from '@/models'
 import { useLogout } from '@/services/auth/hooks'
 
 const { Text } = Typography
 
 interface CurrentUserProps {
-  src?: string
+  currentUser: UsersModelProps
 }
 
 const UserName = ({ currentUser }: { currentUser: UsersModelProps }) => (
   <Text>{currentUser?.email || currentUser?.username}</Text>
 )
 
-export const CurrentUser: React.FC<CurrentUserProps> = () => {
+export const CurrentUser: React.FC<CurrentUserProps> = ({ currentUser }) => {
   const { mutate: logout }: any = useLogout()
-  const { data }: { data: UsersModelProps } | any = useQueryCache('getInfo')
+
   const handleLogout = () => {
     logout(
       {},
@@ -39,7 +38,7 @@ export const CurrentUser: React.FC<CurrentUserProps> = () => {
     () => (
       <Card>
         <Space direction='vertical'>
-          <Link href={`/calculations/${data?.id}`}>
+          <Link href='/calculations'>
             <Button
               type='text'
               icon={<PieChartOutlined />}
@@ -74,7 +73,7 @@ export const CurrentUser: React.FC<CurrentUserProps> = () => {
           dropdownRender={DropdownRender}
         >
           <Button type='text' onClick={(e) => e.stopPropagation()}>
-            <UserOutlined /> <UserName currentUser={data} />
+            <UserOutlined /> <UserName currentUser={currentUser} />
           </Button>
         </Dropdown>
       </Col>

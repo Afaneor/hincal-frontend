@@ -7,6 +7,7 @@ import type { AppProps } from 'next/app'
 import { appWithTranslation } from 'next-i18next'
 import React from 'react'
 
+import CurrentUserProvider from '@/components/CurrentUserProvider/CurrentUserProvider'
 import NotificationMessageProvider from '@/components/NotificationMessage/NotificationMessage'
 
 const qClientConfig = {
@@ -18,7 +19,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <QueryClientProvider client={queryClient}>
       <NotificationMessageProvider>
-        <Component {...pageProps} />
+        <CurrentUserProvider>
+          <Component {...pageProps} />
+        </CurrentUserProvider>
       </NotificationMessageProvider>
     </QueryClientProvider>
   )

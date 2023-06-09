@@ -1,9 +1,9 @@
 import { Button, Card, Col, Descriptions, Row } from 'antd'
 import type { Gutter } from 'antd/es/grid/row'
-import { useRouter } from 'next/router'
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 
 import { CalculatorResults } from '@/components/CalculatorResults'
+import { CurrentUserContext } from '@/components/CurrentUserProvider/CurrentUserProvider'
 import { FetchMoreItemsComponent } from '@/components/FetchMoreItemsComponent'
 import { PageWrapper } from '@/components/PageWrapper'
 import { useDateTimePrettyStr } from '@/hooks/useDateTimePrettyStr'
@@ -18,7 +18,8 @@ const gutter = [20, 20] as Gutter | [Gutter, Gutter]
 const Model = ReportModel
 
 const Analytics = () => {
-  const { query } = useRouter()
+  const { currentUser } = useContext(CurrentUserContext)
+
   const [reportResults, setReportResults] = useState<ResultCalculate>(
     {} as ResultCalculate
   )
@@ -55,14 +56,16 @@ const Analytics = () => {
       <PageWrapper title='Мои расчеты' subTitle=''>
         <FetchMoreItemsComponent
           model={Model}
-          defFilters={{ user: query.userId }}
-          options={{ enabled: !!query.userId }}
+          defFilters={{ user: currentUser?.id }}
+          options={{ enabled: !!currentUser?.id }}
           renderItems={(rowData) => (
             <Row gutter={gutter}>
               {rowData.map((report: ResultCalculate) => (
                 <Col key={report.id} span={24}>
                   <Card
-                    title={`${report.initial_data?.sector} от ${dateFormatter({
+                    title={`${
+                      report.initial_data?.sector || 'Без отрасли'
+                    } от ${dateFormatter({
                       date: report?.created_at,
                     })}`}
                     hoverable
