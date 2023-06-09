@@ -39,13 +39,7 @@ export const CurrentUser: React.FC<CurrentUserProps> = ({ currentUser }) => {
       <Card>
         <Space direction='vertical'>
           <Link href='/calculations'>
-            <Button
-              type='text'
-              icon={<PieChartOutlined />}
-              onClick={(e) => {
-                e.stopPropagation()
-              }}
-            >
+            <Button type='text' icon={<PieChartOutlined />}>
               Мои расчеты
             </Button>
           </Link>

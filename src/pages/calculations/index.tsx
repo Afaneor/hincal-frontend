@@ -56,7 +56,7 @@ const Analytics = () => {
       <PageWrapper title='Мои расчеты' subTitle=''>
         <FetchMoreItemsComponent
           model={Model}
-          // defFilters={{ user: currentUser?.id }}
+          defFilters={{ user: currentUser?.id }}
           options={{ enabled: !!currentUser?.id }}
           renderItems={(rowData) => (
             <Row gutter={gutter}>
